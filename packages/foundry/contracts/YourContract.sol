@@ -76,4 +76,10 @@ contract YourContract {
      * Function that allows the contract to receive ETH
      */
     receive() external payable { }
+
+
+    //ADD HERE
+    function sayHello() public pure returns (string memory) {
+        return "Hello from contract!";
+    }
 }
