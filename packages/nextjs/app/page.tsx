@@ -33,13 +33,13 @@ const Home: NextPage = () => {
     contractName: "YourContract", 
   });
 
-  const handleClick = async () => {
-    if (connectedAddress) {
-      alert(`Connected Address: ${connectedAddress}`);
-    } else {
-      alert("⚠️ No wallet connected.");
-    }
-  };
+  // const handleClick = async () => {
+  //   if (connectedAddress) {
+  //     alert(`Connected Address: ${connectedAddress}`);
+  //   } else {
+  //     alert("⚠️ No wallet connected.");
+  //   }
+  // };
   //BLOCKCHAIN
 
 
@@ -145,18 +145,17 @@ const Home: NextPage = () => {
 
             {/* Blockchain testing*/}
             <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
-              <button className="btn" onClick={handleClick}>
-                BlockChain
+              <button className="btn" /*onClick={handleClick}*/>
+              <Link href="/parcel_template">Block Chain</Link>
               </button>
-            </div>
-
-            <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
               {deployedContractData ? (
                 <ContractReadMethods />                
               ) : (
                 <p>Loading contract data...</p>
-              )}            
+              )}  
+
             </div>
+
 
           </div>
         </div>

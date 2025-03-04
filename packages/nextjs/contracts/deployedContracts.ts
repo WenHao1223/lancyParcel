@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     YourContract: {
-      address: "0xb19b36b1456e65e3a6d514d3f715f204bd59f431",
+      address: "0xa15bb66138824a1c7167f5e85b957d04dd34e468",
       abi: [
         {
           type: "constructor",
@@ -23,6 +23,121 @@ const deployedContracts = {
         {
           type: "receive",
           stateMutability: "payable",
+        },
+        {
+          type: "function",
+          name: "getParcel",
+          inputs: [
+            {
+              name: "_trackingNumber",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "tuple",
+              internalType: "struct YourContract.Parcel",
+              components: [
+                {
+                  name: "TrackingNumber",
+                  type: "string",
+                  internalType: "string",
+                },
+                {
+                  name: "sends",
+                  type: "tuple[]",
+                  internalType: "struct YourContract.Send[]",
+                  components: [
+                    {
+                      name: "TrackingNumber",
+                      type: "string",
+                      internalType: "string",
+                    },
+                    {
+                      name: "OutofDelTime",
+                      type: "uint256",
+                      internalType: "uint256",
+                    },
+                    {
+                      name: "Sender_ID",
+                      type: "address",
+                      internalType: "address",
+                    },
+                    {
+                      name: "Employee_ID",
+                      type: "address",
+                      internalType: "address",
+                    },
+                    {
+                      name: "Emp_Sign",
+                      type: "bytes",
+                      internalType: "bytes",
+                    },
+                    {
+                      name: "status",
+                      type: "uint8",
+                      internalType: "enum YourContract.Status",
+                    },
+                    {
+                      name: "stage",
+                      type: "uint256",
+                      internalType: "uint256",
+                    },
+                  ],
+                },
+                {
+                  name: "receives",
+                  type: "tuple[]",
+                  internalType: "struct YourContract.Receive[]",
+                  components: [
+                    {
+                      name: "TrackingNumber",
+                      type: "string",
+                      internalType: "string",
+                    },
+                    {
+                      name: "ReceivedTimes",
+                      type: "uint256",
+                      internalType: "uint256",
+                    },
+                    {
+                      name: "Receiver_ID",
+                      type: "address",
+                      internalType: "address",
+                    },
+                    {
+                      name: "Employee_ID",
+                      type: "address",
+                      internalType: "address",
+                    },
+                    {
+                      name: "Emp_Sign",
+                      type: "bytes",
+                      internalType: "bytes",
+                    },
+                    {
+                      name: "status",
+                      type: "uint8",
+                      internalType: "enum YourContract.Status",
+                    },
+                    {
+                      name: "stage",
+                      type: "uint256",
+                      internalType: "uint256",
+                    },
+                  ],
+                },
+                {
+                  name: "status",
+                  type: "uint8",
+                  internalType: "enum YourContract.Status",
+                },
+              ],
+            },
+          ],
+          stateMutability: "view",
         },
         {
           type: "function",
@@ -46,6 +161,30 @@ const deployedContracts = {
               name: "",
               type: "address",
               internalType: "address",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "parcels",
+          inputs: [
+            {
+              name: "",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          outputs: [
+            {
+              name: "TrackingNumber",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "status",
+              type: "uint8",
+              internalType: "enum YourContract.Status",
             },
           ],
           stateMutability: "view",
@@ -161,7 +300,7 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {},
-      deploymentFile: "run-1741109493.json",
+      deploymentFile: "run-1741123978.json",
       deploymentScript: "Deploy.s.sol",
     },
   },
