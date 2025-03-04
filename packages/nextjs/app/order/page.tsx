@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { NextPage } from "next";
 
 const Order: NextPage = () => {
@@ -11,7 +12,9 @@ const Order: NextPage = () => {
         {/* Item 1 */}
         <div className="card bg-base-100 w-96 shadow-sm">
           <figure>
-            <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Shoes" />
+            <div className="relative w-full h-56">
+              <Image fill src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="" />
+            </div>
           </figure>
           <div className="card-body">
             <h2 className="card-title">
@@ -35,7 +38,9 @@ const Order: NextPage = () => {
         {/* Item 2 */}
         <div className="card bg-base-100 w-96 shadow-sm">
           <figure>
-            <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Shoes" />
+            <div className="relative w-full h-56">
+              <Image fill src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="" />
+            </div>
           </figure>
           <div className="card-body">
             <h2 className="card-title">
@@ -59,7 +64,9 @@ const Order: NextPage = () => {
         {/* Item 3 */}
         <div className="card bg-base-100 w-96 shadow-sm">
           <figure>
-            <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Shoes" />
+            <div className="relative w-full h-56">
+              <Image fill src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="" />
+            </div>
           </figure>
           <div className="card-body">
             <h2 className="card-title">

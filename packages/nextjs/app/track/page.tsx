@@ -14,7 +14,13 @@ const Track: NextPage = () => {
 
           <li className="list-row">
             <div>
-              <img className="size-10 rounded-box" src="https://img.daisyui.com/images/profile/demo/1@94.webp" alt="" />
+              <Image
+                width={40}
+                height={40}
+                className="rounded-box"
+                src="https://img.daisyui.com/images/profile/demo/1@94.webp"
+                alt=""
+              />
             </div>
             <div>
               <div>Dio Lupa</div>

@@ -26,4 +26,16 @@ if (isIpfs) {
   };
 }
 
-module.exports = nextConfig;
+module.exports = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "img.daisyui.com",
+        port: "",
+        pathname: "**",
+        search: "",
+      },
+    ],
+  },
+};
