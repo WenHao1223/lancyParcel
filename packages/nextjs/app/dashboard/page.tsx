@@ -1,9 +1,9 @@
 import { NextPage } from "next";
 
-const ParcelDashboard: NextPage = () => {
+const Dashboard: NextPage = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold">Parcel Dashboard</h1>
+      <h1 className="text-4xl font-bold">Dashboard</h1>
       <p>Check parcel status here.</p>
 
       {/* Parcel Hub detail */}
@@ -39,6 +39,7 @@ const ParcelDashboard: NextPage = () => {
             <thead>
               <tr>
                 <th>Tracking No.</th>
+                <th>Sender</th>
                 <th>Recipient</th>
                 <th>Send From</th>
                 <th>Final Destination</th>
@@ -49,17 +50,18 @@ const ParcelDashboard: NextPage = () => {
             <tbody>
               {/* row 1 */}
               <tr>
-                <th>123456789</th>
-                <td>John</td>
+                <td>123456789</td>
+                <td className="link hover:text-secondary">Doe</td>
+                <td className="link hover:text-secondary">John</td>
                 <td>
                   Parcel ABC <br />
                   <span className="badge badge-outline badge-warning badge-sm">Regional</span>
                 </td>
                 <td>123, Main Street, 1234 New York, United States</td>
-                <th>
+                <td>
                   <div className="badge badge-soft badge-info badge-sm">Sent</div>
-                </th>
-                <th>
+                </td>
+                <td>
                   <div className="list-row">
                     <button className="btn btn-square btn-ghost">
                       <div className="tooltip" data-tip="Track delivery">
@@ -85,21 +87,22 @@ const ParcelDashboard: NextPage = () => {
                       </div>
                     </button>
                   </div>
-                </th>
+                </td>
               </tr>
               {/* row 2 */}
               <tr>
-                <th>234567890</th>
-                <td>Alice</td>
+                <td>234567890</td>
+                <td className="link hover:text-secondary">Bob</td>
+                <td className="link hover:text-secondary">Alice</td>
                 <td>
                   Parcel ABC <br />
                   <span className="badge badge-outline badge-success badge-sm">International</span>
                 </td>
                 <td>234, Main Street, 1234 New York, United States</td>
-                <th>
+                <td>
                   <div className="badge badge-soft badge-warning badge-sm">Pending</div>
-                </th>
-                <th>
+                </td>
+                <td>
                   <div className="list-row">
                     <button className="btn btn-square btn-ghost">
                       <div className="tooltip" data-tip="Track delivery">
@@ -143,21 +146,22 @@ const ParcelDashboard: NextPage = () => {
                       </div>
                     </button>
                   </div>
-                </th>
+                </td>
               </tr>
               {/* row 3 */}
               <tr>
-                <th>987654321</th>
-                <td>Jet</td>
+                <td>987654321</td>
+                <td className="link hover:text-secondary">Jet</td>
+                <td className="link hover:text-secondary">Charles</td>
                 <td>
                   Parcel ABC <br />
                   <span className="badge badge-outline badge-warning badge-sm">Regional</span>
                 </td>
                 <td>345, Main Street, 1234 Bristol, United Kingdom</td>
-                <th>
+                <td>
                   <div className="badge badge-soft badge-success badge-sm">Arrived</div>
-                </th>
-                <th>
+                </td>
+                <td>
                   <div className="list-row">
                     <button className="btn btn-square btn-ghost">
                       <div className="tooltip" data-tip="Track delivery">
@@ -183,21 +187,22 @@ const ParcelDashboard: NextPage = () => {
                       </div>
                     </button>
                   </div>
-                </th>
+                </td>
               </tr>
               {/* row 4 */}
               <tr>
-                <th>098765432</th>
-                <td>Dane</td>
+                <td>098765432</td>
+                <td className="link hover:text-secondary">Dane</td>
+                <td className="link hover:text-secondary">John</td>
                 <td>
                   Parcel ABC <br />
                   <span className="badge badge-outline badge-success badge-sm">International</span>
                 </td>
                 <td>456, Main Street, 1234 New York, United States</td>
-                <th>
+                <td>
                   <div className="badge badge-soft badge-error badge-sm">Cancelled</div>
-                </th>
-                <th>
+                </td>
+                <td>
                   <div className="list-row">
                     <button className="btn btn-square btn-ghost">
                       <div className="tooltip" data-tip="Track delivery">
@@ -223,7 +228,7 @@ const ParcelDashboard: NextPage = () => {
                       </div>
                     </button>
                   </div>
-                </th>
+                </td>
               </tr>
             </tbody>
             {/* foot */}
@@ -244,4 +249,4 @@ const ParcelDashboard: NextPage = () => {
   );
 };
 
-export default ParcelDashboard;
+export default Dashboard;
