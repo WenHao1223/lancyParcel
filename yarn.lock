@@ -13677,6 +13677,7 @@ __metadata:
     husky: ~9.1.6
     lint-staged: ~13.2.2
     recharts: ^2.15.1
+    sweetalert2: ^11.17.2
   languageName: unknown
   linkType: soft
 
@@ -14420,6 +14421,13 @@ __metadata:
   version: 1.0.0
   resolution: "supports-preserve-symlinks-flag@npm:1.0.0"
   checksum: 53b1e247e68e05db7b3808b99b892bd36fb096e6fba213a06da7fab22045e97597db425c724f2bbd6c99a3c295e1e73f3e4de78592289f38431049e1277ca0ae
+  languageName: node
+  linkType: hard
+
+"sweetalert2@npm:^11.17.2":
+  version: 11.17.2
+  resolution: "sweetalert2@npm:11.17.2"
+  checksum: 0fd5069af74be31a88e82b8b5eccf60b9f5f373a6eb3ac87ca58ef3dbeae45060f73085b8c24b959b98fcc88ab6d55761917bac6b5614e396cab159230aa189c
   languageName: node
   linkType: hard
 

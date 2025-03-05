@@ -38,15 +38,9 @@ const Home: NextPage = () => {
   // save it to loginData variable
 
   useEffect(() => {
-    if (localStorage.getItem("loginData")) {
-      const userBase64 = localStorage.getItem("loginData");
+    const userBase64 = localStorage.getItem("loginData");
 
-      if (!userBase64) {
-        console.log("User not found.");
-        setIsLogin(false);
-        return;
-      }
-
+    if (userBase64) {
       const userString = atob(userBase64);
       const user = JSON.parse(userString);
       setLoginData(user);
@@ -55,15 +49,26 @@ const Home: NextPage = () => {
       const parcelHub = parcelHubJSON.find(p => p.parcel_hub_id === user.parcel_hub_id);
       if (parcelHub) {
         setParcelHubData(parcelHub);
+        setIsLogin(true);
+      } else {
+        console.log("Parcel hub not found.");
+        setIsLogin(false);
+        localStorage.removeItem("loginData");
+        window.location.href = "/login";
       }
-
-      setIsLogin(true);
     } else {
       // not login
       console.log("Please login first.");
       setIsLogin(false);
+      window.location.href = "/login";
     }
   }, []);
+
+  useEffect(() => {
+    if (isLogin === false) {
+      window.location.href = "/login";
+    }
+  }, [isLogin]);
 
   const handleLogout = () => {
     localStorage.removeItem("loginData");

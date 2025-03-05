@@ -57,6 +57,7 @@
   "dependencies": {
     "daisyui": "^5.0.0",
     "ethers": "5",
-    "recharts": "^2.15.1"
+    "recharts": "^2.15.1",
+    "sweetalert2": "^11.17.2"
   }
 }
