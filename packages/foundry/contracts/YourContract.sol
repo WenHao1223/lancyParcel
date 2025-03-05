@@ -83,60 +83,132 @@ contract YourContract {
         return "Hello from contract!";
     }
 
-    //Parcel System
-    enum Status { Pending, InTransit, Delivered }
 
-    struct Create {
-        string TrackingNumber;
-        uint256 CreateTime;
-        address Sender_ID;
-        address Employee_ID;
-        bytes Emp_Sign;
-        address Cust_ID;
-        bytes Cust_Sign;
+    //Signature Hashing
+    mapping(address => bytes32) public hashedAddresses;
+
+    event AddressHashed(address indexed user, bytes32 hashedValue);
+
+    function hashAddress(address userAddress) public {
+        bytes32 hashed = keccak256(abi.encodePacked(userAddress));
+        hashedAddresses[userAddress] = hashed;
+
+        emit AddressHashed(userAddress, hashed);
     }
 
-    struct Send {
-        string TrackingNumber;
-        uint256 OutofDelTime;
-        address Sender_ID;
-        address Employee_ID;
-        bytes Emp_Sign;
-        Status status;
-        uint256 stage;
+    function getHashedAddress(address userAddress) public view returns (bytes32) {
+        return hashedAddresses[userAddress];
     }
 
-    struct Receive {
-        string TrackingNumber;
-        uint256 ReceivedTimes;
-        address Receiver_ID;
-        address Employee_ID;
-        bytes Emp_Sign;
-        Status status;
-        uint256 stage;
-    }
-
+    //Parcel
     struct Parcel {
-        string TrackingNumber;
-        Send[] sends;
-        Receive[] receives;
-        Status status;
+        string trackingNumber;
+        string dispatchTime;
+        string localHubId;
+        string sender;
+        string employee;
     }
 
-    mapping(string => Parcel) public parcels;
+    mapping(bytes32 => Parcel) public parcels; // Store hashed parcel data
 
+    event ParcelHashed(bytes32 hash, string trackingNumber);
 
-    //Show Parcel Function
-    function getParcel(string memory _trackingNumber) public view returns (Parcel memory) {
-        return parcels[_trackingNumber];
+    function hashParcelData(
+        string memory trackingNumber,
+        string memory dispatchTime,
+        string memory localHubId,
+        string memory sender,
+        string memory employee
+    ) public returns (bytes32) {
+        bytes32 hash = keccak256(
+            abi.encodePacked(trackingNumber, dispatchTime, localHubId, sender, employee)
+        );
+
+        parcels[hash] = Parcel(trackingNumber, dispatchTime, localHubId, sender, employee);
+
+        emit ParcelHashed(hash, trackingNumber);
+        return hash;
     }
 
-    //Create Parcel function
-    //Send Parcel function
-    //Receive Parcel function
+    //Send
+    struct Send {
+        string trackingNumber;
+        string dispatchTime;
+        string hubId;
+        string employee;
+    }
 
-   
-    
+    mapping(bytes32 => Send) public sends; // Store hashed parcel data
 
+    event SendHashed(bytes32 hash, string trackingNumber);
 
+    function hashSendData(
+        string memory trackingNumber,
+        string memory dispatchTime,
+        string memory hubId,
+        string memory employee
+    ) public returns (bytes32) {
+        bytes32 hash = keccak256(
+            abi.encodePacked(trackingNumber, dispatchTime, hubId, employee)
+        );
+
+        sends[hash] = Send(trackingNumber, dispatchTime, hubId, employee);
+
+        emit SendHashed(hash, trackingNumber);
+        return hash;
+    }
+
+    //Receive
+    struct Receive {
+        string trackingNumber;
+        string receiveTime;
+        string hubId;
+        string employee;
+    }
+
+    mapping(bytes32 => Receive) public receives; // Store hashed parcel data
+
+    event ReceiveHashed(bytes32 hash, string trackingNumber);
+
+    function hashReceiveData(
+        string memory trackingNumber,
+        string memory receiveTime,
+        string memory hubId,
+        string memory employee
+    ) public returns (bytes32) {
+        bytes32 hash = keccak256(
+            abi.encodePacked(trackingNumber, receiveTime, hubId, employee)
+        );
+
+        receives[hash] = Receive(trackingNumber, receiveTime, hubId, employee);
+
+        emit ReceiveHashed(hash, trackingNumber);
+        return hash;
+    }
+
+    //Confirm
+    struct Confirm {
+        string trackingNumber;
+        string receiveTime;
+        string customer;
+    }
+
+    mapping(bytes32 => Confirm) public confirms; // Store hashed parcel data
+
+    event ConfirmHashed(bytes32 hash, string trackingNumber);
+
+    function hashConfirmData(
+        string memory trackingNumber,
+        string memory receiveTime,
+        string memory customer
+    ) public returns (bytes32) {
+        bytes32 hash = keccak256(
+            abi.encodePacked(trackingNumber, receiveTime, customer)
+        );
+
+        confirms[hash] = Confirm(trackingNumber, receiveTime, customer);
+
+        emit ConfirmHashed(hash, trackingNumber);
+        return hash;
+    }
 }
