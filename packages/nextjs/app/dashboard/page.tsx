@@ -57,7 +57,7 @@ const Dashboard: NextPage = () => {
         parcelData.filter(p => p.pathway.some(ph => ph.parcel_hub_id === parcelHubData.parcel_hub_id)),
       );
     }
-  }, [parcelHubData]);
+  }, [parcelData, parcelHubData]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
