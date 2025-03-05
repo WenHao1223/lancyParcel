@@ -247,34 +247,39 @@ const Dashboard: NextPage = () => {
                                   parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData.parcel_hub_id) + 1
                                 ]?.received_time
                               ? "badge-success" // Dispatched
-                              : parcel.pathway.some(
-                                    (ph, index) =>
-                                      ph.parcel_hub_id === parcelHubData?.parcel_hub_id &&
-                                      parcel.pathway
-                                        .slice(0, index)
-                                        .some(p => p.parcel_hub_id === parcel.current_location && p.dispatch_time),
-                                  )
-                                ? "badge-warning" // OTW
+                              : parcel.current_location === parcelHubData?.parcel_hub_id &&
+                                  parcel.pathway[0].parcel_hub_id === parcelHubData.parcel_hub_id &&
+                                  !parcel.pathway[0].dispatch_time
+                                ? "badge-secondary" // Arrived
                                 : parcel.pathway.some(
                                       (ph, index) =>
                                         ph.parcel_hub_id === parcelHubData?.parcel_hub_id &&
                                         parcel.pathway
-                                          .slice(index + 1)
-                                          .some(p => p.parcel_hub_id === parcel.current_location && ph.dispatch_time),
+                                          .slice(0, index)
+                                          .some(p => p.parcel_hub_id === parcel.current_location && p.dispatch_time),
                                     )
-                                  ? "badge-info" // Forwarded
-                                  : parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) >
-                                        0 &&
-                                      parcel.pathway
-                                        .slice(
-                                          0,
-                                          parcel.pathway.findIndex(
-                                            ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id,
-                                          ),
-                                        )
-                                        .some(ph => ph.parcel_hub_id === parcel.current_location)
-                                    ? "badge-primary" // Pending
-                                    : "badge-error" // Error
+                                  ? "badge-warning" // OTW
+                                  : parcel.pathway.some(
+                                        (ph, index) =>
+                                          ph.parcel_hub_id === parcelHubData?.parcel_hub_id &&
+                                          parcel.pathway
+                                            .slice(index + 1)
+                                            .some(p => p.parcel_hub_id === parcel.current_location && ph.dispatch_time),
+                                      )
+                                    ? "badge-info" // Forwarded
+                                    : parcel.pathway.findIndex(
+                                          ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id,
+                                        ) > 0 &&
+                                        parcel.pathway
+                                          .slice(
+                                            0,
+                                            parcel.pathway.findIndex(
+                                              ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id,
+                                            ),
+                                          )
+                                          .some(ph => ph.parcel_hub_id === parcel.current_location)
+                                      ? "badge-primary" // Pending
+                                      : "badge-error" // Error
                       }`}
                     >
                       {parcel.current_location === "received"
@@ -293,38 +298,43 @@ const Dashboard: NextPage = () => {
                                 parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData.parcel_hub_id) + 1
                               ]?.received_time
                             ? "Dispatched"
-                            : parcel.pathway.some(
-                                  (ph, index) =>
-                                    ph.parcel_hub_id === parcelHubData?.parcel_hub_id &&
-                                    parcel.pathway
-                                      .slice(0, index)
-                                      .some(p => p.parcel_hub_id === parcel.current_location && p.dispatch_time),
-                                )
-                              ? "OTW"
+                            : parcel.current_location === parcelHubData?.parcel_hub_id &&
+                                parcel.pathway[0].parcel_hub_id === parcelHubData.parcel_hub_id &&
+                                !parcel.pathway[0].dispatch_time
+                              ? "Arrived"
                               : parcel.pathway.some(
                                     (ph, index) =>
                                       ph.parcel_hub_id === parcelHubData?.parcel_hub_id &&
                                       parcel.pathway
-                                        .slice(index + 1)
-                                        .some(p => p.parcel_hub_id === parcel.current_location && ph.dispatch_time),
+                                        .slice(0, index)
+                                        .some(p => p.parcel_hub_id === parcel.current_location && p.dispatch_time),
                                   )
-                                ? "Forwarded"
-                                : parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) >
-                                      0 &&
-                                    parcel.pathway
-                                      .slice(
-                                        0,
-                                        parcel.pathway.findIndex(
-                                          ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id,
-                                        ),
-                                      )
-                                      .some(ph => ph.parcel_hub_id === parcel.current_location)
-                                  ? "Pending"
-                                  : "Error"}
+                                ? "OTW"
+                                : parcel.pathway.some(
+                                      (ph, index) =>
+                                        ph.parcel_hub_id === parcelHubData?.parcel_hub_id &&
+                                        parcel.pathway
+                                          .slice(index + 1)
+                                          .some(p => p.parcel_hub_id === parcel.current_location && ph.dispatch_time),
+                                    )
+                                  ? "Forwarded"
+                                  : parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) >
+                                        0 &&
+                                      parcel.pathway
+                                        .slice(
+                                          0,
+                                          parcel.pathway.findIndex(
+                                            ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id,
+                                          ),
+                                        )
+                                        .some(ph => ph.parcel_hub_id === parcel.current_location)
+                                    ? "Pending"
+                                    : "Error"}
                     </div>
                   </td>
                   <td>
                     <div className="list-row">
+                      {/* Track Delivery */}
                       <button className="btn btn-square btn-ghost">
                         <div className="tooltip" data-tip="Track delivery">
                           <svg
@@ -348,24 +358,33 @@ const Dashboard: NextPage = () => {
                           </svg>
                         </div>
                       </button>
-                      <button className="btn btn-square btn-ghost">
-                        <div className="tooltip" data-tip="Send product">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="size-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
-                            />
-                          </svg>
-                        </div>
-                      </button>
+                      {/* Dispatch Parcel */}
+                      {/* Check if parcel is at current location and has been received but not dispatched: Status is arrived */}
+                      {((parcel.current_location === parcelHubData?.parcel_hub_id &&
+                        parcel.pathway.find(ph => ph.parcel_hub_id === parcelHubData.parcel_hub_id)?.received_time &&
+                        !parcel.pathway.find(ph => ph.parcel_hub_id === parcelHubData.parcel_hub_id)?.dispatch_time) ||
+                        (parcel.current_location === parcelHubData?.parcel_hub_id &&
+                          parcel.pathway[0].parcel_hub_id === parcelHubData.parcel_hub_id &&
+                          !parcel.pathway[0].dispatch_time)) && (
+                        <button className="btn btn-square btn-ghost">
+                          <div className="tooltip" data-tip="Dispatch parcel">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                              className="size-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+                              />
+                            </svg>
+                          </div>
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>
