@@ -48,7 +48,14 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (localStorage.getItem("loginData")) {
       const userBase64 = localStorage.getItem("loginData");
-      const userString = atob(userBase64!);
+
+      if (!userBase64) {
+        console.log("User not found.");
+        setIsLogin(false);
+        return;
+      }
+
+      const userString = atob(userBase64);
       const user = JSON.parse(userString);
       setLoginData(user);
 

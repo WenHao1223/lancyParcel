@@ -9,8 +9,6 @@ const Login: NextPage = () => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = () => {
-    console.log(1);
-
     // check if empty
     if (username === "" || password === "") {
       alert("Please fill in all fields.");

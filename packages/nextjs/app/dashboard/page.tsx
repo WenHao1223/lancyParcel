@@ -1,11 +1,11 @@
 "use client";
 
-// import { useState } from "react";
-// import parcelJSON from "../../public/data/parcel.json";
+import { useState } from "react";
+import parcelJSON from "../../public/data/parcel.json";
 import { NextPage } from "next";
 
 const Dashboard: NextPage = () => {
-  // const [tableData, setTableData] = useState(null);
+  const [tableData, setTableData] = useState(null);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
