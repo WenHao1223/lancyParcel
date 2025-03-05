@@ -1,0 +1,86 @@
+[
+  {
+    "employee_id": "EMP1001",
+    "parcel_hub_id": "1.0.0.0",
+    "email": "intl.malaysia@parcelhub.com",
+    "password": "MalaysiaIntl123"
+  },
+  {
+    "employee_id": "EMP1002",
+    "parcel_hub_id": "1.3.0.0",
+    "email": "national.kl@parcelhub.com",
+    "password": "KLNational456"
+  },
+  {
+    "employee_id": "EMP1003",
+    "parcel_hub_id": "1.3.2.0",
+    "email": "regional.klsouth@parcelhub.com",
+    "password": "KLSouth789"
+  },
+  {
+    "employee_id": "EMP1004",
+    "parcel_hub_id": "1.3.2.1",
+    "email": "local.klsentral@parcelhub.com",
+    "password": "KLSentral321"
+  },
+  {
+    "employee_id": "EMP1005",
+    "parcel_hub_id": "1.3.2.2",
+    "email": "local.bukitbintang@parcelhub.com",
+    "password": "BukitBintang654"
+  },
+  {
+    "employee_id": "EMP1006",
+    "parcel_hub_id": "1.3.1.0",
+    "email": "regional.klnorth@parcelhub.com",
+    "password": "KLNorth987"
+  },
+  {
+    "employee_id": "EMP1007",
+    "parcel_hub_id": "1.3.1.1",
+    "email": "local.sepang@parcelhub.com",
+    "password": "Sepang111"
+  },
+  {
+    "employee_id": "EMP2001",
+    "parcel_hub_id": "1.2.0.0",
+    "email": "national.penang@parcelhub.com",
+    "password": "PenangHub222"
+  },
+  {
+    "employee_id": "EMP2002",
+    "parcel_hub_id": "1.2.1.0",
+    "email": "regional.penangcentral@parcelhub.com",
+    "password": "PenangCentral333"
+  },
+  {
+    "employee_id": "EMP2003",
+    "parcel_hub_id": "1.2.1.1",
+    "email": "local.georgetown@parcelhub.com",
+    "password": "GeorgeTown444"
+  },
+  {
+    "employee_id": "EMP3001",
+    "parcel_hub_id": "2.0.0.0",
+    "email": "intl.singapore@parcelhub.com",
+    "password": "SingaporeIntl555"
+  },
+  {
+    "employee_id": "EMP3002",
+    "parcel_hub_id": "2.6.0.0",
+    "email": "national.singapore@parcelhub.com",
+    "password": "SingaporeNational666"
+  },
+  {
+    "employee_id": "EMP3003",
+    "parcel_hub_id": "2.6.1.0",
+    "email": "regional.singaporecentral@parcelhub.com",
+    "password": "SingaporeCentral777"
+  },
+  {
+    "employee_id": "EMP3004",
+    "parcel_hub_id": "2.6.1.1",
+    "email": "local.rafflesplace@parcelhub.com",
+    "password": "RafflesPlace888"
+  }
+]

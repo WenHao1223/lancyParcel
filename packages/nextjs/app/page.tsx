@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
@@ -9,20 +10,6 @@ import { Address } from "~~/components/scaffold-eth";
 import { useScaffoldContract } from "~~/hooks/scaffold-eth";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
-export const ContractReadMethods = () => {
-  const { data: sayHelloData, isLoading } = useScaffoldReadContract({
-    contractName: "YourContract",
-    functionName: "sayHello",
-  });
-
-  if (isLoading) {
-    return <p>Loading sayHello...</p>;
-  }
-
-  return <h2>{sayHelloData || "No data"}</h2>;
-};
-//BLOCKCHAIN
-
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
 
@@ -30,6 +17,11 @@ const Home: NextPage = () => {
   const { data: deployedContractData } = useScaffoldContract({
     contractName: "YourContract",
   });
+
+  const [loginData, setLoginData] = useState<
+    number | { employee_id: string; parcel_hub_id: string; email: string } | null
+  >(null);
+  const [isLogin, setIsLogin] = useState<null | boolean>(null);
 
   // const handleClick = async () => {
   //   if (connectedAddress) {
@@ -39,6 +31,43 @@ const Home: NextPage = () => {
   //   }
   // };
   //BLOCKCHAIN
+
+  // if local storage has user
+  // decode user
+  // save it to loginData variable
+
+  useEffect(() => {
+    if (localStorage.getItem("loginData")) {
+      const userBase64 = localStorage.getItem("loginData");
+      const userString = atob(userBase64!);
+      const user = JSON.parse(userString);
+      setLoginData(user);
+      setIsLogin(true);
+    } else {
+      // not login
+      console.log("Please login first.");
+      setIsLogin(false);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("loginData");
+    setIsLogin(false);
+    window.location.href = "/";
+  };
+
+  const ContractReadMethods = () => {
+    const { data: sayHelloData, isLoading } = useScaffoldReadContract({
+      contractName: "YourContract",
+      functionName: "sayHello",
+    });
+
+    if (isLoading) {
+      return <p>Loading sayHello...</p>;
+    }
+
+    return <h2>{sayHelloData || "No data"}</h2>;
+  };
 
   return (
     <>
@@ -95,14 +124,51 @@ const Home: NextPage = () => {
             </div>
           </div> */}
 
-          <div className="flex flex-col gap-2 mt-12">
-            <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
-              <h2>General</h2>
-              <button className="btn">
-                <Link href="/login">Login Page</Link>
-              </button>
+          <div className="flex flex-col justify-center items-center w-full">
+            <div className="w-[40%]">
+              {isLogin == true ? (
+                <>
+                  <div className="flex justify-center items-center space-x-2 flex-col sm:flex-row">
+                    {typeof loginData === "object" && loginData !== null && (
+                      <table className="table-auto">
+                        <tbody>
+                          <tr>
+                            <td className="px-4 py-2 font-medium">Email:</td>
+                            <td className="px-4 py-2">{loginData.email}</td>
+                          </tr>
+                          <tr>
+                            <td className="px-4 py-2 font-medium">Employee ID:</td>
+                            <td className="px-4 py-2">{loginData.employee_id}</td>
+                          </tr>
+                          <tr>
+                            <td className="px-4 py-2 font-medium">Parcel Hub ID:</td>
+                            <td className="px-4 py-2">{loginData.parcel_hub_id}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                  <button className="btn btn-primary mt-4 w-full" onClick={handleLogout}>
+                    Logout
+                  </button>
+                </>
+              ) : isLogin == false ? (
+                <>
+                  <p className="my-2">Please login first.</p>
+                  <button className="btn btn-primary mt-4 w-full">
+                    <Link href="/login" className="link no-underline">
+                      Login
+                    </Link>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <p className="my-2">Loading ...</p>
+                </>
+              )}
             </div>
-
+          </div>
+          <div className="flex flex-col gap-2 mt-12">
             <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
               <h2>User</h2>
               <button className="btn">
