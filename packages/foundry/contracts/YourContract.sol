@@ -76,4 +76,67 @@ contract YourContract {
      * Function that allows the contract to receive ETH
      */
     receive() external payable { }
+
+
+    //ADD HERE
+    function sayHello() public pure returns (string memory) {
+        return "Hello from contract!";
+    }
+
+    //Parcel System
+    enum Status { Pending, InTransit, Delivered }
+
+    struct Create {
+        string TrackingNumber;
+        uint256 CreateTime;
+        address Sender_ID;
+        address Employee_ID;
+        bytes Emp_Sign;
+        address Cust_ID;
+        bytes Cust_Sign;
+    }
+
+    struct Send {
+        string TrackingNumber;
+        uint256 OutofDelTime;
+        address Sender_ID;
+        address Employee_ID;
+        bytes Emp_Sign;
+        Status status;
+        uint256 stage;
+    }
+
+    struct Receive {
+        string TrackingNumber;
+        uint256 ReceivedTimes;
+        address Receiver_ID;
+        address Employee_ID;
+        bytes Emp_Sign;
+        Status status;
+        uint256 stage;
+    }
+
+    struct Parcel {
+        string TrackingNumber;
+        Send[] sends;
+        Receive[] receives;
+        Status status;
+    }
+
+    mapping(string => Parcel) public parcels;
+
+
+    //Show Parcel Function
+    function getParcel(string memory _trackingNumber) public view returns (Parcel memory) {
+        return parcels[_trackingNumber];
+    }
+
+    //Create Parcel function
+    //Send Parcel function
+    //Receive Parcel function
+
+   
+    
+
+
 }

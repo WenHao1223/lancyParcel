@@ -5,9 +5,40 @@ import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 // import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Address } from "~~/components/scaffold-eth";
+//BLOCKCHAIN
+import { useScaffoldContract } from "~~/hooks/scaffold-eth";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+
+export const ContractReadMethods = () => {
+  const { data: sayHelloData, isLoading } = useScaffoldReadContract({
+    contractName: "YourContract",
+    functionName: "sayHello",
+  });
+
+  if (isLoading) {
+    return <p>Loading sayHello...</p>;
+  }
+
+  return <h2>{sayHelloData || "No data"}</h2>;
+};
+//BLOCKCHAIN
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
+
+  //BLOCKCHAIN
+  const { data: deployedContractData } = useScaffoldContract({
+    contractName: "YourContract",
+  });
+
+  // const handleClick = async () => {
+  //   if (connectedAddress) {
+  //     alert(`Connected Address: ${connectedAddress}`);
+  //   } else {
+  //     alert("⚠️ No wallet connected.");
+  //   }
+  // };
+  //BLOCKCHAIN
 
   return (
     <>
@@ -103,6 +134,14 @@ const Home: NextPage = () => {
               <button className="btn">
                 <Link href="/send-transaction">Send Transaction Page</Link>
               </button>
+            </div>
+
+            {/* Blockchain testing*/}
+            <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
+              <button className="btn" /*onClick={handleClick}*/>
+                <Link href="/parcel_template">Block Chain</Link>
+              </button>
+              {deployedContractData ? <ContractReadMethods /> : <p>Loading contract data...</p>}
             </div>
           </div>
         </div>
