@@ -257,6 +257,14 @@ const Home: NextPage = () => {
               </button>
               {deployedContractData ? <ContractReadMethods /> : <p>Loading contract data...</p>}
             </div>
+
+            {/* Algo testing*/}
+            <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
+              <h2>Algo Test</h2>
+              <button className="btn">
+                <Link href="/algo-test">Algo Test</Link>
+              </button>
+            </div>
           </div>
         </div>
       </div>
