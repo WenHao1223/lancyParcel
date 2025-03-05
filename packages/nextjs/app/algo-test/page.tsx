@@ -4,7 +4,7 @@ import Link from "next/link";
 import parcelJSON from "../../public/data/parcel.json";
 import { NextPage } from "next";
 
-// 1.2.1.1, 1.3.1.1
+// Test Case: 2.1.1, 1.3.1.1
 
 // 1.⁠ ⁠algorithm compares this 2 ids, from the first to last character
 // 2.⁠ ⁠algorithm found only first part '1.' is the same (you can split it by ".", something like python to get 4 elements in a list, and compare)
@@ -16,22 +16,34 @@ import { NextPage } from "next";
 // to get 1.3.1.1, check the list from localArea.json by input: area
 
 const AlgoTest: NextPage = () => {
-  const origin = "1.3.2.1";
-  const destination = "2.6.1.1";
+  const origin = "1.2.1.1";
+  const destination = "1.2.1.1";
+
+  // Helper function to find the common prefix level
+  const findCommonPrefix = (addr1: string, addr2: string): number => {
+    const parts1 = addr1.split(".");
+    const parts2 = addr2.split(".");
+    for (let i = 0; i < parts1.length; i++) {
+      if (parts1[i] !== parts2[i]) {
+        return i;
+      }
+    }
+    return parts1.length;
+  };
 
   // Helper function to generate path segments going upwards (towards common ancestor)
-  const generateUpwardPath = (address: string): string[] => {
+  const generateUpwardPath = (address: string, commonLevel: number): string[] => {
     const parts = address.split(".");
     const paths: string[] = [address];
 
-    for (let i = parts.length - 1; i >= 0; i--) {
+    // Only go up to the common level
+    for (let i = parts.length - 1; i >= commonLevel; i--) {
       const segment = [...parts];
       for (let j = i; j < parts.length; j++) {
         segment[j] = "0";
       }
       const path = segment.join(".");
       if (path !== address && path !== "0.0.0.0") {
-        // Skip 0.0.0.0
         paths.push(path);
       }
     }
@@ -39,27 +51,33 @@ const AlgoTest: NextPage = () => {
   };
 
   // Helper function to generate path segments going downwards (from common ancestor)
-  const generateDownwardPath = (address: string): string[] => {
+  const generateDownwardPath = (address: string, commonLevel: number): string[] => {
     const parts = address.split(".");
     const paths: string[] = [];
 
-    for (let i = 0; i < parts.length - 1; i++) {
+    // Start from common level
+    for (let i = commonLevel; i < parts.length - 1; i++) {
       const segment = [...parts];
       for (let j = i + 1; j < parts.length; j++) {
         segment[j] = "0";
       }
       const path = segment.join(".");
       if (path !== "0.0.0.0") {
-        // Skip 0.0.0.0
         paths.push(path);
       }
     }
-    paths.push(address); // Add destination
+    paths.push(address);
     return paths;
   };
 
   // Generate complete path
-  const fullPath = [...generateUpwardPath(origin), ...generateDownwardPath(destination)];
+  const fullPath =
+    origin === destination
+      ? ["No pathway needed - Origin and Destination are the same"]
+      : (() => {
+          const commonLevel = findCommonPrefix(origin, destination);
+          return [...generateUpwardPath(origin, commonLevel), ...generateDownwardPath(destination, commonLevel)];
+        })();
 
   return (
     <div className="flex flex-col items-center mt-20 min-h-screen">
