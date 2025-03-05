@@ -144,27 +144,28 @@ const Home: NextPage = () => {
             <div className="w-[40%]">
               {isLogin == true ? (
                 <>
-                  <div className="flex justify-center items-center space-x-2 flex-col sm:flex-row">
+                  {/* Parcel Hub detail */}
+                  <div className="flex flex-row gap-4 mb-6">
                     {typeof loginData === "object" && loginData !== null && (
-                      <table className="table-auto">
-                        <tbody>
-                          <tr>
-                            <td className="px-4 py-2 font-medium">Email:</td>
-                            <td className="px-4 py-2">{loginData.email}</td>
-                          </tr>
-                          <tr>
-                            <td className="px-4 py-2 font-medium">Employee ID:</td>
-                            <td className="px-4 py-2">{loginData.employee_id}</td>
-                          </tr>
+                      <ul className="list bg-base-100 rounded-box w-full shadow-md">
+                        <li className="p-4 pt-2 pb-0 tracking-wide border-b-2 border-gray-400 flex flex-row justify-between items-center">
+                          <p>{loginData.employee_id}</p>
+                          <p>{loginData.email}</p>
+                        </li>
+                        <div className="card bg-base-100 w-full shadow-sm opacity-65 p-4">
                           {parcelHubData ? (
                             <>
-                              <tr>
-                                <td className="px-4 py-2 font-medium">Parcel Hub Name:</td>
-                                <td className="px-4 py-2">{parcelHubData.parcel_hub_name}</td>
-                              </tr>
-                              <tr>
-                                <td className="px-4 py-2 font-medium">Operating Level:</td>
-                                <td className="px-4 py-2">
+                              <div className="flex flex-row justify-between items-center">
+                                <p className="font-semibold">Parcel Hub ID</p>
+                                <p>{parcelHubData.parcel_hub_id}</p>
+                              </div>
+                              <div className="flex flex-row justify-between items-center">
+                                <p className="font-semibold">Parcel Hub Name</p>
+                                <p>{parcelHubData.parcel_hub_name}</p>
+                              </div>
+                              <div className="flex flex-row justify-between items-center">
+                                <p className="font-semibold">Operating Level</p>
+                                <p>
                                   <span
                                     className={`badge badge-outline badge-sm ${
                                       parcelHubData.parcel_hub_operating_level.toLowerCase() === "international"
@@ -179,27 +180,25 @@ const Home: NextPage = () => {
                                     {parcelHubData.parcel_hub_operating_level.charAt(0).toUpperCase() +
                                       parcelHubData.parcel_hub_operating_level.slice(1).toLowerCase()}
                                   </span>
-                                </td>
-                              </tr>
+                                </p>
+                              </div>
                             </>
                           ) : (
-                            <tr>
-                              <td className="px-4 py-2 font-medium" colSpan={2}>
-                                Parcel Hub Data Not Found
-                              </td>
-                            </tr>
+                            <div className="flex flex-row justify-between items-center">
+                              <p>Parcel Hub Data Not Found</p>
+                            </div>
                           )}
-                        </tbody>
-                      </table>
+                        </div>
+                      </ul>
                     )}
                   </div>
-                  <button className="btn btn-primary mt-4 w-full" onClick={handleLogout}>
+                  <button className="btn btn-primary w-full" onClick={handleLogout}>
                     Logout
                   </button>
                 </>
               ) : isLogin == false ? (
                 <>
-                  <p className="my-2">Please login first.</p>
+                  <p className="py-6 px-4 list bg-base-100 rounded-box w-full shadow-md">Please login first.</p>
                   <button className="btn btn-primary mt-4 w-full">
                     <Link href="/login" className="link no-underline">
                       Login
@@ -208,7 +207,7 @@ const Home: NextPage = () => {
                 </>
               ) : (
                 <>
-                  <p className="my-2">Loading ...</p>
+                  <p className="py-6 px-4 list bg-base-100 rounded-box w-full shadow-md">Loading ...</p>
                 </>
               )}
             </div>
