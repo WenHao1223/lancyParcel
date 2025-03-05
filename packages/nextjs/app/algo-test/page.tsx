@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import parcelJSON from "../../public/data/parcel.json";
 import { NextPage } from "next";
 
@@ -76,6 +77,11 @@ const AlgoTest: NextPage = () => {
             ))}
           </div>
         </div>
+      </div>
+      <div className="mt-10 flex justify-start items-center gap-2 flex-col sm:flex-row border-white">
+        <button className="btn">
+          <Link href="/">Back</Link>
+        </button>
       </div>
     </div>
   );
