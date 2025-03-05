@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     YourContract: {
-      address: "0x700b6a60ce7eaaea56f065753d8dcb9653dbad35",
+      address: "0x82dc47734901ee7d4f4232f398752cb9dd5daccc",
       abi: [
         {
           type: "constructor",
@@ -26,115 +26,48 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "getParcel",
+          name: "confirms",
           inputs: [
             {
-              name: "_trackingNumber",
+              name: "",
+              type: "bytes32",
+              internalType: "bytes32",
+            },
+          ],
+          outputs: [
+            {
+              name: "trackingNumber",
               type: "string",
               internalType: "string",
+            },
+            {
+              name: "receiveTime",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "customer",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "getHashedAddress",
+          inputs: [
+            {
+              name: "userAddress",
+              type: "address",
+              internalType: "address",
             },
           ],
           outputs: [
             {
               name: "",
-              type: "tuple",
-              internalType: "struct YourContract.Parcel",
-              components: [
-                {
-                  name: "TrackingNumber",
-                  type: "string",
-                  internalType: "string",
-                },
-                {
-                  name: "sends",
-                  type: "tuple[]",
-                  internalType: "struct YourContract.Send[]",
-                  components: [
-                    {
-                      name: "TrackingNumber",
-                      type: "string",
-                      internalType: "string",
-                    },
-                    {
-                      name: "OutofDelTime",
-                      type: "uint256",
-                      internalType: "uint256",
-                    },
-                    {
-                      name: "Sender_ID",
-                      type: "address",
-                      internalType: "address",
-                    },
-                    {
-                      name: "Employee_ID",
-                      type: "address",
-                      internalType: "address",
-                    },
-                    {
-                      name: "Emp_Sign",
-                      type: "bytes",
-                      internalType: "bytes",
-                    },
-                    {
-                      name: "status",
-                      type: "uint8",
-                      internalType: "enum YourContract.Status",
-                    },
-                    {
-                      name: "stage",
-                      type: "uint256",
-                      internalType: "uint256",
-                    },
-                  ],
-                },
-                {
-                  name: "receives",
-                  type: "tuple[]",
-                  internalType: "struct YourContract.Receive[]",
-                  components: [
-                    {
-                      name: "TrackingNumber",
-                      type: "string",
-                      internalType: "string",
-                    },
-                    {
-                      name: "ReceivedTimes",
-                      type: "uint256",
-                      internalType: "uint256",
-                    },
-                    {
-                      name: "Receiver_ID",
-                      type: "address",
-                      internalType: "address",
-                    },
-                    {
-                      name: "Employee_ID",
-                      type: "address",
-                      internalType: "address",
-                    },
-                    {
-                      name: "Emp_Sign",
-                      type: "bytes",
-                      internalType: "bytes",
-                    },
-                    {
-                      name: "status",
-                      type: "uint8",
-                      internalType: "enum YourContract.Status",
-                    },
-                    {
-                      name: "stage",
-                      type: "uint256",
-                      internalType: "uint256",
-                    },
-                  ],
-                },
-                {
-                  name: "status",
-                  type: "uint8",
-                  internalType: "enum YourContract.Status",
-                },
-              ],
+              type: "bytes32",
+              internalType: "bytes32",
             },
           ],
           stateMutability: "view",
@@ -148,6 +81,174 @@ const deployedContracts = {
               name: "",
               type: "string",
               internalType: "string",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "hashAddress",
+          inputs: [
+            {
+              name: "userAddress",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "hashConfirmData",
+          inputs: [
+            {
+              name: "trackingNumber",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "receiveTime",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "customer",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "bytes32",
+              internalType: "bytes32",
+            },
+          ],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "hashParcelData",
+          inputs: [
+            {
+              name: "trackingNumber",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "dispatchTime",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "localHubId",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "sender",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "employee",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "bytes32",
+              internalType: "bytes32",
+            },
+          ],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "hashReceiveData",
+          inputs: [
+            {
+              name: "trackingNumber",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "receiveTime",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "hubId",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "employee",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "bytes32",
+              internalType: "bytes32",
+            },
+          ],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "hashSendData",
+          inputs: [
+            {
+              name: "trackingNumber",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "dispatchTime",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "hubId",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "employee",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "bytes32",
+              internalType: "bytes32",
+            },
+          ],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "hashedAddresses",
+          inputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "bytes32",
+              internalType: "bytes32",
             },
           ],
           stateMutability: "view",
@@ -171,20 +272,35 @@ const deployedContracts = {
           inputs: [
             {
               name: "",
-              type: "string",
-              internalType: "string",
+              type: "bytes32",
+              internalType: "bytes32",
             },
           ],
           outputs: [
             {
-              name: "TrackingNumber",
+              name: "trackingNumber",
               type: "string",
               internalType: "string",
             },
             {
-              name: "status",
-              type: "uint8",
-              internalType: "enum YourContract.Status",
+              name: "dispatchTime",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "localHubId",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "sender",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "employee",
+              type: "string",
+              internalType: "string",
             },
           ],
           stateMutability: "view",
@@ -204,6 +320,40 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "receives",
+          inputs: [
+            {
+              name: "",
+              type: "bytes32",
+              internalType: "bytes32",
+            },
+          ],
+          outputs: [
+            {
+              name: "trackingNumber",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "receiveTime",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "hubId",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "employee",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "sayHello",
           inputs: [],
           outputs: [
@@ -214,6 +364,40 @@ const deployedContracts = {
             },
           ],
           stateMutability: "pure",
+        },
+        {
+          type: "function",
+          name: "sends",
+          inputs: [
+            {
+              name: "",
+              type: "bytes32",
+              internalType: "bytes32",
+            },
+          ],
+          outputs: [
+            {
+              name: "trackingNumber",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "dispatchTime",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "hubId",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "employee",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          stateMutability: "view",
         },
         {
           type: "function",
@@ -269,6 +453,44 @@ const deployedContracts = {
         },
         {
           type: "event",
+          name: "AddressHashed",
+          inputs: [
+            {
+              name: "user",
+              type: "address",
+              indexed: true,
+              internalType: "address",
+            },
+            {
+              name: "hashedValue",
+              type: "bytes32",
+              indexed: false,
+              internalType: "bytes32",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "ConfirmHashed",
+          inputs: [
+            {
+              name: "hash",
+              type: "bytes32",
+              indexed: false,
+              internalType: "bytes32",
+            },
+            {
+              name: "trackingNumber",
+              type: "string",
+              indexed: false,
+              internalType: "string",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
           name: "GreetingChange",
           inputs: [
             {
@@ -298,9 +520,66 @@ const deployedContracts = {
           ],
           anonymous: false,
         },
+        {
+          type: "event",
+          name: "ParcelHashed",
+          inputs: [
+            {
+              name: "hash",
+              type: "bytes32",
+              indexed: false,
+              internalType: "bytes32",
+            },
+            {
+              name: "trackingNumber",
+              type: "string",
+              indexed: false,
+              internalType: "string",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "ReceiveHashed",
+          inputs: [
+            {
+              name: "hash",
+              type: "bytes32",
+              indexed: false,
+              internalType: "bytes32",
+            },
+            {
+              name: "trackingNumber",
+              type: "string",
+              indexed: false,
+              internalType: "string",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
+          name: "SendHashed",
+          inputs: [
+            {
+              name: "hash",
+              type: "bytes32",
+              indexed: false,
+              internalType: "bytes32",
+            },
+            {
+              name: "trackingNumber",
+              type: "string",
+              indexed: false,
+              internalType: "string",
+            },
+          ],
+          anonymous: false,
+        },
       ],
       inheritedFunctions: {},
-      deploymentFile: "run-1741170864.json",
+      deploymentFile: "run-1741197747.json",
       deploymentScript: "Deploy.s.sol",
     },
   },
