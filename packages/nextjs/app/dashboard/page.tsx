@@ -133,24 +133,60 @@ const Dashboard: NextPage = () => {
             <tbody>
               {filteredParcelData?.map(parcel => (
                 <tr key={parcel.tracking_number}>
-                  <td className="link hover:text-secondary">{parcel.tracking_number}</td>
-                  <td className="link hover:text-secondary">{parcel.sender.name}</td>
-                  <td className="link hover:text-secondary">{parcel.recipient.name}</td>
+                  <td
+                    className="link hover:text-secondary"
+                    onClick={() =>
+                      (
+                        document.getElementById("modal-trackingNo-" + parcel.tracking_number) as HTMLDialogElement
+                      )?.showModal()
+                    }
+                  >
+                    {parcel.tracking_number}
+                  </td>
+                  <td
+                    className="link hover:text-secondary"
+                    onClick={() =>
+                      (
+                        document.getElementById("modal-sender-" + parcel.tracking_number) as HTMLDialogElement
+                      )?.showModal()
+                    }
+                  >
+                    {parcel.sender.name}
+                  </td>
+                  <td
+                    className="link hover:text-secondary"
+                    onClick={() =>
+                      (
+                        document.getElementById("modal-recipent-" + parcel.tracking_number) as HTMLDialogElement
+                      )?.showModal()
+                    }
+                  >
+                    {parcel.recipient.name}
+                  </td>
                   <td>
                     {parcel.pathway[0].parcel_hub_id === parcelHubData?.parcel_hub_id ? (
                       <i>(Sender)</i>
                     ) : parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) > 0 ? (
                       <>
-                        {parcelHubJSON.find(
-                          ph =>
-                            ph.parcel_hub_id ===
-                            parcel.pathway[
-                              parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) - 1
-                            ].parcel_hub_id,
-                        )?.parcel_hub_name || "-"}
+                        <span
+                          className="inline-block pb-1 link hover:text-secondary"
+                          onClick={() =>
+                            (
+                              document.getElementById("modal-sendFrom-" + parcel.tracking_number) as HTMLDialogElement
+                            )?.showModal()
+                          }
+                        >
+                          {parcelHubJSON.find(
+                            ph =>
+                              ph.parcel_hub_id ===
+                              parcel.pathway[
+                                parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) - 1
+                              ].parcel_hub_id,
+                          )?.parcel_hub_name || "-"}
+                        </span>
                         <br />
                         <span
-                          className={`badge badge-outline badge-sm ${
+                          className={`inline-block badge badge-outline badge-sm ${
                             parcelHubJSON
                               .find(
                                 ph =>
@@ -386,6 +422,237 @@ const Dashboard: NextPage = () => {
                         </button>
                       )}
                     </div>
+                    {/* Tracking Number Modal */}
+                    <dialog id={"modal-trackingNo-" + parcel.tracking_number} className="modal">
+                      <div className="modal-box">
+                        <h3 className="font-bold text-lg">{parcel.tracking_number}</h3>
+                        <p className="pb-2">Press ESC key or click the button below to close</p>
+                        {/* Parcel weight */}
+                        <div className="flex justify-between items-center">
+                          <p>Parcel weight</p>
+                          <p>{parcel.parcel_weight_kg} kg</p>
+                        </div>
+                        {/* Parcel dimension */}
+                        <div className="flex justify-between items-center">
+                          <p>Parcel dimension</p>
+                          <p>
+                            {parcel.parcel_dimensions_cm.length} cm x {parcel.parcel_dimensions_cm.width} cm x{" "}
+                            {parcel.parcel_dimensions_cm.height} cm
+                          </p>
+                        </div>
+                        {/* Parcel estimated delivery */}
+                        <div className="flex justify-between items-center">
+                          <p>Parcel estimated delivery</p>
+                          <p>{parcel.parcel_estimated_delivery}</p>
+                        </div>
+                        {/* Parcel type */}
+                        <div className="flex justify-between items-center">
+                          <p>Parcel type</p>
+                          <p>{parcel.parcel_type.charAt(0).toUpperCase() + parcel.parcel_type.slice(1)}</p>
+                        </div>
+                        {/* is fragile */}
+                        <div className="flex justify-between items-center">
+                          <p>Is fragile</p>
+                          <p>{parcel.is_fragile ? "Yes" : "No"}</p>
+                        </div>
+                        {/* extra comment */}
+                        <div className="flex justify-between items-center">
+                          <p>Extra comment</p>
+                          <p>{parcel.extra_comment}</p>
+                        </div>
+                        {/* Close button */}
+                        <div className="modal-action">
+                          <form method="dialog">
+                            {/* if there is a button in form, it will close the modal */}
+                            <button className="btn">Close</button>
+                          </form>
+                        </div>
+                      </div>
+                    </dialog>
+                    {/* Sender Modal */}
+                    <dialog id={"modal-sender-" + parcel.tracking_number} className="modal">
+                      <div className="modal-box">
+                        <h3 className="font-bold text-lg">{parcel.sender.name}</h3>
+                        <p className="pb-2">Press ESC key or click the button below to close</p>
+                        {/* Sender phone number */}
+                        <div className="flex justify-between items-center">
+                          <p>Phone number</p>
+                          <p>{parcel.sender.phone_number}</p>
+                        </div>
+                        {/* Sender address */}
+                        <div className="flex justify-between items-center">
+                          <p>Email</p>
+                          <p>{parcel.sender.email}</p>
+                        </div>
+                        {/* Close button */}
+                        <div className="modal-action">
+                          <form method="dialog">
+                            {/* if there is a button in form, it will close the modal */}
+                            <button className="btn">Close</button>
+                          </form>
+                        </div>
+                      </div>
+                    </dialog>
+                    {/* Recipent Modal */}
+                    <dialog id={"modal-recipent-" + parcel.tracking_number} className="modal">
+                      <div className="modal-box">
+                        <h3 className="font-bold text-lg">{parcel.recipient.name}</h3>
+                        <p className="pb-2">Press ESC key or click the button below to close</p>
+                        {/* Recipent phone number */}
+                        <div className="flex justify-between items-center">
+                          <p>Phone number</p>
+                          <p>{parcel.recipient.phone_number}</p>
+                        </div>
+                        {/* Recipent email */}
+                        <div className="flex justify-between items-center">
+                          <p>Email</p>
+                          <p>{parcel.recipient.email}</p>
+                        </div>
+                        {/* Close button */}
+                        <div className="modal-action">
+                          <form method="dialog">
+                            {/* if there is a button in form, it will close the modal */}
+                            <button className="btn">Close</button>
+                          </form>
+                        </div>
+                      </div>
+                    </dialog>
+                    {/* Send From Modal */}
+                    <dialog id={"modal-sendFrom-" + parcel.tracking_number} className="modal">
+                      <div className="modal-box">
+                        <h3 className="font-bold text-lg">
+                          {parcelHubJSON.find(
+                            ph =>
+                              ph.parcel_hub_id ===
+                              parcel.pathway[
+                                parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) - 1
+                              ]?.parcel_hub_id,
+                          )?.parcel_hub_name ?? "-"}
+                        </h3>
+                        <p className="pb-2">Press ESC key or click the button below to close</p>
+                        {/* Parcel Hub ID */}
+                        <div className="flex justify-between items-center">
+                          <p>Parcel Hub ID</p>
+                          <p>
+                            {
+                              parcel.pathway[
+                                parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) - 1
+                              ]?.parcel_hub_id
+                            }
+                          </p>
+                        </div>
+                        {/* Parcel Hub Location */}
+                        <div className="flex justify-between items-center">
+                          <p>Parcel Hub Location</p>
+                          <p>
+                            {parcelHubJSON.find(
+                              ph =>
+                                ph.parcel_hub_id ===
+                                parcel.pathway[
+                                  parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) - 1
+                                ]?.parcel_hub_id,
+                            )?.parcel_hub_address +
+                              ", " +
+                              parcelHubJSON.find(
+                                ph =>
+                                  ph.parcel_hub_id ===
+                                  parcel.pathway[
+                                    parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) -
+                                      1
+                                  ]?.parcel_hub_id,
+                              )?.state +
+                              ", " +
+                              parcelHubJSON.find(
+                                ph =>
+                                  ph.parcel_hub_id ===
+                                  parcel.pathway[
+                                    parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) -
+                                      1
+                                  ]?.parcel_hub_id,
+                              )?.country}
+                          </p>
+                        </div>
+                        {/* Parcel Hub Operating Level */}
+                        <div className="flex justify-between items-center">
+                          <p>Parcel Hub Operating Level</p>
+                          <p>
+                            <span
+                              className={`badge badge-outline badge-sm ${
+                                parcelHubJSON
+                                  .find(
+                                    ph =>
+                                      ph.parcel_hub_id ===
+                                      parcel.pathway[
+                                        parcel.pathway.findIndex(
+                                          ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id,
+                                        ) - 1
+                                      ]?.parcel_hub_id,
+                                  )
+                                  ?.parcel_hub_operating_level.toLowerCase() === "international"
+                                  ? "badge-success"
+                                  : parcelHubJSON
+                                        .find(
+                                          ph =>
+                                            ph.parcel_hub_id ===
+                                            parcel.pathway[
+                                              parcel.pathway.findIndex(
+                                                ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id,
+                                              ) - 1
+                                            ]?.parcel_hub_id,
+                                        )
+                                        ?.parcel_hub_operating_level.toLowerCase() === "national"
+                                    ? "badge-info"
+                                    : parcelHubJSON
+                                          .find(
+                                            ph =>
+                                              ph.parcel_hub_id ===
+                                              parcel.pathway[
+                                                parcel.pathway.findIndex(
+                                                  ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id,
+                                                ) - 1
+                                              ]?.parcel_hub_id,
+                                          )
+                                          ?.parcel_hub_operating_level.toLowerCase() === "regional"
+                                      ? "badge-warning"
+                                      : "badge-error"
+                              }`}
+                            >
+                              {(parcelHubJSON
+                                .find(
+                                  ph =>
+                                    ph.parcel_hub_id ===
+                                    parcel.pathway[
+                                      parcel.pathway.findIndex(
+                                        ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id,
+                                      ) - 1
+                                    ]?.parcel_hub_id,
+                                )
+                                ?.parcel_hub_operating_level.charAt(0)
+                                .toUpperCase() || "") +
+                                (parcelHubJSON
+                                  .find(
+                                    ph =>
+                                      ph.parcel_hub_id ===
+                                      parcel.pathway[
+                                        parcel.pathway.findIndex(
+                                          ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id,
+                                        ) - 1
+                                      ]?.parcel_hub_id,
+                                  )
+                                  ?.parcel_hub_operating_level.slice(1)
+                                  .toLowerCase() || "")}
+                            </span>
+                          </p>
+                        </div>
+                        {/* Close button */}
+                        <div className="modal-action">
+                          <form method="dialog">
+                            {/* if there is a button in form, it will close the modal */}
+                            <button className="btn">Close</button>
+                          </form>
+                        </div>
+                      </div>
+                    </dialog>
                   </td>
                 </tr>
               ))}
