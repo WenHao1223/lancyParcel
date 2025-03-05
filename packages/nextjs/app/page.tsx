@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import parcelHubJSON from "../public/data/parcelHub.json";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 // import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -18,9 +19,17 @@ const Home: NextPage = () => {
     contractName: "YourContract",
   });
 
-  const [loginData, setLoginData] = useState<
-    number | { employee_id: string; parcel_hub_id: string; email: string } | null
-  >(null);
+  const [loginData, setLoginData] = useState<{ employee_id: string; parcel_hub_id: string; email: string } | null>(
+    null,
+  );
+  const [parcelHubData, setParcelHubData] = useState<{
+    parcel_hub_id: string;
+    parcel_hub_name: string;
+    parcel_hub_address: string;
+    state: string;
+    country: string;
+    parcel_hub_operating_level: string;
+  } | null>(null);
   const [isLogin, setIsLogin] = useState<null | boolean>(null);
 
   // const handleClick = async () => {
@@ -42,6 +51,13 @@ const Home: NextPage = () => {
       const userString = atob(userBase64!);
       const user = JSON.parse(userString);
       setLoginData(user);
+
+      // load parcel hub info from json based on loginData.parcel_hub_id
+      const parcelHub = parcelHubJSON.find(p => p.parcel_hub_id === user.parcel_hub_id);
+      if (parcelHub) {
+        setParcelHubData(parcelHub);
+      }
+
       setIsLogin(true);
     } else {
       // not login
@@ -140,10 +156,39 @@ const Home: NextPage = () => {
                             <td className="px-4 py-2 font-medium">Employee ID:</td>
                             <td className="px-4 py-2">{loginData.employee_id}</td>
                           </tr>
-                          <tr>
-                            <td className="px-4 py-2 font-medium">Parcel Hub ID:</td>
-                            <td className="px-4 py-2">{loginData.parcel_hub_id}</td>
-                          </tr>
+                          {parcelHubData ? (
+                            <>
+                              <tr>
+                                <td className="px-4 py-2 font-medium">Parcel Hub Name:</td>
+                                <td className="px-4 py-2">{parcelHubData.parcel_hub_name}</td>
+                              </tr>
+                              <tr>
+                                <td className="px-4 py-2 font-medium">Operating Level:</td>
+                                <td className="px-4 py-2">
+                                  <span
+                                    className={`badge badge-outline badge-sm ${
+                                      parcelHubData.parcel_hub_operating_level.toLowerCase() === "international"
+                                        ? "badge-success"
+                                        : parcelHubData.parcel_hub_operating_level.toLowerCase() === "national"
+                                          ? "badge-info"
+                                          : parcelHubData.parcel_hub_operating_level.toLowerCase() === "regional"
+                                            ? "badge-warning"
+                                            : "badge-error"
+                                    }`}
+                                  >
+                                    {parcelHubData.parcel_hub_operating_level.charAt(0).toUpperCase() +
+                                      parcelHubData.parcel_hub_operating_level.slice(1).toLowerCase()}
+                                  </span>
+                                </td>
+                              </tr>
+                            </>
+                          ) : (
+                            <tr>
+                              <td className="px-4 py-2 font-medium" colSpan={2}>
+                                Parcel Hub Data Not Found
+                              </td>
+                            </tr>
+                          )}
                         </tbody>
                       </table>
                     )}

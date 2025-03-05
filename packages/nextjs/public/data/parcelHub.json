@@ -1,6 +1,6 @@
 [
   {
-    "id": "1.0.0.0",
+    "parcel_hub_id": "1.0.0.0",
     "parcel_hub_name": "Malaysia International Hub",
     "parcel_hub_address": "KLIA Cargo Terminal",
     "state": "Selangor",
@@ -8,7 +8,7 @@
     "parcel_hub_operating_level": "international"
   },
   {
-    "id": "1.3.0.0",
+    "parcel_hub_id": "1.3.0.0",
     "parcel_hub_name": "Kuala Lumpur National Hub",
     "parcel_hub_address": "Jalan Duta",
     "state": "Kuala Lumpur",
@@ -16,7 +16,7 @@
     "parcel_hub_operating_level": "national"
   },
   {
-    "id": "1.3.2.0",
+    "parcel_hub_id": "1.3.2.0",
     "parcel_hub_name": "KL South Hub",
     "parcel_hub_address": "Jalan Tun Razak",
     "state": "Kuala Lumpur",
@@ -24,7 +24,7 @@
     "parcel_hub_operating_level": "regional"
   },
   {
-    "id": "1.3.2.1",
+    "parcel_hub_id": "1.3.2.1",
     "parcel_hub_name": "KL Sentral Hub",
     "parcel_hub_address": "Jalan Stesen Sentral",
     "state": "Kuala Lumpur",
@@ -32,7 +32,7 @@
     "parcel_hub_operating_level": "local"
   },
   {
-    "id": "1.3.2.2",
+    "parcel_hub_id": "1.3.2.2",
     "parcel_hub_name": "Bukit Bintang Hub",
     "parcel_hub_address": "Jalan Bukit Bintang",
     "state": "Kuala Lumpur",
@@ -40,7 +40,7 @@
     "parcel_hub_operating_level": "local"
   },
   {
-    "id": "1.3.1.0",
+    "parcel_hub_id": "1.3.1.0",
     "parcel_hub_name": "KL North Hub",
     "parcel_hub_address": "Jalan Sultan Ismail",
     "state": "Kuala Lumpur",
@@ -48,7 +48,7 @@
     "parcel_hub_operating_level": "regional"
   },
   {
-    "id": "1.3.1.1",
+    "parcel_hub_id": "1.3.1.1",
     "parcel_hub_name": "Sepang Hub",
     "parcel_hub_address": "Jalan Sepang",
     "state": "Kuala Lumpur",
@@ -56,7 +56,7 @@
     "parcel_hub_operating_level": "local"
   },
   {
-    "id": "1.2.0.0",
+    "parcel_hub_id": "1.2.0.0",
     "parcel_hub_name": "Penang National Hub",
     "parcel_hub_address": "Jalan Penang",
     "state": "Penang",
@@ -64,7 +64,7 @@
     "parcel_hub_operating_level": "national"
   },
   {
-    "id": "1.2.1.0",
+    "parcel_hub_id": "1.2.1.0",
     "parcel_hub_name": "Penang Central Hub",
     "parcel_hub_address": "Jalan Sultan Ahmad Shah",
     "state": "Penang",
@@ -72,7 +72,7 @@
     "parcel_hub_operating_level": "regional"
   },
   {
-    "id": "1.2.1.1",
+    "parcel_hub_id": "1.2.1.1",
     "parcel_hub_name": "George Town Hub",
     "parcel_hub_address": "Lebuh Pantai",
     "state": "Penang",
@@ -80,7 +80,7 @@
     "parcel_hub_operating_level": "local"
   },
   {
-    "id": "2.0.0.0",
+    "parcel_hub_id": "2.0.0.0",
     "parcel_hub_name": "Singapore International Hub",
     "parcel_hub_address": "Changi Air Freight Centre",
     "state": "Changi",
@@ -88,7 +88,7 @@
     "parcel_hub_operating_level": "international"
   },
   {
-    "id": "2.6.0.0",
+    "parcel_hub_id": "2.6.0.0",
     "parcel_hub_name": "Singapore National Hub",
     "parcel_hub_address": "Orchard Road",
     "state": "Central Region",
@@ -96,7 +96,7 @@
     "parcel_hub_operating_level": "national"
   },
   {
-    "id": "2.6.1.0",
+    "parcel_hub_id": "2.6.1.0",
     "parcel_hub_name": "Singapore Central Hub",
     "parcel_hub_address": "Marina Bay",
     "state": "Central Region",
@@ -104,7 +104,7 @@
     "parcel_hub_operating_level": "regional"
   },
   {
-    "id": "2.6.1.1",
+    "parcel_hub_id": "2.6.1.1",
     "parcel_hub_name": "Raffles Place Hub",
     "parcel_hub_address": "Raffles Quay",
     "state": "Central Region",
