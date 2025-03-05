@@ -265,11 +265,14 @@ const Dashboard: NextPage = () => {
                                   ? "badge-info" // Forwarded
                                   : parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) >
                                         0 &&
-                                      parcel.pathway[
-                                        parcel.pathway.findIndex(
-                                          ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id,
-                                        ) - 1
-                                      ].parcel_hub_id === parcel.current_location
+                                      parcel.pathway
+                                        .slice(
+                                          0,
+                                          parcel.pathway.findIndex(
+                                            ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id,
+                                          ),
+                                        )
+                                        .some(ph => ph.parcel_hub_id === parcel.current_location)
                                     ? "badge-primary" // Pending
                                     : "badge-error" // Error
                       }`}
@@ -308,11 +311,14 @@ const Dashboard: NextPage = () => {
                                 ? "Forwarded"
                                 : parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) >
                                       0 &&
-                                    parcel.pathway[
-                                      parcel.pathway.findIndex(
-                                        ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id,
-                                      ) - 1
-                                    ].parcel_hub_id === parcel.current_location
+                                    parcel.pathway
+                                      .slice(
+                                        0,
+                                        parcel.pathway.findIndex(
+                                          ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id,
+                                        ),
+                                      )
+                                      .some(ph => ph.parcel_hub_id === parcel.current_location)
                                   ? "Pending"
                                   : "Error"}
                     </div>
