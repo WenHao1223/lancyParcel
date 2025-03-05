@@ -10,6 +10,7 @@ import { Address } from "~~/components/scaffold-eth";
 //BLOCKCHAIN
 import { useScaffoldContract } from "~~/hooks/scaffold-eth";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { EmployeeWithoutPasswordInterface, ParcelHubInterface } from "~~/interfaces/GeneralInterface";
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
@@ -19,17 +20,8 @@ const Home: NextPage = () => {
     contractName: "YourContract",
   });
 
-  const [loginData, setLoginData] = useState<{ employee_id: string; parcel_hub_id: string; email: string } | null>(
-    null,
-  );
-  const [parcelHubData, setParcelHubData] = useState<{
-    parcel_hub_id: string;
-    parcel_hub_name: string;
-    parcel_hub_address: string;
-    state: string;
-    country: string;
-    parcel_hub_operating_level: string;
-  } | null>(null);
+  const [loginData, setLoginData] = useState<EmployeeWithoutPasswordInterface | null>(null);
+  const [parcelHubData, setParcelHubData] = useState<ParcelHubInterface | null>(null);
   const [isLogin, setIsLogin] = useState<null | boolean>(null);
 
   // const handleClick = async () => {

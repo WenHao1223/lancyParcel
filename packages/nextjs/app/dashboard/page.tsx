@@ -3,61 +3,10 @@
 import { useState } from "react";
 import parcelJSON from "../../public/data/parcel.json";
 import { NextPage } from "next";
-
-interface Parcel {
-  tracking_number: string;
-  parcel_weight_kg: number;
-  parcel_dimensions_cm: {
-    length: number;
-    width: number;
-    height: number;
-  };
-  parcel_estimated_delivery: string;
-  parcel_type: string;
-  is_fragile: boolean;
-  extra_comment: string | "";
-  sender: {
-    name: string;
-    phone_number: string;
-    email: string;
-  };
-  recipient: {
-    name: string;
-    phone_number: string;
-    email: string;
-  };
-  final_destination: {
-    street: string;
-    area: string;
-    postal_code: string;
-    state: string;
-    country: string;
-  };
-  current_location: string;
-  pathway: Array<{
-    parcel_hub_id: string;
-    received_time?: string;
-    dispatch_time: string | null;
-    photo_url: string | null;
-    sender?: {
-      signature_hash: string;
-    };
-    employee: {
-      employee_id: string;
-      signature_hash: string | null;
-    };
-    verification_hash: string | null;
-  }>;
-  final_delivery: {
-    received_time: string;
-    photo_url: string;
-    customer_signature_hash: string | null;
-    verification_hash: string | null;
-  } | null;
-}
+import { ParcelInterface } from "~~/interfaces/GeneralInterface";
 
 const Dashboard: NextPage = () => {
-  const [parcelData, setParcelData] = useState<Parcel[] | null>(null);
+  const [parcelData, setParcelData] = useState<ParcelInterface[] | null>(null);
   // store parcelJSON data into parcelData
   if (!parcelData) {
     setParcelData(parcelJSON);
