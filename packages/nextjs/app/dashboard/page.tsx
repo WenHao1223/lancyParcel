@@ -4,8 +4,65 @@ import { useState } from "react";
 import parcelJSON from "../../public/data/parcel.json";
 import { NextPage } from "next";
 
+interface Parcel {
+  tracking_number: string;
+  parcel_weight_kg: number;
+  parcel_dimensions_cm: {
+    length: number;
+    width: number;
+    height: number;
+  };
+  parcel_estimated_delivery: string;
+  parcel_type: string;
+  is_fragile: boolean;
+  extra_comment: string | "";
+  sender: {
+    name: string;
+    phone_number: string;
+    email: string;
+  };
+  recipient: {
+    name: string;
+    phone_number: string;
+    email: string;
+  };
+  final_destination: {
+    street: string;
+    area: string;
+    postal_code: string;
+    state: string;
+    country: string;
+  };
+  current_location: string;
+  pathway: Array<{
+    parcel_hub_id: string;
+    received_time?: string;
+    dispatch_time: string | null;
+    photo_url: string | null;
+    sender?: {
+      signature_hash: string;
+    };
+    employee: {
+      employee_id: string;
+      signature_hash: string | null;
+    };
+    verification_hash: string | null;
+  }>;
+  final_delivery: {
+    received_time: string;
+    photo_url: string;
+    customer_signature_hash: string | null;
+    verification_hash: string | null;
+  } | null;
+}
+
 const Dashboard: NextPage = () => {
-  const [tableData, setTableData] = useState(null);
+  const [parcelData, setParcelData] = useState<Parcel[] | null>(null);
+  // store parcelJSON data into parcelData
+  if (!parcelData) {
+    setParcelData(parcelJSON);
+  }
+  console.log(parcelData);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
@@ -74,18 +131,18 @@ const Dashboard: NextPage = () => {
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
-                          stroke-width="1.5"
+                          strokeWidth="1.5"
                           stroke="currentColor"
                           className="size-6"
                         >
                           <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                             d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
                           />
                           <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                             d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
                           />
                         </svg>
@@ -97,13 +154,13 @@ const Dashboard: NextPage = () => {
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
-                          stroke-width="1.5"
+                          strokeWidth="1.5"
                           stroke="currentColor"
                           className="size-6"
                         >
                           <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                             d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
                           />
                         </svg>
