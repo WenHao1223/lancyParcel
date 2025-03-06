@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import parcelJSON from "../../../public/data/parcel.json";
-import parcelHubJSON from "../../../public/data/parcelHub.json";
+import parcelJSON from "../../../data/parcel.json";
+import parcelHubJSON from "../../../data/parcelHub.json";
 import { NextPage } from "next";
 import { EmployeeWithoutPasswordInterface, ParcelHubInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
 

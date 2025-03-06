@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import parcelHubJSON from "../public/data/parcelHub.json";
+import parcelHubJSON from "../data/parcelHub.json";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 // import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";

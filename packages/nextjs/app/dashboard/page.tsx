@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import localAreaJSON from "../../public/data/localArea.json";
-import parcelJSON from "../../public/data/parcel.json";
-import parcelHubJSON from "../../public/data/parcelHub.json";
+import localAreaJSON from "../../data/localArea.json";
+import parcelJSON from "../../data/parcel.json";
+import parcelHubJSON from "../../data/parcelHub.json";
 import { countries } from "countries-list";
 import { NextPage } from "next";
 import Swal from "sweetalert2";
@@ -13,6 +13,7 @@ const Dashboard: NextPage = () => {
   const [loginData, setLoginData] = useState<EmployeeWithoutPasswordInterface | null>(null);
   const [parcelHubData, setParcelHubData] = useState<ParcelHubInterface | null>(null);
   const [parcelData, setParcelData] = useState<ParcelInterface[] | null>(null);
+  const [newParcelData, setNewParcelData] = useState<ParcelInterface[] | null>(null);
   const [isLogin, setIsLogin] = useState<null | boolean>(null);
 
   const [filteredParcelData, setFilteredParcelData] = useState<ParcelInterface[] | null>(null);
@@ -85,6 +86,10 @@ const Dashboard: NextPage = () => {
     }).then(() => {
       window.location.href = "dispatch-parcel/" + trackingNumber;
     });
+  };
+
+  const handleSubmit = () => {
+    alert("Submit");
   };
 
   return (
@@ -164,6 +169,7 @@ const Dashboard: NextPage = () => {
         </div>
       </div>
 
+      {/* This is a dividerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr */}
       {/* Add Parcel Modal */}
       <dialog id="modal-add-parcel" className="modal">
         <div className="modal-box w-8/12 max-w-5xl">
@@ -458,12 +464,15 @@ const Dashboard: NextPage = () => {
                 {/* if there is a button in form, it will close the modal */}
                 <button className="btn">Cancel</button>
                 {/* Submit button */}
-                <button className="btn btn-primary">Submit</button>
+                <button className="btn btn-primary" onClick={handleSubmit}>
+                  Submit
+                </button>
               </div>
             </form>
           </div>
         </div>
       </dialog>
+      {/* This is a dividerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr */}
 
       {/* Dashboard table */}
       <div className="flex flex-col w-[80%] min-w-96 gap-4 mb-4">
