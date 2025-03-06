@@ -65,7 +65,6 @@ const Dashboard: NextPage = () => {
   const dispatchParcel = (trackingNumber: string) => {
     const status = document.getElementById("status-" + trackingNumber)?.textContent;
     if (status !== "Arrived") {
-      alert("Action not allowed.");
       Swal.fire({
         icon: "error",
         title: "Action not allowed",
