@@ -274,7 +274,7 @@ const Dashboard: NextPage = () => {
                 <span className="text-error ms-1">*</span>
               </p>
               <div className="flex flex-row gap-2 items-center w-full">
-                <input type="file" className="file-input" />
+                <input type="file" className="file-input" accept="image/*" />
               </div>
             </div>
           </div>
