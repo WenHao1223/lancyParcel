@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import employeeJSON from "../../../public/data/employee.json";
-import parcelJSON from "../../../public/data/parcel.json";
 import parcelHubJSON from "../../../public/data/parcelHub.json";
 import { NextPage } from "next";
+import parcelJSON from "~~/data/parcel.json";
 import { EmployeeWithoutPasswordInterface, ParcelHubInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
 
 // Seller
@@ -130,6 +130,67 @@ const ParcelDispatch: NextPage = () => {
       setSpecificEmployee(employeeJSON.find(e => e.employee_id === employeeID) || null);
     }
   }, [employeeID]);
+
+  const placeDigitalSigature = () => {
+    console.log("Tracking Number", trackingNumber);
+    console.log("Dispatched Time", dispatchedTime);
+    console.log("Parcel Hub ID", parcelHubData?.parcel_hub_id);
+    console.log("Employee ID", employeeID);
+
+    // smart contract algorithm here
+    // @shinyen17
+
+    const signature_hash = "dummy_signature_hash"; // Replace with actual signature hash
+    const verification_hash = "dummy_verification_hash"; // Replace with actual verification hash
+    const photo_url = "dummy_photo_url"; // Replace with actual photo URL
+
+    // Find the specific parcel
+    const parcelIndex = parcelJSON.findIndex(p => p.tracking_number === trackingNumber);
+    if (parcelIndex !== -1) {
+      const parcel = parcelJSON[parcelIndex];
+
+      // Find the current parcel hub in the pathway
+      const pathwayIndex = parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id);
+      if (pathwayIndex !== -1) {
+        // Update the dispatch time, photo URL, employee signature hash, and verification hash
+        parcel.pathway[pathwayIndex].dispatch_time = dispatchedTime;
+        parcel.pathway[pathwayIndex].photo_url = photo_url;
+        parcel.pathway[pathwayIndex].employee.employee_id = employeeID;
+        parcel.pathway[pathwayIndex].employee.signature_hash = signature_hash;
+        parcel.pathway[pathwayIndex].verification_hash = verification_hash;
+
+        // Update the parcelJSON with the modified parcel
+        parcelJSON[parcelIndex] = parcel;
+
+        // Write the updated parcelJSON to the file
+        fetch("/data/parcel.json", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(parcelJSON),
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log("Parcel JSON updated successfully:", data);
+          })
+          .catch(error => {
+            console.error("Error updating parcel JSON:", error);
+          });
+
+        console.log("Parcel updated successfully:", parcel);
+      } else {
+        console.log("Current parcel hub not found in the pathway.");
+      }
+    } else {
+      console.log("Parcel not found.");
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
@@ -396,7 +457,9 @@ const ParcelDispatch: NextPage = () => {
       {isInsidePathway && (
         <div className="flex flex-row w-[40%] min-w-96 gap-4 justify-center mt-4">
           <button className="btn btn-error btn-disabled w-1/2">Cancel</button>
-          <button className="btn btn-primary w-1/2">Place Digital Signature</button>
+          <button className="btn btn-primary w-1/2" onClick={placeDigitalSigature}>
+            Place Digital Signature
+          </button>
         </div>
       )}
     </div>

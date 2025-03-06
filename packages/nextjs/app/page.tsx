@@ -265,6 +265,14 @@ const Home: NextPage = () => {
                 <Link href="/algo-test">Algo Test</Link>
               </button>
             </div>
+
+            {/* Test fetch API */}
+            <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
+              <h2>Test Fetch API</h2>
+              <button className="btn">
+                <Link href="/test-json">Test Fetch API</Link>
+              </button>
+            </div>
           </div>
         </div>
       </div>
