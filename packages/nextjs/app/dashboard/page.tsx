@@ -168,7 +168,10 @@ const Dashboard: NextPage = () => {
           {/* Parcel weight */}
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
-              <p className="w-56">Parcel weight</p>
+              <p className="w-56">
+                Parcel weight
+                <span className="text-error ms-1">*</span>
+              </p>
               <div className="flex flex-row gap-2 items-center w-full">
                 <input type="number" placeholder="Parcel weight" className="input" /> kg
               </div>
@@ -177,19 +180,22 @@ const Dashboard: NextPage = () => {
           {/* Parcel weight */}
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
-              <p className="w-56">Parcel dimension</p>
+              <p className="w-56">
+                Parcel dimension
+                <span className="text-error ms-1">*</span>
+              </p>
               <div className="flex flex-row gap-2 items-center w-full">
                 <div className="flex flex-row gap-2 items-center">
                   <input type="text" placeholder="Length" className="input" />
-                  <span className="w-20">cm x</span>
+                  <span className="text-center w-12">cm x</span>
                 </div>
                 <div className="flex flex-row gap-2 items-center">
                   <input type="text" placeholder="Width" className="input" />
-                  <span className="w-20">cm x</span>
+                  <span className="text-center w-12">cm x</span>
                 </div>
                 <div className="flex flex-row gap-2 items-center">
                   <input type="text" placeholder="Height" className="input" />
-                  <span className="w-20">cm</span>
+                  <span className="text-center w-12">cm</span>
                 </div>
               </div>
             </div>
@@ -197,7 +203,10 @@ const Dashboard: NextPage = () => {
           {/* Parcel estimated delivery */}
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
-              <p className="w-56">Parcel estimated delivery</p>
+              <p className="w-56">
+                Parcel estimated delivery
+                <span className="text-error ms-1">*</span>
+              </p>
               <p className="flex flex-row gap-2 items-center w-full">
                 <input type="date" className="input w-56" />
                 <input type="time" className="input w-56" />
@@ -206,7 +215,10 @@ const Dashboard: NextPage = () => {
           </div>
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
-              <p className="w-56">Parcel type</p>
+              <p className="w-56">
+                Parcel type
+                <span className="text-error ms-1">*</span>
+              </p>
               <div className="flex w-full flex-row items-center gap-2">
                 {/* Parcel type */}
                 <div className="flex flex-row gap-2 items-center w-full">
@@ -223,7 +235,10 @@ const Dashboard: NextPage = () => {
               </div>
             </div>
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
-              <p className="w-56">Is Fragile?</p>
+              <p className="w-56">
+                Is Fragile?
+                <span className="text-error ms-1">*</span>
+              </p>
               <div className="flex w-full flex-row items-center gap-2">
                 {/* Is Fragile */}
                 <div className="flex flex-row gap-12 w-full">
@@ -246,13 +261,29 @@ const Dashboard: NextPage = () => {
               <textarea className="textarea textarea-bordered w-full" placeholder="Extra comment"></textarea>
             </div>
           </div>
+          {/* Upload image */}
+          <div className="flex justify-between items-center w-full gap-2">
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">
+                Upload image
+                <span className="text-error ms-1">*</span>
+              </p>
+              <div className="flex flex-row gap-2 items-center w-full">
+                <input type="file" className="file-input" />
+              </div>
+            </div>
+          </div>
+
           <hr className="mt-8 mb-4 opacity-60" />
           {/* Sender */}
           <h4 className="font-bold text-lg">Sender</h4>
           {/* Sender name */}
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
-              <p className="w-56">Name</p>
+              <p className="w-56">
+                Name
+                <span className="text-error ms-1">*</span>
+              </p>
               <div className="flex flex-row gap-2 items-center w-full">
                 <input type="text" placeholder="John Doe" className="input" />
               </div>
@@ -261,7 +292,10 @@ const Dashboard: NextPage = () => {
           {/* Sender phone number */}
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
-              <p className="w-56">Phone number</p>
+              <p className="w-56">
+                Phone number
+                <span className="text-error ms-1">*</span>
+              </p>
               <div className="flex flex-row gap-2 items-center w-full">
                 <input type="text" placeholder="+60123456789" className="input" />
               </div>
@@ -270,7 +304,10 @@ const Dashboard: NextPage = () => {
           {/* Sender email */}
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
-              <p className="w-56">Email</p>
+              <p className="w-56">
+                Email
+                <span className="text-error ms-1">*</span>
+              </p>
               <div className="flex flex-row gap-2 items-center w-full">
                 <input type="email" placeholder="john.doe@example.com" className="input" />
               </div>
@@ -283,7 +320,10 @@ const Dashboard: NextPage = () => {
           {/* Recipent name */}
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
-              <p className="w-56">Name</p>
+              <p className="w-56">
+                Name
+                <span className="text-error ms-1">*</span>
+              </p>
               <div className="flex flex-row gap-2 items-center w-full">
                 <input type="text" placeholder="John Doe" className="input" />
               </div>
@@ -292,7 +332,10 @@ const Dashboard: NextPage = () => {
           {/* Recipent phone number */}
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
-              <p className="w-56">Phone number</p>
+              <p className="w-56">
+                Phone number
+                <span className="text-error ms-1">*</span>
+              </p>
               <div className="flex flex-row gap-2 items-center w-full">
                 <input type="text" placeholder="+60123456789" className="input" />
               </div>
@@ -301,7 +344,10 @@ const Dashboard: NextPage = () => {
           {/* Recipent email */}
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
-              <p className="w-56">Email</p>
+              <p className="w-56">
+                Email
+                <span className="text-error ms-1">*</span>
+              </p>
               <div className="flex flex-row gap-2 items-center w-full">
                 <input type="email" placeholder="john.doe@example.com" className="input" />
               </div>
@@ -314,7 +360,10 @@ const Dashboard: NextPage = () => {
           {/* Street */}
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
-              <p className="w-56">Street</p>
+              <p className="w-56">
+                Street
+                <span className="text-error ms-1">*</span>
+              </p>
               <div className="flex flex-row gap-2 items-center w-full">
                 <input type="text" placeholder="123, Jalan ABC" className="input" />
               </div>
@@ -323,7 +372,10 @@ const Dashboard: NextPage = () => {
           {/* Area */}
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
-              <p className="w-56">Area</p>
+              <p className="w-56">
+                Area
+                <span className="text-error ms-1">*</span>
+              </p>
               <div className="flex flex-row gap-2 items-center w-full">
                 <select className="select select-bordered max-w-xs w-full">
                   <option disabled selected>
@@ -340,7 +392,10 @@ const Dashboard: NextPage = () => {
           </div>
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
-              <p className="w-56">Postcode</p>
+              <p className="w-56">
+                Postcode
+                <span className="text-error ms-1">*</span>
+              </p>
               <div className="flex w-full flex-row items-center gap-2">
                 {/* Postcode */}
                 <div className="flex flex-row gap-2 items-center w-full">
@@ -358,7 +413,10 @@ const Dashboard: NextPage = () => {
               </div>
             </div>
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
-              <p className="w-56">State</p>
+              <p className="w-56">
+                State
+                <span className="text-error ms-1">*</span>
+              </p>
               <div className="flex w-full flex-row items-center gap-2">
                 {/* State */}
                 <div className="flex flex-row gap-2 items-center w-full">
@@ -370,7 +428,10 @@ const Dashboard: NextPage = () => {
           {/* Country */}
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
-              <p className="w-56">Country</p>
+              <p className="w-56">
+                Country
+                <span className="text-error ms-1">*</span>
+              </p>
               <div className="flex flex-row gap-2 items-center w-full">
                 <select className="select select-bordered w-">
                   <option disabled selected>
