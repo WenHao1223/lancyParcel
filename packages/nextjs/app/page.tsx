@@ -68,13 +68,14 @@ const Home: NextPage = () => {
       // not login
       console.log("Please login first.");
       setIsLogin(false);
-      window.location.href = "/login";
+      // window.location.href = "/login";
     }
   }, []);
 
   useEffect(() => {
     if (isLogin === false) {
-      window.location.href = "/login";
+      console.log("Please login first.");
+      // window.location.href = "/login";
     }
   }, [isLogin]);
 
