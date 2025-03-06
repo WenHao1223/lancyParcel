@@ -6,6 +6,7 @@ import parcelJSON from "../../public/data/parcel.json";
 import parcelHubJSON from "../../public/data/parcelHub.json";
 import { countries } from "countries-list";
 import { NextPage } from "next";
+import Swal from "sweetalert2";
 import { EmployeeWithoutPasswordInterface, ParcelHubInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
 
 const Dashboard: NextPage = () => {
@@ -60,6 +61,26 @@ const Dashboard: NextPage = () => {
       );
     }
   }, [parcelData, parcelHubData]);
+
+  const dispatchParcel = (trackingNumber: string) => {
+    const status = document.getElementById("status-" + trackingNumber)?.textContent;
+    if (status !== "Arrived") {
+      alert("Action not allowed.");
+      return;
+    }
+
+    // loading 1s
+    Swal.fire({
+      title: "Get ready to dispatch parcel...",
+      timer: 1000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    }).then(() => {
+      window.location.href = "dispatch-parcel/" + trackingNumber;
+    });
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
@@ -511,6 +532,7 @@ const Dashboard: NextPage = () => {
                   </td>
                   <td>
                     <div
+                      id={`status-${parcel.tracking_number}`}
                       className={`badge badge-outline badge-sm ${
                         parcel.current_location === "received"
                           ? "badge-ghost" // Delivered
@@ -676,7 +698,10 @@ const Dashboard: NextPage = () => {
                         (parcel.current_location === parcelHubData?.parcel_hub_id &&
                           parcel.pathway[0].parcel_hub_id === parcelHubData.parcel_hub_id &&
                           !parcel.pathway[0].dispatch_time)) && (
-                        <button className="btn btn-square btn-ghost">
+                        <button
+                          className="btn btn-square btn-ghost"
+                          onClick={() => dispatchParcel(parcel.tracking_number)}
+                        >
                           <div className="tooltip" data-tip="Dispatch parcel">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"

@@ -236,7 +236,7 @@ const Home: NextPage = () => {
             <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
               <h2>Warehouse Employee</h2>
               <button className="btn">
-                <Link href="/send-transaction">Send Transaction Page</Link>
+                <Link href="/dispatch-parcel">Send Transaction Page</Link>
               </button>
             </div>
 
@@ -246,7 +246,7 @@ const Home: NextPage = () => {
                 <Link href="/dashboard">Parcel Dashboard Page</Link>
               </button>
               <button className="btn">
-                <Link href="/send-transaction">Send Transaction Page</Link>
+                <Link href="/dispatch-parcel">Dispatch Parcel Page</Link>
               </button>
             </div>
 

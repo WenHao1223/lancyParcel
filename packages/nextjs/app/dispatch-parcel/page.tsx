@@ -14,7 +14,7 @@ import { NextPage } from "next";
 // Customer
 // Tracking Number, Out for Delivery Time, Delivery Time, Receiver Confirmation (Signature or Digital Proof), Employee ID Wallet Address, Digital Signature
 
-const SendTransaction: NextPage = () => {
+const ParcelDispatch: NextPage = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-4xl font-bold">Send Parcel Page</h1>
@@ -90,4 +90,4 @@ const SendTransaction: NextPage = () => {
   );
 };
 
-export default SendTransaction;
+export default ParcelDispatch;
