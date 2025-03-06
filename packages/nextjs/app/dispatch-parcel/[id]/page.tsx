@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import parcelJSON from "../../../data/parcel.json";
-import parcelHubJSON from "../../../data/parcelHub.json";
 import { NextPage } from "next";
+import Swal from "sweetalert2";
+import employeeJSON from "~~/data/employee.json";
+import parcelJSON from "~~/data/parcel.json";
+import parcelHubJSON from "~~/data/parcelHub.json";
 import { EmployeeWithoutPasswordInterface, ParcelHubInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
 
 // Seller
@@ -36,6 +38,7 @@ const ParcelDispatch: NextPage = () => {
 
   const [trackingNumber, setTrackingNumber] = useState("");
 
+  const [specificEmployee, setSpecificEmployee] = useState<EmployeeWithoutPasswordInterface | null>(null);
   const [specificParcel, setSpecificParcel] = useState<ParcelInterface | null>(null);
   const [isInsidePathway, setIsInsidePathway] = useState<boolean | null>(null);
 
@@ -122,6 +125,84 @@ const ParcelDispatch: NextPage = () => {
     }
   }, [specificParcel, parcelHubData, isInsidePathway, employeeID]);
 
+  // get specific employee data
+  useEffect(() => {
+    if (employeeID) {
+      setSpecificEmployee(employeeJSON.find(e => e.employee_id === employeeID) || null);
+    }
+  }, [employeeID]);
+
+  const placeDigitalSigature = async () => {
+    console.log("Tracking Number", trackingNumber);
+    console.log("Dispatched Time", dispatchedTime);
+    console.log("Parcel Hub ID", parcelHubData?.parcel_hub_id);
+    console.log("Employee ID", employeeID);
+
+    // smart contract algorithm here
+    // @shinyen17
+
+    const signature_hash = "dummy_signature_hash"; // Replace with actual signature hash
+    const verification_hash = "dummy_verification_hash"; // Replace with actual verification hash
+    const photo_url = "dummy_photo_url"; // Replace with actual photo URL
+
+    // Find the specific parcel
+    const parcelIndex = parcelJSON.findIndex(p => p.tracking_number === trackingNumber);
+    if (parcelIndex !== -1) {
+      const parcel = parcelJSON[parcelIndex];
+
+      // Find the current parcel hub in the pathway
+      const pathwayIndex = parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id);
+      if (pathwayIndex !== -1) {
+        // Update the dispatch time, photo URL, employee signature hash, and verification hash
+        parcel.pathway[pathwayIndex].dispatch_time = dispatchedTime;
+        parcel.pathway[pathwayIndex].photo_url = photo_url;
+        parcel.pathway[pathwayIndex].employee.employee_id = employeeID;
+        parcel.pathway[pathwayIndex].employee.signature_hash = signature_hash;
+        parcel.pathway[pathwayIndex].verification_hash = verification_hash;
+
+        // Update the parcelJSON with the modified parcel
+        parcelJSON[parcelIndex] = parcel;
+
+        async function handleUpdate() {
+          if (!parcelJSON) return;
+
+          try {
+            const response = await fetch("/api/parcel", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(parcelJSON),
+            });
+
+            // if (!response.ok) throw new Error("Failed to update data");
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
+        await handleUpdate();
+
+        console.log("Parcel updated successfully:", parcel);
+
+        Swal.fire({
+          icon: "success",
+          title: "Parcel Dispatched Successfully",
+          text: "Parcel has been dispatched successfully.",
+          allowOutsideClick: false,
+          timer: 3000,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        }).then(() => {
+          window.location.href = "/dashboard";
+        });
+      } else {
+        console.log("Current parcel hub not found in the pathway.");
+      }
+    } else {
+      console.log("Parcel not found.");
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-4xl font-bold">Dispatch Parcel</h1>
@@ -143,10 +224,28 @@ const ParcelDispatch: NextPage = () => {
               />
             </div>
             <div>
-              <div>{trackingNumber}</div>
+              {specificParcel && (
+                <div
+                  className="link hover:text-secondary no-underline"
+                  onClick={() =>
+                    (
+                      document.getElementById("modal-trackingNo-" + specificParcel.tracking_number) as HTMLDialogElement
+                    )?.showModal()
+                  }
+                >
+                  {trackingNumber}
+                </div>
+              )}
               <div className="text-xs font-semibold opacity-60">
                 {isInsidePathway === true ? (
-                  <>Received on {receivedTime}</>
+                  <>
+                    Received on{" "}
+                    <span className="italic">
+                      {new Date(receivedTime).toLocaleString("en-SG", {
+                        timeZone: "Asia/Singapore",
+                      })}
+                    </span>
+                  </>
                 ) : isInsidePathway === false ? (
                   <>Record not found.</>
                 ) : (
@@ -179,16 +278,34 @@ const ParcelDispatch: NextPage = () => {
 
         <div className="divider" />
 
-        {isInsidePathway && (
+        {isInsidePathway && specificParcel && (
           <>
             <div className="card bg-base-100 w-full shadow-sm p-4">
               <div className="flex flex-row justify-between items-center">
                 <p className="font-semibold">Send From</p>
-                <p>{currentParcelHub?.parcel_hub_name}</p>
+                <p
+                  className="link hover:text-secondary no-underline"
+                  onClick={() =>
+                    (
+                      document.getElementById("modal-sender-" + specificParcel.tracking_number) as HTMLDialogElement
+                    )?.showModal()
+                  }
+                >
+                  {currentParcelHub?.parcel_hub_name}
+                </p>
               </div>
               <div className="flex flex-row justify-between items-center">
                 <p className="font-semibold">Send To</p>
-                <p>{nextParcelHub?.parcel_hub_name}</p>
+                <p
+                  className="link hover:text-secondary no-underline"
+                  onClick={() =>
+                    (
+                      document.getElementById("modal-recipent-" + specificParcel.tracking_number) as HTMLDialogElement
+                    )?.showModal()
+                  }
+                >
+                  {nextParcelHub?.parcel_hub_name}
+                </p>
               </div>
               <div className="flex flex-row justify-between items-center">
                 <p className="font-semibold">Dispatched Time</p>
@@ -199,18 +316,161 @@ const ParcelDispatch: NextPage = () => {
                 </p>
               </div>
               <div className="flex flex-row justify-between items-center">
-                <p className="font-semibold">Employee ID</p>
-                <p>{employeeID}</p>
+                <p>Employee ID</p>
+                <p
+                  className="font-semibold link hover:text-secondary no-underline"
+                  onClick={() =>
+                    (document.getElementById("modal-employee-" + employeeID) as HTMLDialogElement)?.showModal()
+                  }
+                >
+                  {employeeID}
+                </p>
               </div>
             </div>
           </>
         )}
       </div>
 
+      {/* Tracking Number Modal */}
+      {specificParcel && (
+        <dialog id={"modal-trackingNo-" + specificParcel.tracking_number} className="modal">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">{specificParcel.tracking_number}</h3>
+            <p className="pb-2">Press ESC key or click the button below to close</p>
+            {/* Parcel weight */}
+            <div className="flex justify-between items-center">
+              <p>Parcel weight</p>
+              <p>{specificParcel.parcel_weight_kg} kg</p>
+            </div>
+            {/* Parcel dimension */}
+            <div className="flex justify-between items-center">
+              <p>Parcel dimension</p>
+              <p>
+                {specificParcel.parcel_dimensions_cm.length} cm x {specificParcel.parcel_dimensions_cm.width} cm x{" "}
+                {specificParcel.parcel_dimensions_cm.height} cm
+              </p>
+            </div>
+            {/* Parcel estimated delivery */}
+            <div className="flex justify-between items-center">
+              <p>Parcel estimated delivery</p>
+              <p>{specificParcel.parcel_estimated_delivery}</p>
+            </div>
+            {/* Parcel type */}
+            <div className="flex justify-between items-center">
+              <p>Parcel type</p>
+              <p>{specificParcel.parcel_type.charAt(0).toUpperCase() + specificParcel.parcel_type.slice(1)}</p>
+            </div>
+            {/* is fragile */}
+            <div className="flex justify-between items-center">
+              <p>Is fragile</p>
+              <p>{specificParcel.is_fragile ? "Yes" : "No"}</p>
+            </div>
+            {/* extra comment */}
+            <div className="flex justify-between items-center">
+              <p>Extra comment</p>
+              <p>{specificParcel.extra_comment}</p>
+            </div>
+            {/* Close button */}
+            <div className="modal-action">
+              <form method="dialog">
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn">Close</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
+      )}
+
+      {/* Sender Modal */}
+      {specificParcel && (
+        <dialog id={"modal-sender-" + specificParcel.tracking_number} className="modal">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">{specificParcel.sender.name}</h3>
+            <p className="pb-2">Press ESC key or click the button below to close</p>
+            {/* Sender phone number */}
+            <div className="flex justify-between items-center">
+              <p>Phone number</p>
+              <p>{specificParcel.sender.phone_number}</p>
+            </div>
+            {/* Sender address */}
+            <div className="flex justify-between items-center">
+              <p>Email</p>
+              <p>{specificParcel.sender.email}</p>
+            </div>
+            {/* Close button */}
+            <div className="modal-action">
+              <form method="dialog">
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn">Close</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
+      )}
+
+      {/* Recipient Modal */}
+      {specificParcel && (
+        <dialog id={"modal-recipent-" + specificParcel.tracking_number} className="modal">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">{specificParcel.recipient.name}</h3>
+            <p className="pb-2">Press ESC key or click the button below to close</p>
+            {/* Recipent phone number */}
+            <div className="flex justify-between items-center">
+              <p>Phone number</p>
+              <p>{specificParcel.recipient.phone_number}</p>
+            </div>
+            {/* Recipent email */}
+            <div className="flex justify-between items-center">
+              <p>Email</p>
+              <p>{specificParcel.recipient.email}</p>
+            </div>
+            {/* Close button */}
+            <div className="modal-action">
+              <form method="dialog">
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn">Close</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
+      )}
+
+      {/* Employee Modal */}
+      {employeeID && specificEmployee && (
+        <dialog id={"modal-employee-" + employeeID} className="modal">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">{employeeID}</h3>
+            <p className="pb-2">Press ESC key or click the button below to close</p>
+            {/* Employee email */}
+            <div className="flex justify-between items-center">
+              <p>Email</p>
+              <p>{specificEmployee.email}</p>
+            </div>
+            {/* Parcel Hub */}
+            <div className="flex justify-between items-center">
+              <p>Parcel Hub</p>
+              <p>
+                {parcelHubJSON.find(ph => ph.parcel_hub_id === specificEmployee.parcel_hub_id)?.parcel_hub_name} (
+                {specificEmployee.parcel_hub_id})
+              </p>
+            </div>
+            {/* Close button */}
+            <div className="modal-action">
+              <form method="dialog">
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn">Close</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
+      )}
+
       {isInsidePathway && (
         <div className="flex flex-row w-[40%] min-w-96 gap-4 justify-center mt-4">
           <button className="btn btn-error btn-disabled w-1/2">Cancel</button>
-          <button className="btn btn-primary w-1/2">Place Digital Signature</button>
+          <button className="btn btn-primary w-1/2" onClick={placeDigitalSigature}>
+            Place Digital Signature
+          </button>
         </div>
       )}
     </div>

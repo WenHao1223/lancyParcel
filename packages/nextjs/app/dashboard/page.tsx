@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import localAreaJSON from "../../data/localArea.json";
-import parcelJSON from "../../data/parcel.json";
-import parcelHubJSON from "../../data/parcelHub.json";
 import { countries } from "countries-list";
 import { NextPage } from "next";
 import Swal from "sweetalert2";
+import localAreaJSON from "~~/data/localArea.json";
+import parcelJSON from "~~/data/parcel.json";
+import parcelHubJSON from "~~/data/parcelHub.json";
 import { EmployeeWithoutPasswordInterface, ParcelHubInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
 
 const Dashboard: NextPage = () => {
@@ -66,7 +66,6 @@ const Dashboard: NextPage = () => {
   const dispatchParcel = (trackingNumber: string) => {
     const status = document.getElementById("status-" + trackingNumber)?.textContent;
     if (status !== "Arrived") {
-      alert("Action not allowed.");
       Swal.fire({
         icon: "error",
         title: "Action not allowed",
