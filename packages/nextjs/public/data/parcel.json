@@ -349,7 +349,7 @@
       "state": "Pulau Pinang",
       "country": "Malaysia"
     },
-    "current_location": "1.2.1.0",
+    "current_location": "2.6.1.1",
     "pathway": [
       {
         "parcel_hub_id": "2.6.1.1",
@@ -437,8 +437,8 @@
       },
       {
         "parcel_hub_id": "1.2.1.0",
-        "received_time": "ss",
-        "dispatch_time": "ss",
+        "received_time": "",
+        "dispatch_time": "",
         "photo_url": "",
         "sender": {
           "signature_hash": ""

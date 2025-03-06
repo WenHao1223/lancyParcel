@@ -3,6 +3,7 @@
 import { useState } from "react";
 import employeeJSON from "../../public/data/employee.json";
 import { NextPage } from "next";
+import Swal from "sweetalert2";
 
 const Login: NextPage = () => {
   const [username, setUsername] = useState("");
@@ -11,7 +12,11 @@ const Login: NextPage = () => {
   const handleSubmit = () => {
     // check if empty
     if (username === "" || password === "") {
-      alert("Please fill in all fields.");
+      Swal.fire({
+        icon: "error",
+        title: "Please fill in all fields.",
+        text: "Please try again.",
+      });
       console.error("Please fill in all fields.");
       return;
     }
@@ -19,14 +24,23 @@ const Login: NextPage = () => {
     // check if user exists
     const user = employeeJSON.find(u => u.email === username && u.password === password);
     if (user) {
-      alert("Login successful!");
-      const { password, ...userWithoutPassword } = user;
-      const userString = JSON.stringify(userWithoutPassword);
-      const userBase64 = btoa(userString);
-      localStorage.setItem("loginData", userBase64);
-      window.location.href = "/";
+      Swal.fire({
+        icon: "success",
+        title: "Login successful!",
+        text: "Welcome back!",
+      }).then(() => {
+        const { password, ...userWithoutPassword } = user;
+        const userString = JSON.stringify(userWithoutPassword);
+        const userBase64 = btoa(userString);
+        localStorage.setItem("loginData", userBase64);
+        window.location.href = "/";
+      });
     } else {
-      alert("Invalid username or password.");
+      Swal.fire({
+        icon: "error",
+        title: "Invalid username or password.",
+        text: "Please try again.",
+      });
       console.error("Invalid username or password.");
       return;
     }
