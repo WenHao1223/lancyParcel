@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import parcelJSON from "../../public/data/parcel.json";
 import { NextPage } from "next";
+import parcelJSON from "~~/data/parcel.json";
 
 // Test Case: 2.1.1, 1.3.1.1
 

@@ -16,7 +16,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch("/api/updateJson");
+        const response = await fetch("/api/test");
         if (!response.ok) throw new Error("Failed to fetch data");
         const json: JsonData = await response.json();
         setData(json);

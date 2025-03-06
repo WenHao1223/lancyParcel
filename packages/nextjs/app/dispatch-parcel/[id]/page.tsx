@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import employeeJSON from "../../../public/data/employee.json";
-import parcelHubJSON from "../../../public/data/parcelHub.json";
 import { NextPage } from "next";
+import Swal from "sweetalert2";
+import employeeJSON from "~~/data/employee.json";
 import parcelJSON from "~~/data/parcel.json";
+import parcelHubJSON from "~~/data/parcelHub.json";
 import { EmployeeWithoutPasswordInterface, ParcelHubInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
 
 // Seller
@@ -131,7 +132,7 @@ const ParcelDispatch: NextPage = () => {
     }
   }, [employeeID]);
 
-  const placeDigitalSigature = () => {
+  const placeDigitalSigature = async () => {
     console.log("Tracking Number", trackingNumber);
     console.log("Dispatched Time", dispatchedTime);
     console.log("Parcel Hub ID", parcelHubData?.parcel_hub_id);
@@ -162,28 +163,38 @@ const ParcelDispatch: NextPage = () => {
         // Update the parcelJSON with the modified parcel
         parcelJSON[parcelIndex] = parcel;
 
-        // Write the updated parcelJSON to the file
-        fetch("/data/parcel.json", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(parcelJSON),
-        })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error("Network response was not ok");
-            }
-            return response.json();
-          })
-          .then(data => {
-            console.log("Parcel JSON updated successfully:", data);
-          })
-          .catch(error => {
-            console.error("Error updating parcel JSON:", error);
-          });
+        async function handleUpdate() {
+          if (!parcelJSON) return;
+
+          try {
+            const response = await fetch("/api/parcel", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(parcelJSON),
+            });
+
+            // if (!response.ok) throw new Error("Failed to update data");
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
+        await handleUpdate();
 
         console.log("Parcel updated successfully:", parcel);
+
+        Swal.fire({
+          icon: "success",
+          title: "Parcel Dispatched Successfully",
+          text: "Parcel has been dispatched successfully.",
+          allowOutsideClick: false,
+          timer: 3000,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        }).then(() => {
+          window.location.href = "/dashboard";
+        });
       } else {
         console.log("Current parcel hub not found in the pathway.");
       }

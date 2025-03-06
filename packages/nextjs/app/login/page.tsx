@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import employeeJSON from "../../public/data/employee.json";
 import { NextPage } from "next";
 import Swal from "sweetalert2";
+import employeeJSON from "~~/data/employee.json";
 
 const Login: NextPage = () => {
   const [username, setUsername] = useState("");

@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import parcelHubJSON from "../public/data/parcelHub.json";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 // import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Address } from "~~/components/scaffold-eth";
+import parcelHubJSON from "~~/data/parcelHub.json";
 //BLOCKCHAIN
 import { useScaffoldContract } from "~~/hooks/scaffold-eth";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
