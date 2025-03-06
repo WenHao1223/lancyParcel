@@ -325,7 +325,16 @@ const Dashboard: NextPage = () => {
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
               <p className="w-56">Area</p>
               <div className="flex flex-row gap-2 items-center w-full">
-                <input type="text" placeholder="Taman OUG" className="input" />
+                <select className="select select-bordered max-w-xs w-full">
+                  <option disabled selected>
+                    Select area
+                  </option>
+                  {Object.keys(localAreaJSON).map(area => (
+                    <option key={area} value={area}>
+                      {area}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>
@@ -335,7 +344,16 @@ const Dashboard: NextPage = () => {
               <div className="flex w-full flex-row items-center gap-2">
                 {/* Postcode */}
                 <div className="flex flex-row gap-2 items-center w-full">
-                  <input type="text" placeholder="57000" className="input" />
+                  <select className="select select-bordered max-w-xs w-full">
+                    <option disabled selected>
+                      Select area
+                    </option>
+                    {Object.keys(localAreaJSON).map(area => (
+                      <option key={area} value={area}>
+                        {area}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </div>
