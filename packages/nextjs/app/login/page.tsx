@@ -3,11 +3,27 @@
 import { useState } from "react";
 import { NextPage } from "next";
 import Swal from "sweetalert2";
+import customerJSON from "~~/data/customer.json";
 import employeeJSON from "~~/data/employee.json";
 
 const Login: NextPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  // check if user is already logged in
+  if (localStorage.getItem("employeeData") || localStorage.getItem("customerData")) {
+    Swal.fire({
+      title: "Loading...",
+      html: "Please wait while we redirect you to the home page.",
+      timer: 1500,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    }).then(() => {
+      window.location.href = "/";
+    });
+  }
 
   const handleSubmit = () => {
     // check if empty
@@ -22,7 +38,10 @@ const Login: NextPage = () => {
     }
 
     // check if user exists
-    const user = employeeJSON.find(u => u.email === username && u.password === password);
+    const employee = employeeJSON.find(u => u.email === username && u.password === password);
+    const customer = customerJSON.find(u => u.email === username && u.password === password);
+    const user = employee || customer;
+
     if (user) {
       Swal.fire({
         icon: "success",
@@ -32,7 +51,16 @@ const Login: NextPage = () => {
         const { password, ...userWithoutPassword } = user;
         const userString = JSON.stringify(userWithoutPassword);
         const userBase64 = btoa(userString);
-        localStorage.setItem("loginData", userBase64);
+
+        if (employee) {
+          localStorage.setItem("employeeData", userBase64);
+          localStorage.removeItem("customerData");
+        }
+        if (customer) {
+          localStorage.setItem("customerData", userBase64);
+          localStorage.removeItem("employeeData");
+        }
+
         window.location.href = "/";
       });
     } else {

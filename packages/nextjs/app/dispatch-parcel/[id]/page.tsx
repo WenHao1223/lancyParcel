@@ -8,7 +8,12 @@ import Swal from "sweetalert2";
 import employeeJSON from "~~/data/employee.json";
 import parcelJSON from "~~/data/parcel.json";
 import parcelHubJSON from "~~/data/parcelHub.json";
-import { EmployeeWithoutPasswordInterface, ParcelHubInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
+import {
+  CustomerWithoutPasswordInterface,
+  EmployeeWithoutPasswordInterface,
+  ParcelHubInterface,
+  ParcelInterface,
+} from "~~/interfaces/GeneralInterface";
 
 // Seller
 // Tracking Number, Order Time, Sender Details (Encrypted), Parcel Weight & Dimensions, Dispatch Time, Employee ID Wallet Address, Digital Signature
@@ -31,7 +36,8 @@ const ParcelDispatch: NextPage = () => {
     setTrackingNumber(Array.isArray(params.id) ? params.id[0] : params.id);
   }, [params]);
 
-  const [loginData, setLoginData] = useState<EmployeeWithoutPasswordInterface | null>(null);
+  const [employeeData, setEmployeeData] = useState<EmployeeWithoutPasswordInterface | null>(null);
+  const [customerData, setCustomerData] = useState<null | CustomerWithoutPasswordInterface>(null);
   const [parcelHubData, setParcelHubData] = useState<ParcelHubInterface | null>(null);
   const [parcelData, setParcelData] = useState<ParcelInterface[] | null>(null);
   const [isLogin, setIsLogin] = useState<null | boolean>(null);
@@ -49,25 +55,31 @@ const ParcelDispatch: NextPage = () => {
   const [employeeID, setEmployeeID] = useState("");
 
   useEffect(() => {
-    const userBase64 = localStorage.getItem("loginData");
+    const employeeBase64 = localStorage.getItem("employeeData");
+    const customerBase64 = localStorage.getItem("customerData");
 
-    if (userBase64) {
-      const userString = atob(userBase64);
-      const user = JSON.parse(userString);
-      setLoginData(user);
+    if (employeeBase64) {
+      const employeeString = atob(employeeBase64);
+      const employee = JSON.parse(employeeString);
+      setEmployeeData(employee);
 
-      // load parcel hub info from json based on loginData.parcel_hub_id
-      const parcelHub = parcelHubJSON.find(p => p.parcel_hub_id === user.parcel_hub_id);
+      // load parcel hub info from json based on employeeData.parcel_hub_id
+      const parcelHub = parcelHubJSON.find(p => p.parcel_hub_id === employee.parcel_hub_id);
       if (parcelHub) {
         setParcelHubData(parcelHub);
-        setEmployeeID(user.employee_id);
         setIsLogin(true);
       } else {
         console.log("Parcel hub not found.");
         setIsLogin(false);
-        localStorage.removeItem("loginData");
+        localStorage.removeItem("employeeData");
         window.location.href = "/login";
       }
+    } else if (customerBase64) {
+      const customerString = atob(customerBase64);
+      const customer = JSON.parse(customerString);
+      setCustomerData(customer);
+      setParcelHubData(null);
+      setIsLogin(true);
     } else {
       // not login
       console.log("Please login first.");
@@ -189,6 +201,7 @@ const ParcelDispatch: NextPage = () => {
           text: "Parcel has been dispatched successfully.",
           allowOutsideClick: false,
           timer: 3000,
+          timerProgressBar: true,
           didOpen: () => {
             Swal.showLoading();
           },

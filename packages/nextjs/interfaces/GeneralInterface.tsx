@@ -4,6 +4,11 @@ export interface EmployeeWithoutPasswordInterface {
   email: string;
 }
 
+export interface CustomerWithoutPasswordInterface {
+  name: string;
+  email: string;
+}
+
 export interface ParcelHubInterface {
   parcel_hub_id: string;
   parcel_hub_name: string;
