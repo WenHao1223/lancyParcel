@@ -66,6 +66,11 @@ const Dashboard: NextPage = () => {
     const status = document.getElementById("status-" + trackingNumber)?.textContent;
     if (status !== "Arrived") {
       alert("Action not allowed.");
+      Swal.fire({
+        icon: "error",
+        title: "Action not allowed",
+        text: "Parcel is not arrived at your location yet.",
+      });
       return;
     }
 
