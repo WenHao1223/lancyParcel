@@ -6847,6 +6847,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"countries-list@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "countries-list@npm:3.1.1"
+  checksum: c11467b55a7d59ee7000d1149d5b66b00d60c3a407431808bb7bd8813a9b5c3639f5b1b3efbec9b388b12448340eacfee9a4c4595813708449d6231c158d5e65
+  languageName: node
+  linkType: hard
+
 "crc-32@npm:^1.2.0":
   version: 1.2.2
   resolution: "crc-32@npm:1.2.2"
@@ -13672,6 +13679,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "se-2@workspace:."
   dependencies:
+    countries-list: ^3.1.1
     daisyui: ^5.0.0
     ethers: 5
     husky: ~9.1.6

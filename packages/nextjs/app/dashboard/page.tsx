@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import localAreaJSON from "../../public/data/localArea.json";
 import parcelJSON from "../../public/data/parcel.json";
 import parcelHubJSON from "../../public/data/parcelHub.json";
+import { countries } from "countries-list";
 import { NextPage } from "next";
 import { EmployeeWithoutPasswordInterface, ParcelHubInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
 
@@ -113,6 +115,250 @@ const Dashboard: NextPage = () => {
           </div>
         )}
       </div>
+
+      {/* Add Parcel Button */}
+      <div className="flex flex-row w-[80%] gap-4 mb-6">
+        <div className="w-full flex justify-end">
+          <button
+            className="btn btn-primary"
+            onClick={() => (document.getElementById("modal-add-parcel") as HTMLDialogElement)?.showModal()}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Add Parcel
+          </button>
+        </div>
+      </div>
+
+      {/* Add Parcel Modal */}
+      <dialog id="modal-add-parcel" className="modal">
+        <div className="modal-box w-8/12 max-w-5xl">
+          <h3 className="font-bold text-lg">Add New Parcel</h3>
+          <p className="py-4">Press ESC key or click the button below to close</p>
+          {/* Form */}
+          {/* Parcel weight */}
+          <div className="flex justify-between items-center w-full gap-2">
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">Parcel weight</p>
+              <div className="flex flex-row gap-2 items-center w-full">
+                <input type="number" placeholder="Parcel weight" className="input" /> kg
+              </div>
+            </div>
+          </div>
+          {/* Parcel weight */}
+          <div className="flex justify-between items-center w-full gap-2">
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">Parcel dimension</p>
+              <div className="flex flex-row gap-2 items-center w-full">
+                <div className="flex flex-row gap-2 items-center">
+                  <input type="text" placeholder="Length" className="input" />
+                  <span className="w-20">cm x</span>
+                </div>
+                <div className="flex flex-row gap-2 items-center">
+                  <input type="text" placeholder="Width" className="input" />
+                  <span className="w-20">cm x</span>
+                </div>
+                <div className="flex flex-row gap-2 items-center">
+                  <input type="text" placeholder="Height" className="input" />
+                  <span className="w-20">cm</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Parcel estimated delivery */}
+          <div className="flex justify-between items-center w-full gap-2">
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">Parcel estimated delivery</p>
+              <p className="flex flex-row gap-2 items-center w-full">
+                <input type="date" className="input w-56" />
+                <input type="time" className="input w-56" />
+              </p>
+            </div>
+          </div>
+          <div className="flex justify-between items-center w-full gap-2">
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">Parcel type</p>
+              <div className="flex w-full flex-row items-center gap-2">
+                {/* Parcel type */}
+                <div className="flex flex-row gap-2 items-center w-full">
+                  <select className="select select-bordered max-w-xs w-full">
+                    <option disabled selected>
+                      Select parcel type
+                    </option>
+                    <option value="box">Box</option>
+                    <option value="envelope">Envelope</option>
+                    <option value="package">Package</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">Is Fragile?</p>
+              <div className="flex w-full flex-row items-center gap-2">
+                {/* Is Fragile */}
+                <div className="flex flex-row gap-12 w-full">
+                  <label className="label cursor-pointer">
+                    <span className="label-text">Yes</span>
+                    <input type="radio" name="is_fragile" className="radio radio-primary" value="yes" />
+                  </label>
+                  <label className="label cursor-pointer">
+                    <span className="label-text">No</span>
+                    <input type="radio" name="is_fragile" className="radio radio-primary" value="no" />
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Extra comment */}
+          <div className="flex justify-between items-center w-full gap-2">
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">Extra Comment</p>
+              <textarea className="textarea textarea-bordered w-full" placeholder="Extra comment"></textarea>
+            </div>
+          </div>
+          <hr className="mt-8 mb-4 opacity-60" />
+          {/* Sender */}
+          <h4 className="font-bold text-lg">Sender</h4>
+          {/* Sender name */}
+          <div className="flex justify-between items-center w-full gap-2">
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">Name</p>
+              <div className="flex flex-row gap-2 items-center w-full">
+                <input type="text" placeholder="John Doe" className="input" />
+              </div>
+            </div>
+          </div>
+          {/* Sender phone number */}
+          <div className="flex justify-between items-center w-full gap-2">
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">Phone number</p>
+              <div className="flex flex-row gap-2 items-center w-full">
+                <input type="text" placeholder="+60123456789" className="input" />
+              </div>
+            </div>
+          </div>
+          {/* Sender email */}
+          <div className="flex justify-between items-center w-full gap-2">
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">Email</p>
+              <div className="flex flex-row gap-2 items-center w-full">
+                <input type="email" placeholder="john.doe@example.com" className="input" />
+              </div>
+            </div>
+          </div>
+
+          <hr className="mt-8 mb-4 opacity-60" />
+          {/* Recipient */}
+          <h4 className="font-bold text-lg">Recipent</h4>
+          {/* Recipent name */}
+          <div className="flex justify-between items-center w-full gap-2">
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">Name</p>
+              <div className="flex flex-row gap-2 items-center w-full">
+                <input type="text" placeholder="John Doe" className="input" />
+              </div>
+            </div>
+          </div>
+          {/* Recipent phone number */}
+          <div className="flex justify-between items-center w-full gap-2">
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">Phone number</p>
+              <div className="flex flex-row gap-2 items-center w-full">
+                <input type="text" placeholder="+60123456789" className="input" />
+              </div>
+            </div>
+          </div>
+          {/* Recipent email */}
+          <div className="flex justify-between items-center w-full gap-2">
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">Email</p>
+              <div className="flex flex-row gap-2 items-center w-full">
+                <input type="email" placeholder="john.doe@example.com" className="input" />
+              </div>
+            </div>
+          </div>
+
+          <hr className="mt-8 mb-4 opacity-60" />
+          {/* Final Destination */}
+          <h4 className="font-bold text-lg">Final Destination</h4>
+          {/* Street */}
+          <div className="flex justify-between items-center w-full gap-2">
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">Street</p>
+              <div className="flex flex-row gap-2 items-center w-full">
+                <input type="text" placeholder="123, Jalan ABC" className="input" />
+              </div>
+            </div>
+          </div>
+          {/* Area */}
+          <div className="flex justify-between items-center w-full gap-2">
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">Area</p>
+              <div className="flex flex-row gap-2 items-center w-full">
+                <input type="text" placeholder="Taman OUG" className="input" />
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-between items-center w-full gap-2">
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">Postcode</p>
+              <div className="flex w-full flex-row items-center gap-2">
+                {/* Postcode */}
+                <div className="flex flex-row gap-2 items-center w-full">
+                  <input type="text" placeholder="57000" className="input" />
+                </div>
+              </div>
+            </div>
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">State</p>
+              <div className="flex w-full flex-row items-center gap-2">
+                {/* State */}
+                <div className="flex flex-row gap-2 items-center w-full">
+                  <input type="text" placeholder="Selangor" className="input" />
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Country */}
+          <div className="flex justify-between items-center w-full gap-2">
+            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
+              <p className="w-56">Country</p>
+              <div className="flex flex-row gap-2 items-center w-full">
+                <select className="select select-bordered w-">
+                  <option disabled selected>
+                    Select country
+                  </option>
+                  {Object.values(countries).map(country => (
+                    <option key={country.name} value={country.name}>
+                      {country.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div className="modal-action">
+            <form method="dialog">
+              <div className="flex flex-row gap-2">
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn">Cancel</button>
+                {/* Submit button */}
+                <button className="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </dialog>
 
       {/* Dashboard table */}
       <div className="flex flex-col w-[80%] min-w-96 gap-4 mb-4">
