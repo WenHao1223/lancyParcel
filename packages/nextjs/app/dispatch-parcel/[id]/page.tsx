@@ -88,7 +88,7 @@ const ParcelDispatch: NextPage = () => {
     if (parcelData && parcelHubData) {
       setSpecificParcel(parcelData.find(p => p.tracking_number === trackingNumber) || null);
     }
-  }, [parcelData, parcelHubData]);
+  }, [parcelData, parcelHubData, trackingNumber]);
 
   useEffect(() => {
     if (specificParcel && parcelHubData) {
@@ -97,7 +97,7 @@ const ParcelDispatch: NextPage = () => {
         specificParcel.pathway.find(ph => ph.parcel_hub_id === parcelHubData.parcel_hub_id) ? true : false,
       );
     }
-  }, [specificParcel]);
+  }, [specificParcel, parcelHubData]);
 
   useEffect(() => {
     if (specificParcel && parcelHubData && isInsidePathway) {
@@ -120,7 +120,7 @@ const ParcelDispatch: NextPage = () => {
       );
       setEmployeeID(employeeID);
     }
-  }, [specificParcel, isInsidePathway]);
+  }, [specificParcel, parcelHubData, isInsidePathway, employeeID]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
