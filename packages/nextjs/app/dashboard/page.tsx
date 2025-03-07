@@ -319,7 +319,7 @@ const Dashboard: NextPage = () => {
             Swal.showLoading();
           },
         }).then(() => {
-          window.location.href = "receive-delivery/";
+          window.location.href = "receive-parcel/" + newParcelData.tracking_number;
         });
       } else {
         console.error("Error:", result);
