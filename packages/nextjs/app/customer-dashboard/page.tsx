@@ -72,6 +72,19 @@ const OrderHistory: NextPage = () => {
     });
   };
 
+  const receiveParcel = (trackingNumber: string) => {
+    Swal.fire({
+      title: "Get ready to receive parcel...",
+      timer: 1000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    }).then(() => {
+      window.location.href = "customer-receive-parcel/" + trackingNumber;
+    });
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-4xl font-bold">Customer Dashboard</h1>
@@ -105,7 +118,7 @@ const OrderHistory: NextPage = () => {
 
           <li className="list-row">
             {filteredParcelData ? (
-              filteredParcelData.map((parcel, index) => (
+              filteredParcelData.map(parcel => (
                 <>
                   <div>
                     <Image width={40} height={40} className="rounded-box" src="/lancy-parcel.png" alt="" />
@@ -193,6 +206,7 @@ const OrderHistory: NextPage = () => {
                       </div>
                     </div>
                   </dialog>
+                  {/* Track delivery button */}
                   <button className="btn btn-square btn-ghost" onClick={() => trackDelivery(parcel.tracking_number)}>
                     <div className="tooltip" data-tip="Track delivery">
                       <svg
@@ -212,6 +226,31 @@ const OrderHistory: NextPage = () => {
                       </svg>
                     </div>
                   </button>
+                  {/* Receive parcel button */}
+                  {parcel.pathway[parcel.pathway.length - 1].parcel_hub_id === parcel.current_location &&
+                    parcel.pathway[parcel.pathway.length - 1].dispatch_time && (
+                      <button
+                        className="btn btn-square btn-ghost"
+                        onClick={() => receiveParcel(parcel.tracking_number)}
+                      >
+                        <div className="tooltip" data-tip="Receive parcel">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            className="size-6"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                            />
+                          </svg>
+                        </div>
+                      </button>
+                    )}
                 </>
               ))
             ) : (
