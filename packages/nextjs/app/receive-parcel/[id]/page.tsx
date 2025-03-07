@@ -135,7 +135,7 @@ const ParcelReceive: NextPage = () => {
 
   const placeDigitalSigature = async () => {
     console.log("Tracking Number", trackingNumber);
-    console.log("Dispatched Time", dispatchedTime);
+    console.log("Received Time", receivedTime);
     console.log("Parcel Hub ID", parcelHubData?.parcel_hub_id);
     console.log("Employee ID", employeeData?.employee_id);
 
@@ -155,7 +155,7 @@ const ParcelReceive: NextPage = () => {
       const pathwayIndex = parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id);
       if (pathwayIndex !== -1) {
         // Update the dispatch time, photo URL, employee signature hash, and verification hash
-        parcel.pathway[pathwayIndex].dispatch_time = dispatchedTime;
+        parcel.pathway[pathwayIndex].received_time = receivedTime;
         parcel.pathway[pathwayIndex].photo_url = photo_url;
         parcel.pathway[pathwayIndex].employee.employee_id = employeeData?.employee_id || "";
         parcel.pathway[pathwayIndex].employee.signature_hash = signature_hash;
