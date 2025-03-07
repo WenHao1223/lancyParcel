@@ -8,12 +8,7 @@ import localAreaJSON from "~~/data/localArea.json";
 import parcelJSON from "~~/data/parcel.json";
 import parcelHubJSON from "~~/data/parcelHub.json";
 import postcodeJSON from "~~/data/postcode.json";
-import {
-  CustomerWithoutPasswordInterface,
-  EmployeeWithoutPasswordInterface,
-  ParcelHubInterface,
-  ParcelInterface,
-} from "~~/interfaces/GeneralInterface";
+import { EmployeeWithoutPasswordInterface, ParcelHubInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
 import { generatePath } from "~~/utils/generatePath";
 
 const Dashboard: NextPage = () => {

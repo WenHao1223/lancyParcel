@@ -3,14 +3,10 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { countries } from "countries-list";
 import { NextPage } from "next";
 import Swal from "sweetalert2";
-import { idchain } from "viem/chains";
-import localAreaJSON from "~~/data/localArea.json";
 import parcelJSON from "~~/data/parcel.json";
 import parcelHubJSON from "~~/data/parcelHub.json";
-import postcodeJSON from "~~/data/postcode.json";
 import {
   CustomerWithoutPasswordInterface,
   EmployeeWithoutPasswordInterface,

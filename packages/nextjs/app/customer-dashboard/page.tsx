@@ -5,13 +5,7 @@ import Image from "next/image";
 import { NextPage } from "next";
 import Swal from "sweetalert2";
 import parcelJSON from "~~/data/parcel.json";
-import parcelHubJSON from "~~/data/parcelHub.json";
-import {
-  CustomerWithoutPasswordInterface,
-  EmployeeWithoutPasswordInterface,
-  ParcelHubInterface,
-  ParcelInterface,
-} from "~~/interfaces/GeneralInterface";
+import { CustomerWithoutPasswordInterface, ParcelHubInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
 
 const OrderHistory: NextPage = () => {
   const [customerData, setCustomerData] = useState<CustomerWithoutPasswordInterface | null>(null);
