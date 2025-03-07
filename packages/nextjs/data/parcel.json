@@ -349,10 +349,24 @@
       "state": "Pulau Pinang",
       "country": "Malaysia"
     },
-    "current_location": "2.6.1.1",
+    "current_location": "1.2.1.0",
     "pathway": [
       {
-        "parcel_hub_id": "2.6.1.1",
+        "parcel_hub_id": "1.2.1.1",
+        "received_time": "2025-03-08T06:00:00Z",
+        "dispatch_time": "2025-03-08T06:00:00Z",
+        "photo_url": "",
+        "sender": {
+          "signature_hash": ""
+        },
+        "employee": {
+          "employee_id": "",
+          "signature_hash": ""
+        },
+        "verification_hash": ""
+      },
+      {
+        "parcel_hub_id": "1.2.1.0",
         "received_time": "2025-03-08T06:00:00Z",
         "dispatch_time": "",
         "photo_url": "",
@@ -366,35 +380,7 @@
         "verification_hash": ""
       },
       {
-        "parcel_hub_id": "2.6.1.0",
-        "received_time": "",
-        "dispatch_time": "",
-        "photo_url": "",
-        "sender": {
-          "signature_hash": ""
-        },
-        "employee": {
-          "employee_id": "",
-          "signature_hash": ""
-        },
-        "verification_hash": ""
-      },
-      {
-        "parcel_hub_id": "2.6.0.0",
-        "received_time": "",
-        "dispatch_time": "",
-        "photo_url": "",
-        "sender": {
-          "signature_hash": ""
-        },
-        "employee": {
-          "employee_id": "",
-          "signature_hash": ""
-        },
-        "verification_hash": ""
-      },
-      {
-        "parcel_hub_id": "2.0.0.0",
+        "parcel_hub_id": "1.2.0.0",
         "received_time": "",
         "dispatch_time": "",
         "photo_url": "",
@@ -422,7 +408,7 @@
         "verification_hash": ""
       },
       {
-        "parcel_hub_id": "1.2.0.0",
+        "parcel_hub_id": "1.3.0.0",
         "received_time": "",
         "dispatch_time": "",
         "photo_url": "",
@@ -436,7 +422,7 @@
         "verification_hash": ""
       },
       {
-        "parcel_hub_id": "1.2.1.0",
+        "parcel_hub_id": "1.3.1.0",
         "received_time": "",
         "dispatch_time": "",
         "photo_url": "",
@@ -450,7 +436,7 @@
         "verification_hash": ""
       },
       {
-        "parcel_hub_id": "1.2.1.1",
+        "parcel_hub_id": "1.3.1.1",
         "received_time": "",
         "dispatch_time": "",
         "photo_url": "",
