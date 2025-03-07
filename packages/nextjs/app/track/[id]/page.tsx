@@ -79,10 +79,10 @@ const Track: NextPage = () => {
   }
 
   useEffect(() => {
-    if (parcelData && parcelHubData) {
+    if (parcelData) {
       setSpecificParcel(parcelData.find(p => p.tracking_number === trackingNumber) || null);
     }
-  }, [parcelData, parcelHubData, trackingNumber]);
+  }, [parcelData, trackingNumber]);
 
   const formatDate = (isoString?: string): string => {
     if (!isoString) return "--/--"; // Handle undefined or null values
