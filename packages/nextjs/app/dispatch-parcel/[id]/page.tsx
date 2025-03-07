@@ -202,7 +202,6 @@ const ParcelDispatch: NextPage = () => {
     console.log("Employee ID", employeeData?.employee_id);
 
     // smart contract algorithm here
-    // @shinyen17
     const hub_id: string = parcelHubData?.parcel_hub_id ?? "";
 
     const signature_hash = await handleHashSignature();
