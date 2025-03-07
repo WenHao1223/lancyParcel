@@ -26,11 +26,11 @@ export interface ParcelHubInterface {
 
 export interface ParcelInterface {
   tracking_number: string;
-  parcel_weight_kg: number;
+  parcel_weight_kg: number | undefined;
   parcel_dimensions_cm: {
-    length: number;
-    width: number;
-    height: number;
+    length: number | undefined;
+    width: number | undefined;
+    height: number | undefined;
   };
   parcel_estimated_delivery: string;
   parcel_type: string;
