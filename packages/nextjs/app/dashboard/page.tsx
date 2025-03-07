@@ -100,6 +100,30 @@ const Dashboard: NextPage = () => {
     });
   };
 
+  const receiveParcel = (trackingNumber: string) => {
+    const status = document.getElementById("status-" + trackingNumber)?.textContent;
+    if (status !== "OTW") {
+      Swal.fire({
+        icon: "error",
+        title: "Action not allowed",
+        text: "Parcel is not dispatched from your location yet.",
+      });
+      return;
+    }
+
+    // loading 1s
+    Swal.fire({
+      title: "Get ready to receive parcel...",
+      timer: 1000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    }).then(() => {
+      window.location.href = "receive-parcel/" + trackingNumber;
+    });
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-4xl font-bold">Dashboard</h1>
@@ -768,7 +792,10 @@ const Dashboard: NextPage = () => {
                             .slice(0, index)
                             .some(p => p.parcel_hub_id === parcel.current_location && p.dispatch_time),
                       ) && (
-                        <button className="btn btn-square btn-ghost">
+                        <button
+                          onClick={() => receiveParcel(parcel.tracking_number)}
+                          className="btn btn-square btn-ghost"
+                        >
                           <div className="tooltip" data-tip="Receive parcel">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"

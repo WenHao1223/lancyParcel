@@ -18,7 +18,7 @@ import Swal from "sweetalert2";
 // Customer
 // Tracking Number, Out for Delivery Time, Delivery Time, Receiver Confirmation (Signature or Digital Proof), Employee ID Wallet Address, Digital Signature
 
-const ParcelDispatch: NextPage = () => {
+const ParcelReceive: NextPage = () => {
   useEffect(() => {
     Swal.fire({
       title: "Loading...",
@@ -35,8 +35,8 @@ const ParcelDispatch: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold">Send Parcel Page</h1>
-      <p>Send your parcel here.</p>
+      <h1 className="text-4xl font-bold">Receive Parcel Page</h1>
+      <p>Receive your parcel here.</p>
 
       {/* Ordered Item detail */}
       <div className="flex flex-col w-[40%] min-w-96 gap-4 mb-4">
@@ -53,4 +53,4 @@ const ParcelDispatch: NextPage = () => {
   );
 };
 
-export default ParcelDispatch;
+export default ParcelReceive;

@@ -19,6 +19,13 @@ const Register: NextPage = () => {
       html: "Please wait while we redirect you to the home page.",
       timer: 1500,
       timerProgressBar: true,
+      /*************  ✨ Codeium Command ⭐  *************/
+      /**
+       * This function is triggered when the Swal modal is opened.
+       * It displays a loading spinner to indicate that a process is ongoing.
+       */
+
+      /******  0b865a71-d370-4ae0-a613-ebf55e513c95  *******/
       didOpen: () => {
         Swal.showLoading();
       },

@@ -221,11 +221,9 @@ const Home: NextPage = () => {
               ) : isLogin == false ? (
                 <>
                   <p className="py-6 px-4 list bg-base-100 rounded-box w-full shadow-md">Please login first.</p>
-                  <button className="btn btn-primary mt-4 w-full">
-                    <Link href="/login" className="link no-underline">
-                      Login
-                    </Link>
-                  </button>
+                  <Link href="/login" className="link no-underline">
+                    <button className="btn btn-primary mt-4 w-full">Login</button>
+                  </Link>
                 </>
               ) : (
                 <>
@@ -258,7 +256,7 @@ const Home: NextPage = () => {
                 <Link href="/track">Tracking Page</Link>
               </button>
               <button className="btn">
-                <Link href="/receive-delivery">Receive Delivery Page</Link>
+                <Link href="/receive-parcel">Receive Parcel Page</Link>
               </button>
             </div>
 

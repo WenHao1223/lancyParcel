@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { NextPage } from "next";
 
-const ReceiveDelivery: NextPage = () => {
+const ParcelReceive: NextPage = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold">Receive Delivery Page</h1>
+      <h1 className="text-4xl font-bold">Receive Parcel Page</h1>
       <p>Receive your delivery here.</p>
 
       {/* Ordered Item detail */}
@@ -77,4 +77,4 @@ const ReceiveDelivery: NextPage = () => {
   );
 };
 
-export default ReceiveDelivery;
+export default ParcelReceive;
