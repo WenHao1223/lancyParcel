@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { NextPage } from "next";
+import Swal from "sweetalert2";
 import parcelJSON from "~~/data/parcel.json";
 import parcelHubJSON from "~~/data/parcelHub.json";
 import {
@@ -58,6 +59,19 @@ const OrderHistory: NextPage = () => {
       setFilteredParcelData(filteredData);
     }
   }, [parcelData, customerData]);
+
+  const trackDelivery = (trackingNumber: string) => {
+    Swal.fire({
+      title: "Get ready to track parcel...",
+      timer: 1000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    }).then(() => {
+      window.location.href = "track/" + trackingNumber;
+    });
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">

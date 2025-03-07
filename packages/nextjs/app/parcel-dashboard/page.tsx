@@ -178,6 +178,19 @@ const Dashboard: NextPage = () => {
     });
   };
 
+  const trackDelivery = (trackingNumber: string) => {
+    Swal.fire({
+      title: "Get ready to track parcel...",
+      timer: 1000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    }).then(() => {
+      window.location.href = "track/" + trackingNumber;
+    });
+  };
+
   const handleDateTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -1094,7 +1107,10 @@ const Dashboard: NextPage = () => {
                   <td>
                     <div className="list-row">
                       {/* Track Delivery */}
-                      <button className="btn btn-square btn-ghost">
+                      <button
+                        className="btn btn-square btn-ghost"
+                        onClick={() => trackDelivery(parcel.tracking_number)}
+                      >
                         <div className="tooltip" data-tip="Track delivery">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
