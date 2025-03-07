@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { NextPage } from "next";
 import Swal from "sweetalert2";
+import { useAccount } from "wagmi";
+import { useHashSend, useHashSignature } from "~~/app/parcel_template/page";
 import employeeJSON from "~~/data/employee.json";
 import parcelJSON from "~~/data/parcel.json";
 import parcelHubJSON from "~~/data/parcelHub.json";
@@ -30,6 +32,9 @@ import {
 
 const ParcelDispatch: NextPage = () => {
   const params = useParams();
+  const { address: connectedAddress } = useAccount();
+  const { handleHashSignature } = useHashSignature(connectedAddress);
+  const { hashSendData } = useHashSend();
 
   useEffect(() => {
     if (!params) return;
@@ -152,9 +157,25 @@ const ParcelDispatch: NextPage = () => {
 
     // smart contract algorithm here
     // @shinyen17
+    const hub_id: string = parcelHubData?.parcel_hub_id ?? "";
 
-    const signature_hash = "dummy_signature_hash"; // Replace with actual signature hash
-    const verification_hash = "dummy_verification_hash"; // Replace with actual verification hash
+    const signature_hash = await handleHashSignature();
+    if (!signature_hash) {
+      alert("Signature hash is invalid!");
+      return;
+    }
+
+    const verification_hash = await hashSendData(
+      trackingNumber, // Tracking number
+      dispatchedTime, // Dispatch time
+      hub_id, // Hub ID
+      signature_hash, // Employee
+    );
+    if (!verification_hash) {
+      alert("Verification hash failed!");
+      return;
+    }
+
     const photo_url = "dummy_photo_url"; // Replace with actual photo URL
 
     // Find the specific parcel
