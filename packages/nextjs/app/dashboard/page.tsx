@@ -269,11 +269,42 @@ const Dashboard: NextPage = () => {
     // console.log(newParcelData.pathway);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     newParcelData.tracking_number = generateUniqueTrackingNumber();
     applyDijkstraAlgoritm(newParcelData.final_destination.area);
     console.log(newParcelData);
+
+    try {
+      const response = await fetch("/api/temporaryParcel", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newParcelData),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        // loading 1s
+        Swal.fire({
+          title: "Get ready to create parcel...",
+          timer: 1000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        }).then(() => {
+          window.location.href = "receive-delivery/";
+        });
+      } else {
+        console.error("Error:", result);
+        alert("Failed to update parcel data.");
+      }
+    } catch (error) {
+      console.error("Request Error:", error);
+      alert("An error occurred while updating parcel data.");
+    }
   };
 
   return (
