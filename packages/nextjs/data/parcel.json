@@ -28,7 +28,7 @@
       "state": "Kuala Lumpur",
       "country": "Malaysia"
     },
-    "current_location": "received",
+    "current_location": "1.3.2.2",
     "pathway": [
       {
         "parcel_hub_id": "1.3.2.1",

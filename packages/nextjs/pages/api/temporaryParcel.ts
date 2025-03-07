@@ -28,6 +28,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "PUT") {
     try {
       const newParcel = req.body;
+      console.log("Ran here", newParcel);
 
       // Step 1: Read existing file data
       let existingData: any[] = [];
@@ -46,8 +47,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       fs.writeFileSync(filePath, JSON.stringify(existingData, null, 2), "utf8");
 
       return res.status(200).json({ message: "Parcel added successfully" });
-    } catch (error) {
-      return res.status(500).json({ error: "Failed to update JSON file" });
+    } catch (error: any) {
+      console.error("Error updating parcel:", error.message || error);
+      return res.status(500).json({ error: `Failed to update JSON file: ${error.message || error}` });
     }
   }
 
