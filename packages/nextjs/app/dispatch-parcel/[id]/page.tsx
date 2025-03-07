@@ -5,9 +5,11 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { NextPage } from "next";
 import Swal from "sweetalert2";
+import { useAccount } from "wagmi";
 import employeeJSON from "~~/data/employee.json";
 import parcelJSON from "~~/data/parcel.json";
 import parcelHubJSON from "~~/data/parcelHub.json";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import {
   CustomerWithoutPasswordInterface,
   EmployeeWithoutPasswordInterface,
@@ -27,9 +29,68 @@ import {
 // Tracking Number, Received Time, Current Parcel Hub ID/Location, Customs Clearance Time (If applicable), Dispatched Time, Employee ID Wallet Address, Digital Signature
 // Customer
 // Tracking Number, Out for Delivery Time, Delivery Time, Receiver Confirmation (Signature or Digital Proof), Employee ID Wallet Address, Digital Signature
+const useHashSignature = (connectedAddress: string | undefined) => {
+  const { writeContractAsync } = useScaffoldWriteContract({
+    contractName: "YourContract",
+  });
+
+  const handleHashSignature = async () => {
+    if (!connectedAddress) {
+      alert("Please connect MetaMask first!");
+      return null;
+    }
+
+    try {
+      const tx = await writeContractAsync({
+        functionName: "hashAddress",
+        args: [connectedAddress],
+      });
+
+      if (tx) {
+        alert(`Transaction sent! Hash: ${tx}`);
+        return tx as string;
+      }
+    } catch (error) {
+      console.error("Error hashing address:", error);
+      alert("Transaction failed!");
+      return "";
+    }
+  };
+
+  return { handleHashSignature };
+};
+
+const useHashSend = () => {
+  const { writeContractAsync } = useScaffoldWriteContract({
+    contractName: "YourContract",
+  });
+
+  const hashSendData = async (trackingNumber: string, dispatchTime: string, localHubId: string, employee: string) => {
+    try {
+      const tx = await writeContractAsync({
+        functionName: "hashSendData",
+        args: [trackingNumber, dispatchTime, localHubId, employee],
+      });
+
+      if (tx) {
+        alert(`Transaction successful! Hash: ${tx}`);
+        return tx as string; // Returning hash
+      }
+    } catch (error) {
+      console.error("Error hashing parcel data:", error);
+      alert("Transaction failed!");
+      return null;
+    }
+  };
+
+  return { hashSendData };
+};
 
 const ParcelDispatch: NextPage = () => {
   const params = useParams();
+  const { address: connectedAddress } = useAccount();
+  const { handleHashSignature } = useHashSignature(connectedAddress);
+  const { hashSendData } = useHashSend();
 
   useEffect(() => {
     if (!params) return;
@@ -142,9 +203,25 @@ const ParcelDispatch: NextPage = () => {
 
     // smart contract algorithm here
     // @shinyen17
+    const hub_id: string = parcelHubData?.parcel_hub_id ?? "";
 
-    const signature_hash = "dummy_signature_hash"; // Replace with actual signature hash
-    const verification_hash = "dummy_verification_hash"; // Replace with actual verification hash
+    const signature_hash = await handleHashSignature();
+    if (!signature_hash) {
+      alert("Signature hash is invalid!");
+      return;
+    }
+
+    const verification_hash = await hashSendData(
+      trackingNumber, // Tracking number
+      dispatchedTime, // Dispatch time
+      hub_id, // Hub ID
+      signature_hash, // Employee
+    );
+    if (!verification_hash) {
+      alert("Verification hash failed!");
+      return;
+    }
+
     const photo_url = "dummy_photo_url"; // Replace with actual photo URL
 
     // Find the specific parcel

@@ -115,9 +115,9 @@
         },
         "employee": {
           "employee_id": "",
-          "signature_hash": ""
+          "signature_hash": "0x819b701d5bebc8cd85ed81388b848fe5b0b8f527af22551cebfd9b1e42c5d5e5"
         },
-        "verification_hash": ""
+        "verification_hash": "0x690ed0535a2d037646eac2b17b4bfeb6b3ae9eb84b2ff4c73a3914e7fadc7b97"
       },
       {
         "parcel_hub_id": "1.2.1.0",

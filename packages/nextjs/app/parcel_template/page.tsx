@@ -20,7 +20,7 @@ const useHashSignature = (connectedAddress: string | undefined) => {
   const handleHashSignature = async () => {
     if (!connectedAddress) {
       alert("Please connect MetaMask first!");
-      return "";
+      return null;
     }
 
     try {
@@ -31,7 +31,7 @@ const useHashSignature = (connectedAddress: string | undefined) => {
 
       if (tx) {
         alert(`Transaction sent! Hash: ${tx}`);
-        return tx;
+        return tx as string;
       }
     } catch (error) {
       console.error("Error hashing address:", error);
@@ -91,7 +91,7 @@ const useHashSend = () => {
 
       if (tx) {
         alert(`Transaction successful! Hash: ${tx}`);
-        return tx; // Returning hash
+        return tx as string; // Returning hash
       }
     } catch (error) {
       console.error("Error hashing parcel data:", error);

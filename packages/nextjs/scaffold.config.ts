@@ -12,7 +12,29 @@ export const DEFAULT_ALCHEMY_API_KEY = "oKxs-03sij-U_N0iOlrSsZFr29-IqbuF";
 
 const scaffoldConfig = {
   // The networks on which your DApp is live
-  targetNetworks: [chains.foundry],
+  targetNetworks: [
+    {
+      id: 534351, // Scroll Sepolia chain ID
+      name: "Scroll Sepolia",
+      nativeCurrency: {
+        name: "SepoliaETH",
+        symbol: "ETH",
+        decimals: 18,
+      },
+      rpcUrls: {
+        default: {
+          http: ["https://sepolia-rpc.scroll.io/"],
+        },
+      },
+      blockExplorers: {
+        default: {
+          name: "Scroll Sepolia Explorer",
+          url: "https://sepolia.scrollscan.com",
+        },
+      },
+    },
+    chains.foundry,
+  ],
 
   // The interval at which your front-end polls the RPC servers for new data
   // it has no effect if you only target the local network (default is 4000)
