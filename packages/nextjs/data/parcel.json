@@ -121,17 +121,17 @@
       },
       {
         "parcel_hub_id": "1.2.1.0",
-        "received_time": "",
+        "received_time": "2025-03-07T17:46:04.028Z",
         "dispatch_time": "",
-        "photo_url": "",
+        "photo_url": "dummy_photo_url",
         "sender": {
           "signature_hash": ""
         },
         "employee": {
-          "employee_id": "",
-          "signature_hash": ""
+          "employee_id": "EMP2002",
+          "signature_hash": "0x271c3888787eb72f74adf515333a0354b79d9242a733a4eb2602433296d457e8"
         },
-        "verification_hash": ""
+        "verification_hash": "0x7df6ba15e21d87b3067cf794ba31c020138259d97d537b6814abdf10344e311f"
       },
       {
         "parcel_hub_id": "1.2.0.0",
