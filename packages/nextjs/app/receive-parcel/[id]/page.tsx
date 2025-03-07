@@ -5,9 +5,120 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { NextPage } from "next";
 import Swal from "sweetalert2";
+//solidity
+import { useAccount } from "wagmi";
+import employeeJSON from "~~/data/employee.json";
 import parcelJSON from "~~/data/parcel.json";
 import parcelHubJSON from "~~/data/parcelHub.json";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { EmployeeWithoutPasswordInterface, ParcelHubInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
+
+const useHashSignature = (connectedAddress: string | undefined) => {
+  const { writeContractAsync } = useScaffoldWriteContract({
+    contractName: "YourContract",
+  });
+
+  const handleHashSignature = async () => {
+    if (!connectedAddress) {
+      Swal.fire({
+        icon: "error",
+        title: "Please connect MetaMask first!",
+        text: "Please try again.",
+        allowOutsideClick: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      return null;
+    }
+
+    try {
+      const tx = await writeContractAsync({
+        functionName: "hashAddress",
+        args: [connectedAddress],
+      });
+
+      if (tx) {
+        Swal.fire({
+          icon: "success",
+          title: "Transaction successful!",
+          text: "Transaction has been sent successfully. Signature Hash: " + tx,
+          allowOutsideClick: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+        return tx as string;
+      }
+    } catch (error) {
+      console.error("Error hashing address:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Transaction failed!",
+        text: "Please try again.",
+        allowOutsideClick: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      return "";
+    }
+  };
+
+  return { handleHashSignature };
+};
+
+const useHashReceive = () => {
+  const { writeContractAsync } = useScaffoldWriteContract({
+    contractName: "YourContract",
+  });
+
+  const hashReceiveData = async (trackingNumber: string, receiveTime: string, hubId: string, employee: string) => {
+    try {
+      const tx = await writeContractAsync({
+        functionName: "hashReceiveData",
+        args: [trackingNumber, receiveTime, hubId, employee],
+      });
+
+      if (tx) {
+        Swal.fire({
+          icon: "success",
+          title: "Transaction successful!",
+          text: "Transaction has been sent successfully. Verification Hash: " + tx,
+          allowOutsideClick: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+        return tx; // Returning hash
+      }
+    } catch (error) {
+      console.error("Error hashing parcel data:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Transaction failed!",
+        text: "Please try again.",
+        allowOutsideClick: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      return null;
+    }
+  };
+
+  return { hashReceiveData };
+};
 
 // Seller
 // Tracking Number, Order Time, Sender Details (Encrypted), Parcel Weight & Dimensions, Dispatch Time, Employee ID Wallet Address, Digital Signature
@@ -24,6 +135,14 @@ import { EmployeeWithoutPasswordInterface, ParcelHubInterface, ParcelInterface }
 
 const ParcelReceive: NextPage = () => {
   const params = useParams();
+  const { address: connectedAddress } = useAccount();
+  const { handleHashSignature } = useHashSignature(connectedAddress);
+  const { hashReceiveData } = useHashReceive();
+
+  useEffect(() => {
+    if (!params) return;
+    setTrackingNumber(Array.isArray(params.id) ? params.id[0] : params.id);
+  }, [params]);
 
   const [employeeData, setEmployeeData] = useState<EmployeeWithoutPasswordInterface | null>(null);
   const [parcelHubData, setParcelHubData] = useState<ParcelHubInterface | null>(null);
@@ -130,9 +249,44 @@ const ParcelReceive: NextPage = () => {
 
     // smart contract algorithm here
     // @shinyen17
+    const hub_id: string = parcelHubData?.parcel_hub_id ?? "";
 
-    const signature_hash = "dummy_signature_hash"; // Replace with actual signature hash
-    const verification_hash = "dummy_verification_hash"; // Replace with actual verification hash
+    const signature_hash = await handleHashSignature();
+    if (!signature_hash) {
+      Swal.fire({
+        icon: "error",
+        title: "Signature hash is invalid!",
+        text: "Please try again.",
+        allowOutsideClick: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      return;
+    }
+    const verification_hash = await hashReceiveData(
+      trackingNumber, // Tracking number
+      dispatchedTime, // Dispatch time
+      hub_id, // Hub ID
+      signature_hash, // Employee
+    );
+    if (!verification_hash) {
+      Swal.fire({
+        icon: "error",
+        title: "Verification hash is invalid!",
+        text: "Please try again.",
+        allowOutsideClick: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      return;
+    }
+
     const photo_url = "dummy_photo_url"; // Replace with actual photo URL
 
     // Find the specific parcel
