@@ -121,8 +121,28 @@ const OrderHistory: NextPage = () => {
                     >
                       {parcel.tracking_number}
                     </div>
-                    <div className="text-xs font-semibold opacity-60">
-                      Expected Delivery Time: {formatDate(parcel.parcel_estimated_delivery)}
+                    <div className="text-xs flex flex-row items-center gap-4">
+                      <div className="text-xs font-semibold opacity-60">
+                        Expected Delivery Time: {formatDate(parcel.parcel_estimated_delivery)}
+                      </div>
+                      <div
+                        id={`status-${parcel.tracking_number}`}
+                        className={`badge badge-outline badge-sm ${
+                          parcel.current_location === "received"
+                            ? "badge-success" // Received
+                            : parcel.pathway[parcel.pathway.length - 1].parcel_hub_id === parcel.current_location &&
+                                parcel.pathway[parcel.pathway.length - 1].dispatch_time
+                              ? "badge-secondary" // Arrived
+                              : "badge-primary" // Pending
+                        }`}
+                      >
+                        {parcel.current_location === "received"
+                          ? "Received"
+                          : parcel.pathway[parcel.pathway.length - 1].parcel_hub_id === parcel.current_location &&
+                              parcel.pathway[parcel.pathway.length - 1].dispatch_time
+                            ? "Arrived"
+                            : "Pending"}
+                      </div>
                     </div>
                   </div>
 
