@@ -7,13 +7,70 @@ import Swal from "sweetalert2";
 import localAreaJSON from "~~/data/localArea.json";
 import parcelJSON from "~~/data/parcel.json";
 import parcelHubJSON from "~~/data/parcelHub.json";
+import postcodeJSON from "~~/data/postcode.json";
 import { EmployeeWithoutPasswordInterface, ParcelHubInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
+import { generatePath } from "~~/utils/generatePath";
 
 const Dashboard: NextPage = () => {
   const [loginData, setLoginData] = useState<EmployeeWithoutPasswordInterface | null>(null);
   const [parcelHubData, setParcelHubData] = useState<ParcelHubInterface | null>(null);
   const [parcelData, setParcelData] = useState<ParcelInterface[] | null>(null);
-  const [newParcelData, setNewParcelData] = useState<ParcelInterface[] | null>(null);
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [newParcelData, setNewParcelData] = useState<ParcelInterface>({
+    tracking_number: "",
+    parcel_weight_kg: 0,
+    parcel_dimensions_cm: {
+      length: 0,
+      width: 0,
+      height: 0,
+    },
+    parcel_estimated_delivery: "",
+    parcel_type: "",
+    is_fragile: true || false,
+    extra_comment: "",
+    sender: {
+      name: "",
+      phone_number: "",
+      email: "",
+    },
+    recipient: {
+      name: "",
+      phone_number: "",
+      email: "",
+    },
+    final_destination: {
+      street: "",
+      area: "",
+      postal_code: "",
+      state: "",
+      country: "",
+    },
+    current_location: "",
+    pathway: [
+      {
+        parcel_hub_id: "",
+        received_time: "",
+        dispatch_time: "",
+        photo_url: "",
+        sender: {
+          signature_hash: "",
+        },
+        employee: {
+          employee_id: "",
+          signature_hash: "",
+        },
+        verification_hash: "",
+      },
+    ],
+    final_delivery: {
+      received_time: "",
+      photo_url: "",
+      customer_signature_hash: "",
+      verification_hash: "",
+    },
+  });
+
   const [isLogin, setIsLogin] = useState<null | boolean>(null);
 
   const [filteredParcelData, setFilteredParcelData] = useState<ParcelInterface[] | null>(null);
@@ -87,8 +144,122 @@ const Dashboard: NextPage = () => {
     });
   };
 
-  const handleSubmit = () => {
-    alert("Submit");
+  const handleDateTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    if (name === "date") {
+      setDate(value);
+    }
+    if (name === "time") {
+      setTime(value);
+    }
+
+    // If both date and time are set, update parcel_estimated_delivery
+    if (date || time) {
+      const isoString = `${date}T${time}:00Z`; // Ensure format is correct
+      setNewParcelData(prev => ({
+        ...prev,
+        parcel_estimated_delivery: isoString,
+      }));
+      //console.log("parcel_estimated_delivery updated:", newParcelData.parcel_estimated_delivery);
+    }
+  };
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setNewParcelData(prev => ({
+      ...prev,
+      [name]: name === "is_fragile" ? value === "true" : value,
+    }));
+  };
+
+  const handleNestedChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    section: keyof ParcelInterface,
+    key: string,
+  ) => {
+    const { value } = e.target;
+    setNewParcelData(prev => {
+      if (!prev) return prev;
+      const sectionData = prev[section] as Record<string, any>;
+      return {
+        ...prev,
+        [section]: {
+          ...sectionData,
+          [key]: value,
+        },
+      };
+    });
+  };
+
+  const generateUniqueTrackingNumber = (): string => {
+    let trackingNumber: string;
+    do {
+      trackingNumber =
+        "TRK" +
+        Math.floor(Math.random() * 1000000000)
+          .toString()
+          .padStart(9, "0");
+    } while (parcelJSON.some(parcel => parcel.tracking_number === trackingNumber));
+
+    return trackingNumber;
+  };
+
+  const applyDijkstraAlgoritm = (destinationHub: string) => {
+    const destinationId =
+      destinationHub in localAreaJSON ? localAreaJSON[destinationHub as keyof typeof localAreaJSON] : "1.3.1.1";
+    const validAddresses = [
+      "1.0.0.0",
+      "1.2.0.0",
+      "1.2.1.0",
+      "1.2.1.1",
+      "1.3.0.0",
+      "1.3.1.0",
+      "1.3.1.1",
+      "1.3.2.0",
+      "1.3.2.1",
+      "1.3.2.2",
+      "2.0.0.0",
+      "2.6.0.0",
+      "2.6.1.0",
+      "2.6.1.1",
+    ];
+
+    const origin = parcelHubData?.parcel_hub_id || "1.3.2.1"; // Example origin
+
+    // console.log("Origin:", origin);
+    // console.log("Destination:", destination);
+
+    // Generate pathway using the algorithm
+    const pathwayHubs = generatePath(origin, destinationId, validAddresses);
+
+    //Set the current location
+    newParcelData.current_location = destinationId;
+
+    // Map pathway data structure
+    newParcelData.pathway = pathwayHubs.map(hubId => ({
+      parcel_hub_id: hubId,
+      received_time: "",
+      dispatch_time: "",
+      photo_url: "",
+      sender: {
+        signature_hash: "",
+      },
+      employee: {
+        employee_id: "",
+        signature_hash: "",
+      },
+      verification_hash: "",
+    }));
+
+    // console.log(newParcelData.pathway);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    newParcelData.tracking_number = generateUniqueTrackingNumber();
+    applyDijkstraAlgoritm(newParcelData.final_destination.area);
+    console.log(newParcelData);
   };
 
   return (
@@ -183,11 +354,19 @@ const Dashboard: NextPage = () => {
                 <span className="text-error ms-1">*</span>
               </p>
               <div className="flex flex-row gap-2 items-center w-full">
-                <input type="number" placeholder="Parcel weight" className="input" /> kg
+                <input
+                  type="number"
+                  placeholder="Parcel weight"
+                  className="input"
+                  name="parcel_weight_kg"
+                  value={newParcelData.parcel_weight_kg}
+                  onChange={handleChange}
+                />{" "}
+                kg
               </div>
             </div>
           </div>
-          {/* Parcel weight */}
+          {/* Parcel dimension */}
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
               <p className="w-56">
@@ -196,15 +375,36 @@ const Dashboard: NextPage = () => {
               </p>
               <div className="flex flex-row gap-2 items-center w-full">
                 <div className="flex flex-row gap-2 items-center">
-                  <input type="text" placeholder="Length" className="input" />
+                  <input
+                    type="text"
+                    placeholder="Length"
+                    className="input"
+                    name="parcel_dimensions_cm.length"
+                    value={newParcelData.parcel_dimensions_cm.length}
+                    onChange={e => handleNestedChange(e, "parcel_dimensions_cm", "length")}
+                  />
                   <span className="text-center w-12">cm x</span>
                 </div>
                 <div className="flex flex-row gap-2 items-center">
-                  <input type="text" placeholder="Width" className="input" />
+                  <input
+                    type="text"
+                    placeholder="Width"
+                    className="input"
+                    name="parcel_dimensions_cm.width"
+                    value={newParcelData.parcel_dimensions_cm.width}
+                    onChange={e => handleNestedChange(e, "parcel_dimensions_cm", "width")}
+                  />
                   <span className="text-center w-12">cm x</span>
                 </div>
                 <div className="flex flex-row gap-2 items-center">
-                  <input type="text" placeholder="Height" className="input" />
+                  <input
+                    type="text"
+                    placeholder="Height"
+                    className="input"
+                    name="parcel_dimensions_cm.height"
+                    value={newParcelData.parcel_dimensions_cm.height}
+                    onChange={e => handleNestedChange(e, "parcel_dimensions_cm", "height")}
+                  />
                   <span className="text-center w-12">cm</span>
                 </div>
               </div>
@@ -218,8 +418,8 @@ const Dashboard: NextPage = () => {
                 <span className="text-error ms-1">*</span>
               </p>
               <p className="flex flex-row gap-2 items-center w-full">
-                <input type="date" className="input w-56" />
-                <input type="time" className="input w-56" />
+                <input type="date" className="input w-56" name="date" value={date} onChange={handleDateTimeChange} />
+                <input type="time" className="input w-56" name="time" value={time} onChange={handleDateTimeChange} />
               </p>
             </div>
           </div>
@@ -232,7 +432,7 @@ const Dashboard: NextPage = () => {
               <div className="flex w-full flex-row items-center gap-2">
                 {/* Parcel type */}
                 <div className="flex flex-row gap-2 items-center w-full">
-                  <select className="select select-bordered max-w-xs w-full">
+                  <select className="select select-bordered max-w-xs w-full" name="parcel_type" onChange={handleChange}>
                     <option disabled selected>
                       Select parcel type
                     </option>
@@ -254,11 +454,25 @@ const Dashboard: NextPage = () => {
                 <div className="flex flex-row gap-12 w-full">
                   <label className="label cursor-pointer">
                     <span className="label-text">Yes</span>
-                    <input type="radio" name="is_fragile" className="radio radio-primary" value="yes" />
+                    <input
+                      type="radio"
+                      name="is_fragile"
+                      className="radio radio-primary"
+                      value="true"
+                      checked={newParcelData.is_fragile === true}
+                      onChange={handleChange}
+                    />
                   </label>
                   <label className="label cursor-pointer">
                     <span className="label-text">No</span>
-                    <input type="radio" name="is_fragile" className="radio radio-primary" value="no" />
+                    <input
+                      type="radio"
+                      name="is_fragile"
+                      className="radio radio-primary"
+                      value="false"
+                      checked={newParcelData.is_fragile === false}
+                      onChange={handleChange}
+                    />
                   </label>
                 </div>
               </div>
@@ -268,7 +482,13 @@ const Dashboard: NextPage = () => {
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
               <p className="w-56">Extra Comment</p>
-              <textarea className="textarea textarea-bordered w-full" placeholder="Extra comment"></textarea>
+              <textarea
+                className="textarea textarea-bordered w-full"
+                placeholder="Extra comment"
+                name="extra_comment"
+                value={newParcelData.extra_comment}
+                onChange={handleChange}
+              ></textarea>
             </div>
           </div>
           {/* Upload image */}
@@ -279,7 +499,7 @@ const Dashboard: NextPage = () => {
                 <span className="text-error ms-1">*</span>
               </p>
               <div className="flex flex-row gap-2 items-center w-full">
-                <input type="file" className="file-input" accept="image/*" />
+                <input type="file" className="file-input" accept="image/*" name="photo_url" onChange={handleChange} />
               </div>
             </div>
           </div>
@@ -295,7 +515,14 @@ const Dashboard: NextPage = () => {
                 <span className="text-error ms-1">*</span>
               </p>
               <div className="flex flex-row gap-2 items-center w-full">
-                <input type="text" placeholder="John Doe" className="input" />
+                <input
+                  type="text"
+                  placeholder="John Doe"
+                  className="input"
+                  name="sender.name"
+                  value={newParcelData.sender.name}
+                  onChange={e => handleNestedChange(e, "sender", "name")}
+                />
               </div>
             </div>
           </div>
@@ -307,7 +534,14 @@ const Dashboard: NextPage = () => {
                 <span className="text-error ms-1">*</span>
               </p>
               <div className="flex flex-row gap-2 items-center w-full">
-                <input type="text" placeholder="+60123456789" className="input" />
+                <input
+                  type="text"
+                  placeholder="+60123456789"
+                  className="input"
+                  name="sender.phone_number"
+                  value={newParcelData.sender.phone_number}
+                  onChange={e => handleNestedChange(e, "sender", "phone_number")}
+                />
               </div>
             </div>
           </div>
@@ -319,7 +553,14 @@ const Dashboard: NextPage = () => {
                 <span className="text-error ms-1">*</span>
               </p>
               <div className="flex flex-row gap-2 items-center w-full">
-                <input type="email" placeholder="john.doe@example.com" className="input" />
+                <input
+                  type="email"
+                  placeholder="john.doe@example.com"
+                  className="input"
+                  name="sender.email"
+                  value={newParcelData.sender.email}
+                  onChange={e => handleNestedChange(e, "sender", "email")}
+                />
               </div>
             </div>
           </div>
@@ -335,7 +576,14 @@ const Dashboard: NextPage = () => {
                 <span className="text-error ms-1">*</span>
               </p>
               <div className="flex flex-row gap-2 items-center w-full">
-                <input type="text" placeholder="John Doe" className="input" />
+                <input
+                  type="text"
+                  placeholder="John Doe"
+                  className="input"
+                  name="recipient.name"
+                  onChange={e => handleNestedChange(e, "recipient", "name")}
+                  value={newParcelData.recipient.name}
+                />
               </div>
             </div>
           </div>
@@ -347,7 +595,14 @@ const Dashboard: NextPage = () => {
                 <span className="text-error ms-1">*</span>
               </p>
               <div className="flex flex-row gap-2 items-center w-full">
-                <input type="text" placeholder="+60123456789" className="input" />
+                <input
+                  type="text"
+                  placeholder="+60123456789"
+                  className="input"
+                  name="recipient.phone_number"
+                  onChange={e => handleNestedChange(e, "recipient", "phone_number")}
+                  value={newParcelData.recipient.phone_number}
+                />
               </div>
             </div>
           </div>
@@ -359,7 +614,14 @@ const Dashboard: NextPage = () => {
                 <span className="text-error ms-1">*</span>
               </p>
               <div className="flex flex-row gap-2 items-center w-full">
-                <input type="email" placeholder="john.doe@example.com" className="input" />
+                <input
+                  type="email"
+                  placeholder="john.doe@example.com"
+                  className="input"
+                  name="recipient.email"
+                  onChange={e => handleNestedChange(e, "recipient", "email")}
+                  value={newParcelData.recipient.email}
+                />
               </div>
             </div>
           </div>
@@ -375,7 +637,14 @@ const Dashboard: NextPage = () => {
                 <span className="text-error ms-1">*</span>
               </p>
               <div className="flex flex-row gap-2 items-center w-full">
-                <input type="text" placeholder="123, Jalan ABC" className="input" />
+                <input
+                  type="text"
+                  placeholder="123, Jalan ABC"
+                  className="input"
+                  name="final_destination.street"
+                  onChange={e => handleNestedChange(e, "final_destination", "street")}
+                  value={newParcelData.final_destination.street}
+                />
               </div>
             </div>
           </div>
@@ -387,13 +656,29 @@ const Dashboard: NextPage = () => {
                 <span className="text-error ms-1">*</span>
               </p>
               <div className="flex flex-row gap-2 items-center w-full">
-                <select className="select select-bordered max-w-xs w-full">
+                <select
+                  className="select select-bordered max-w-xs w-full"
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                    const selectedArea = e.target.value;
+                    const selectedPostcode =
+                      (postcodeJSON as Record<string, { postal_code: string }>)[selectedArea]?.postal_code || "";
+
+                    setNewParcelData(prev => ({
+                      ...prev,
+                      final_destination: {
+                        ...prev.final_destination,
+                        area: selectedArea,
+                        postal_code: selectedPostcode,
+                      },
+                    }));
+                  }}
+                >
                   <option disabled selected>
                     Select area
                   </option>
-                  {Object.keys(localAreaJSON).map(area => (
+                  {Object.entries(postcodeJSON).map(([area, data]) => (
                     <option key={area} value={area}>
-                      {area}
+                      {data.postal_code} - {area}
                     </option>
                   ))}
                 </select>
@@ -401,15 +686,18 @@ const Dashboard: NextPage = () => {
             </div>
           </div>
           <div className="flex justify-between items-center w-full gap-2">
-            <div className="flex md:flex-row flex-col px-2 w-full gap-2">
-              <p className="w-56">
+            {/* <div className="flex md:flex-row flex-col px-2 w-full gap-2"> */}
+            {/* <p className="w-56">
                 Postcode
                 <span className="text-error ms-1">*</span>
-              </p>
-              <div className="flex w-full flex-row items-center gap-2">
-                {/* Postcode */}
-                <div className="flex flex-row gap-2 items-center w-full">
-                  <select className="select select-bordered max-w-xs w-full">
+              </p> */}
+            {/* <div className="flex w-full flex-row items-center gap-2"> */}
+            {/* Postcode */}
+            {/* <div className="flex flex-row gap-2 items-center w-full"> */}
+            {/* <select
+                    className="select select-bordered max-w-xs w-full"
+                    onChange={e => handleNestedChange(e, "final_destination", "postal_code")}
+                  >
                     <option disabled selected>
                       Select area
                     </option>
@@ -418,10 +706,10 @@ const Dashboard: NextPage = () => {
                         {area}
                       </option>
                     ))}
-                  </select>
-                </div>
-              </div>
-            </div>
+                  </select> */}
+            {/* </div> */}
+            {/* </div> */}
+            {/* </div> */}
             <div className="flex md:flex-row flex-col px-2 w-full gap-2">
               <p className="w-56">
                 State
@@ -430,7 +718,14 @@ const Dashboard: NextPage = () => {
               <div className="flex w-full flex-row items-center gap-2">
                 {/* State */}
                 <div className="flex flex-row gap-2 items-center w-full">
-                  <input type="text" placeholder="Selangor" className="input" />
+                  <input
+                    type="text"
+                    placeholder="Selangor"
+                    className="input"
+                    name="final_destination.state"
+                    onChange={e => handleNestedChange(e, "final_destination", "state")}
+                    value={newParcelData.final_destination.state}
+                  />
                 </div>
               </div>
             </div>
@@ -443,7 +738,10 @@ const Dashboard: NextPage = () => {
                 <span className="text-error ms-1">*</span>
               </p>
               <div className="flex flex-row gap-2 items-center w-full">
-                <select className="select select-bordered w-">
+                <select
+                  className="select select-bordered w-"
+                  onChange={e => handleNestedChange(e, "final_destination", "country")}
+                >
                   <option disabled selected>
                     Select country
                   </option>
