@@ -11,7 +11,7 @@ const Login: NextPage = () => {
   const [password, setPassword] = useState("");
 
   // check if user is already logged in
-  if (localStorage.getItem("employeeData") || localStorage.getItem("customerData")) {
+  if (typeof window !== "undefined" && (localStorage.getItem("employeeData") || localStorage.getItem("customerData"))) {
     Swal.fire({
       title: "Loading...",
       html: "Please wait while we redirect you to the home page.",
