@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { countries } from "countries-list";
 import { NextPage } from "next";
 import Swal from "sweetalert2";
+import { idchain } from "viem/chains";
 import localAreaJSON from "~~/data/localArea.json";
 import parcelJSON from "~~/data/parcel.json";
 import parcelHubJSON from "~~/data/parcelHub.json";
@@ -32,6 +33,7 @@ const Track: NextPage = () => {
   const [isLogin, setIsLogin] = useState<null | boolean>(null);
 
   const [specificParcel, setSpecificParcel] = useState<ParcelInterface | null>(null);
+  const [hasSearched, setHasSearched] = useState(false);
 
   useEffect(() => {
     const employeeBase64 = localStorage.getItem("employeeData");
@@ -73,26 +75,48 @@ const Track: NextPage = () => {
     }
   }, [isLogin]);
 
-  // store parcelJSON data into parcelData
-  if (!parcelData) {
-    setParcelData(parcelJSON);
-  }
+  useEffect(() => {
+    if (!parcelData) {
+      setParcelData(parcelJSON);
+    }
+  }, [parcelData]);
 
   useEffect(() => {
-    if (parcelData) {
+    if (parcelData && trackingNumber) {
       setSpecificParcel(parcelData.find(p => p.tracking_number === trackingNumber) || null);
+      setHasSearched(true);
     }
   }, [parcelData, trackingNumber]);
 
+  // check if the parcel is owned by the customer
   useEffect(() => {
-    if (specificParcel) {
-      // check if the parcel is owned by the customer
-      if (customerData && specificParcel.recipient.email !== customerData.email) {
+    if (!customerData) return;
+
+    if (hasSearched) {
+      if (specificParcel) {
+        console.log(specificParcel.recipient.email, customerData.email);
+        // check if the parcel is owned by the customer
+        if (specificParcel.recipient.email !== customerData.email) {
+          setSpecificParcel(null);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "This parcel is not owned by you.",
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          }).then(() => {
+            window.location.href = "/customer-dashboard";
+          });
+        }
+      } else {
         setSpecificParcel(null);
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: "This parcel is not owned by you.",
+          text: "Parcel not found.",
           timer: 2000,
           timerProgressBar: true,
           didOpen: () => {
@@ -102,21 +126,47 @@ const Track: NextPage = () => {
           window.location.href = "/customer-dashboard";
         });
       }
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Parcel not found.",
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      }).then(() => {
-        window.location.href = "/customer-dashboard";
-      });
     }
-  }, [specificParcel]);
+  }, [customerData, specificParcel, hasSearched]);
+
+  // check if the parcel hub is in the pathway of the parcel
+  useEffect(() => {
+    if (!employeeData) return;
+
+    if (hasSearched) {
+      if (specificParcel && parcelHubData) {
+        if (!specificParcel.pathway.find(ph => ph.parcel_hub_id === parcelHubData.parcel_hub_id)) {
+          setSpecificParcel(null);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "You are not allowed to track this parcel.",
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          }).then(() => {
+            window.location.href = "/parcel-dashboard";
+          });
+        }
+      } else {
+        setSpecificParcel(null);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Parcel not found.",
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        }).then(() => {
+          window.location.href = "/customer-dashboard";
+        });
+      }
+    }
+  }, [employeeData, specificParcel, parcelHubData, hasSearched]);
 
   const formatDate = (isoString?: string): string => {
     if (!isoString) return "--/--"; // Handle undefined or null values
