@@ -44,7 +44,6 @@ const ParcelReceive: NextPage = () => {
 
   const [trackingNumber, setTrackingNumber] = useState("");
 
-  const [specificEmployee, setSpecificEmployee] = useState<EmployeeWithoutPasswordInterface | null>(null);
   const [specificParcel, setSpecificParcel] = useState<ParcelInterface | null>(null);
   const [isInsidePathway, setIsInsidePathway] = useState<boolean | null>(null);
 
@@ -52,7 +51,6 @@ const ParcelReceive: NextPage = () => {
   const [prevParcelHub, setPrevParcelHub] = useState<ParcelHubInterface | null>(null);
   const [currentParcelHub, setCurrentParcelHub] = useState<ParcelHubInterface | null>(null);
   const [dispatchedTime, setDispatchedTime] = useState("");
-  const [employeeID, setEmployeeID] = useState("");
 
   useEffect(() => {
     const employeeBase64 = localStorage.getItem("employeeData");
@@ -132,22 +130,14 @@ const ParcelReceive: NextPage = () => {
           specificParcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData.parcel_hub_id) - 1
         ]?.dispatch_time || "",
       );
-      setEmployeeID(employeeID);
     }
-  }, [specificParcel, parcelHubData, isInsidePathway, employeeID]);
-
-  // get specific employee data
-  useEffect(() => {
-    if (employeeID) {
-      setSpecificEmployee(employeeJSON.find(e => e.employee_id === employeeID) || null);
-    }
-  }, [employeeID]);
+  }, [specificParcel, parcelHubData, isInsidePathway, employeeData]);
 
   const placeDigitalSigature = async () => {
     console.log("Tracking Number", trackingNumber);
     console.log("Dispatched Time", dispatchedTime);
     console.log("Parcel Hub ID", parcelHubData?.parcel_hub_id);
-    console.log("Employee ID", employeeID);
+    console.log("Employee ID", employeeData?.employee_id);
 
     // smart contract algorithm here
     // @shinyen17
@@ -167,7 +157,7 @@ const ParcelReceive: NextPage = () => {
         // Update the dispatch time, photo URL, employee signature hash, and verification hash
         parcel.pathway[pathwayIndex].dispatch_time = dispatchedTime;
         parcel.pathway[pathwayIndex].photo_url = photo_url;
-        parcel.pathway[pathwayIndex].employee.employee_id = employeeID;
+        parcel.pathway[pathwayIndex].employee.employee_id = employeeData?.employee_id || "";
         parcel.pathway[pathwayIndex].employee.signature_hash = signature_hash;
         parcel.pathway[pathwayIndex].verification_hash = verification_hash;
 
@@ -332,10 +322,12 @@ const ParcelReceive: NextPage = () => {
                 <p
                   className="font-semibold link hover:text-secondary no-underline"
                   onClick={() =>
-                    (document.getElementById("modal-employee-" + employeeID) as HTMLDialogElement)?.showModal()
+                    (
+                      document.getElementById("modal-employee-" + employeeData?.employee_id) as HTMLDialogElement
+                    )?.showModal()
                   }
                 >
-                  {employeeID}
+                  {employeeData?.employee_id}
                 </p>
               </div>
             </div>
@@ -662,22 +654,22 @@ const ParcelReceive: NextPage = () => {
       )}
 
       {/* Employee Modal */}
-      {employeeID && specificEmployee && (
-        <dialog id={"modal-employee-" + employeeID} className="modal">
+      {employeeData && (
+        <dialog id={"modal-employee-" + employeeData.employee_id} className="modal">
           <div className="modal-box">
-            <h3 className="font-bold text-lg">{employeeID}</h3>
+            <h3 className="font-bold text-lg">{employeeData.employee_id}</h3>
             <p className="pb-2">Press ESC key or click the button below to close</p>
             {/* Employee email */}
             <div className="flex justify-between items-center">
               <p>Email</p>
-              <p>{specificEmployee.email}</p>
+              <p>{employeeData.email}</p>
             </div>
             {/* Parcel Hub */}
             <div className="flex justify-between items-center">
               <p>Parcel Hub</p>
               <p>
-                {parcelHubJSON.find(ph => ph.parcel_hub_id === specificEmployee.parcel_hub_id)?.parcel_hub_name} (
-                {specificEmployee.parcel_hub_id})
+                {parcelHubJSON.find(ph => ph.parcel_hub_id === employeeData.parcel_hub_id)?.parcel_hub_name} (
+                {employeeData.parcel_hub_id})
               </p>
             </div>
             {/* Close button */}
