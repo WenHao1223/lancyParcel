@@ -368,16 +368,16 @@
       {
         "parcel_hub_id": "1.2.1.0",
         "received_time": "2025-03-08T06:00:00Z",
-        "dispatch_time": "2025-03-07T17:19:20.252Z",
-        "photo_url": "dummy_photo_url",
+        "dispatch_time": "",
+        "photo_url": "",
         "sender": {
           "signature_hash": ""
         },
         "employee": {
-          "employee_id": "EMP2002",
-          "signature_hash": "0x7fe4b21e22651e8116f5a668013ff33db79dc3cdb11cf22fdc32c4a77032aa77"
+          "employee_id": "",
+          "signature_hash": ""
         },
-        "verification_hash": "0xb9a2acf308004c5c4ffa355aee3af74a6d63bc69350ed6eb89de83c6d01c052b"
+        "verification_hash": ""
       },
       {
         "parcel_hub_id": "1.2.0.0",
