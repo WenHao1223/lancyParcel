@@ -341,7 +341,7 @@ const ParcelDispatch: NextPage = () => {
             Swal.showLoading();
           },
         }).then(() => {
-          window.location.href = "/dashboard";
+          window.location.href = "/parcel-dashboard";
         });
       } else {
         console.log("Current parcel hub not found in the pathway.");

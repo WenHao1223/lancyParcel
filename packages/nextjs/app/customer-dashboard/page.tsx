@@ -1,11 +1,47 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { NextPage } from "next";
+import {
+  CustomerWithoutPasswordInterface,
+  EmployeeWithoutPasswordInterface,
+  ParcelHubInterface,
+  ParcelInterface,
+} from "~~/interfaces/GeneralInterface";
 
 const OrderHistory: NextPage = () => {
+  const [customerData, setCustomerData] = useState<CustomerWithoutPasswordInterface | null>(null);
+  const [parcelData, setParcelData] = useState<ParcelInterface[] | null>(null);
+
+  const [isLogin, setIsLogin] = useState<null | boolean>(null);
+
+  const [filteredParcelData, setFilteredParcelData] = useState<ParcelInterface[] | null>(null);
+
+  useEffect(() => {
+    const employeeBase64 = localStorage.getItem("employeeData");
+    const customerBase64 = localStorage.getItem("customerData");
+
+    if (employeeBase64) {
+      // redirect to employee dashboard
+      window.location.href = "/parcel-dashboard";
+    } else if (customerBase64) {
+      const customerString = atob(customerBase64);
+      const customer = JSON.parse(customerString);
+      setCustomerData(customer);
+      setIsLogin(true);
+    } else {
+      // not login
+      console.log("Please login first.");
+      setIsLogin(false);
+      window.location.href = "/login";
+    }
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold">Order History Page</h1>
-      <p>View your order history here.</p>
+      <h1 className="text-4xl font-bold">Customer Dashboard Page</h1>
+      <p>View your parcel status here.</p>
 
       {/* Order history list */}
       <div className="flex flex-row w-[40%] gap-4">

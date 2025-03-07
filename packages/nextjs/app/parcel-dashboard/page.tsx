@@ -18,7 +18,6 @@ import { generatePath } from "~~/utils/generatePath";
 
 const Dashboard: NextPage = () => {
   const [employeeData, setEmployeeData] = useState<EmployeeWithoutPasswordInterface | null>(null);
-  const [customerData, setCustomerData] = useState<CustomerWithoutPasswordInterface | null>(null);
   const [parcelHubData, setParcelHubData] = useState<ParcelHubInterface | null>(null);
   const [parcelData, setParcelData] = useState<ParcelInterface[] | null>(null);
   const [date, setDate] = useState("");
@@ -102,11 +101,8 @@ const Dashboard: NextPage = () => {
         window.location.href = "/login";
       }
     } else if (customerBase64) {
-      const customerString = atob(customerBase64);
-      const customer = JSON.parse(customerString);
-      setCustomerData(customer);
-      setParcelHubData(null);
-      setIsLogin(true);
+      // redirect to customer dashboard
+      window.location.href = "/customer-dashboard";
     } else {
       // not login
       console.log("Please login first.");
@@ -333,7 +329,7 @@ const Dashboard: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold">Dashboard</h1>
+      <h1 className="text-4xl font-bold">Parcel Dashboard</h1>
       <p>Check parcel status here.</p>
 
       {/* Parcel Hub detail */}
