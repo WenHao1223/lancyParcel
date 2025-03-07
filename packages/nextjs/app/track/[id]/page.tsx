@@ -16,6 +16,7 @@ import {
 
 const Track: NextPage = () => {
   const params = useParams();
+
   const [trackingNumber, setTrackingNumber] = useState("");
   useEffect(() => {
     if (!params) return;

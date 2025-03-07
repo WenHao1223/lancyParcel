@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import Image from "next/image";
 import { NextPage } from "next";
 import Swal from "sweetalert2";
 
@@ -18,7 +17,7 @@ import Swal from "sweetalert2";
 // Customer
 // Tracking Number, Out for Delivery Time, Delivery Time, Receiver Confirmation (Signature or Digital Proof), Employee ID Wallet Address, Digital Signature
 
-const ParcelReceive: NextPage = () => {
+const ParcelReceiveCustomer: NextPage = () => {
   useEffect(() => {
     Swal.fire({
       title: "Loading...",
@@ -35,8 +34,8 @@ const ParcelReceive: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold">Receive Parcel Verification</h1>
-      <p>Verify your parcel ready for receive.</p>
+      <h1 className="text-4xl font-bold">Recipent Receive Parcel Verification</h1>
+      <p>Verify your parcel here.</p>
 
       {/* Ordered Item detail */}
       <div className="flex flex-col w-[40%] min-w-96 gap-4 mb-4">
@@ -53,4 +52,4 @@ const ParcelReceive: NextPage = () => {
   );
 };
 
-export default ParcelReceive;
+export default ParcelReceiveCustomer;

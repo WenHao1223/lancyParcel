@@ -34,8 +34,8 @@ const ParcelDispatch: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold">Send Parcel Page</h1>
-      <p>Send your parcel here.</p>
+      <h1 className="text-4xl font-bold">Dispatch Parcel Verification</h1>
+      <p>Verify your parcel ready for dispatch.</p>
 
       {/* Ordered Item detail */}
       <div className="flex flex-col w-[40%] min-w-96 gap-4 mb-4">

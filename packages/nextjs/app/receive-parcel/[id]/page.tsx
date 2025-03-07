@@ -5,15 +5,9 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { NextPage } from "next";
 import Swal from "sweetalert2";
-import employeeJSON from "~~/data/employee.json";
 import parcelJSON from "~~/data/parcel.json";
 import parcelHubJSON from "~~/data/parcelHub.json";
-import {
-  CustomerWithoutPasswordInterface,
-  EmployeeWithoutPasswordInterface,
-  ParcelHubInterface,
-  ParcelInterface,
-} from "~~/interfaces/GeneralInterface";
+import { EmployeeWithoutPasswordInterface, ParcelHubInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
 
 // Seller
 // Tracking Number, Order Time, Sender Details (Encrypted), Parcel Weight & Dimensions, Dispatch Time, Employee ID Wallet Address, Digital Signature
@@ -31,18 +25,16 @@ import {
 const ParcelReceive: NextPage = () => {
   const params = useParams();
 
-  useEffect(() => {
-    if (!params) return;
-    setTrackingNumber(Array.isArray(params.id) ? params.id[0] : params.id);
-  }, [params]);
-
   const [employeeData, setEmployeeData] = useState<EmployeeWithoutPasswordInterface | null>(null);
-  const [customerData, setCustomerData] = useState<null | CustomerWithoutPasswordInterface>(null);
   const [parcelHubData, setParcelHubData] = useState<ParcelHubInterface | null>(null);
   const [parcelData, setParcelData] = useState<ParcelInterface[] | null>(null);
   const [isLogin, setIsLogin] = useState<null | boolean>(null);
 
   const [trackingNumber, setTrackingNumber] = useState("");
+  useEffect(() => {
+    if (!params) return;
+    setTrackingNumber(Array.isArray(params.id) ? params.id[0] : params.id);
+  }, [params]);
 
   const [specificParcel, setSpecificParcel] = useState<ParcelInterface | null>(null);
   const [isInsidePathway, setIsInsidePathway] = useState<boolean | null>(null);
@@ -73,11 +65,8 @@ const ParcelReceive: NextPage = () => {
         window.location.href = "/login";
       }
     } else if (customerBase64) {
-      const customerString = atob(customerBase64);
-      const customer = JSON.parse(customerString);
-      setCustomerData(customer);
-      setParcelHubData(null);
-      setIsLogin(true);
+      // redirect to customer dashboard
+      window.location.href = "/customer-dashboard";
     } else {
       // not login
       console.log("Please login first.");
@@ -207,8 +196,8 @@ const ParcelReceive: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold">Dispatch Parcel</h1>
-      <p>Confirm to dispatch your parcel here.</p>
+      <h1 className="text-4xl font-bold">Receive Parcel Verification</h1>
+      <p>Verify your parcel ready for receive.</p>
 
       {/* Ordered Item detail */}
       <div className="flex flex-col w-[40%] min-w-96 gap-4 mb-4">
