@@ -25,11 +25,11 @@ const Dashboard: NextPage = () => {
   const [time, setTime] = useState("");
   const [newParcelData, setNewParcelData] = useState<ParcelInterface>({
     tracking_number: "",
-    parcel_weight_kg: 0,
+    parcel_weight_kg: undefined,
     parcel_dimensions_cm: {
-      length: 0,
-      width: 0,
-      height: 0,
+      length: undefined,
+      width: undefined,
+      height: undefined,
     },
     parcel_estimated_delivery: "",
     parcel_type: "",
