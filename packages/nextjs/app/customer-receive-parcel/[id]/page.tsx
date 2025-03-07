@@ -5,8 +5,10 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { NextPage } from "next";
 import Swal from "sweetalert2";
+import { useAccount } from "wagmi";
 import parcelJSON from "~~/data/parcel.json";
 import parcelHubJSON from "~~/data/parcelHub.json";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { CustomerWithoutPasswordInterface, ParcelHubInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
 
 // Seller
@@ -22,8 +24,118 @@ import { CustomerWithoutPasswordInterface, ParcelHubInterface, ParcelInterface }
 // Customer
 // Tracking Number, Out for Delivery Time, Delivery Time, Receiver Confirmation (Signature or Digital Proof), Employee ID Wallet Address, Digital Signature
 
+const useHashSignature = (connectedAddress: string | undefined) => {
+  const { writeContractAsync } = useScaffoldWriteContract({
+    contractName: "YourContract",
+  });
+
+  const handleHashSignature = async () => {
+    if (!connectedAddress) {
+      Swal.fire({
+        icon: "error",
+        title: "Please connect MetaMask first!",
+        text: "Please try again.",
+        allowOutsideClick: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      return null;
+    }
+
+    try {
+      const tx = await writeContractAsync({
+        functionName: "hashAddress",
+        args: [connectedAddress],
+      });
+
+      if (tx) {
+        Swal.fire({
+          icon: "success",
+          title: "Transaction successful!",
+          text: "Transaction has been sent successfully. Signature Hash: " + tx,
+          allowOutsideClick: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+        return tx as string;
+      }
+    } catch (error) {
+      console.error("Error hashing address:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Transaction failed!",
+        text: "Please try again.",
+        allowOutsideClick: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      return "";
+    }
+  };
+
+  return { handleHashSignature };
+};
+
+const useHashSend = () => {
+  const { writeContractAsync } = useScaffoldWriteContract({
+    contractName: "YourContract",
+  });
+
+  const hashSendData = async (trackingNumber: string, dispatchTime: string, localHubId: string, customer: string) => {
+    try {
+      const tx = await writeContractAsync({
+        functionName: "hashSendData",
+        args: [trackingNumber, dispatchTime, localHubId, customer],
+      });
+
+      if (tx) {
+        Swal.fire({
+          icon: "success",
+          title: "Transaction successful!",
+          text: "Transaction has been sent successfully. Verification Hash: " + tx,
+          allowOutsideClick: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+        return tx as string; // Returning hash
+      }
+    } catch (error) {
+      console.error("Error hashing parcel data:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Transaction failed!",
+        text: "Please try again.",
+        allowOutsideClick: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      return null;
+    }
+  };
+
+  return { hashSendData };
+};
+
 const ParcelReceiveCustomer: NextPage = () => {
   const params = useParams();
+  const { address: connectedAddress } = useAccount();
+  const { handleHashSignature } = useHashSignature(connectedAddress);
+  const { hashSendData } = useHashSend();
 
   const [customerData, setCustomerData] = useState<CustomerWithoutPasswordInterface | null>(null);
   const [parcelData, setParcelData] = useState<ParcelInterface[] | null>(null);
@@ -106,8 +218,113 @@ const ParcelReceiveCustomer: NextPage = () => {
     }
   }, [specificParcel, customerData, isCurrentCustomer]);
 
-  const placeDigitalSigature = () => {
-    console.log("Placing digital signature...");
+  const placeDigitalSigature = async () => {
+    console.log("Tracking Number", trackingNumber);
+    console.log("Received Time", receivedTime);
+    console.log("Customer ID", customerData?.email);
+
+    // smart contract algorithm here
+    const cus_id: string = customerData?.email ?? "";
+
+    const signature_hash = await handleHashSignature();
+    if (!signature_hash) {
+      Swal.fire({
+        icon: "error",
+        title: "Signature hash is invalid!",
+        text: "Please try again.",
+        allowOutsideClick: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      return;
+    }
+
+    const verification_hash = await hashSendData(
+      trackingNumber, // Tracking number
+      receivedTime, // Received time
+      cus_id, // Customer ID
+      signature_hash, // Customer
+    );
+    if (!verification_hash) {
+      Swal.fire({
+        icon: "error",
+        title: "Verification hash is invalid!",
+        text: "Please try again.",
+        allowOutsideClick: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      return;
+    }
+
+    const photo_url = "dummy_photo_url"; // Replace with actual photo URL
+
+    // Find the specific parcel
+    const parcelIndex = parcelJSON.findIndex(p => p.tracking_number === trackingNumber);
+    if (parcelIndex !== -1) {
+      const parcel = parcelJSON[parcelIndex];
+
+      // Find the current parcel hub in the pathway
+      const pathwayIndex = parcel.pathway.length - 1;
+      if (pathwayIndex !== -1) {
+        // Update the dispatch time, photo URL, employee signature hash, and verification hash
+        parcel.pathway[pathwayIndex].dispatch_time = dispatchedTime;
+
+        parcel.final_delivery.received_time = receivedTime;
+        parcel.final_delivery.photo_url = photo_url;
+        parcel.final_delivery.customer_signature_hash = signature_hash;
+        parcel.final_delivery.verification_hash = verification_hash;
+
+        parcel.current_location = "received";
+
+        // Update the parcelJSON with the modified parcel
+        parcelJSON[parcelIndex] = parcel;
+
+        async function handleUpdate() {
+          if (!parcelJSON) return;
+
+          try {
+            const response = await fetch("/api/parcel", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(parcelJSON),
+            });
+
+            // if (!response.ok) throw new Error("Failed to update data");
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
+        await handleUpdate();
+
+        console.log("Parcel updated successfully:", parcel);
+
+        Swal.fire({
+          icon: "success",
+          title: "Parcel Dispatched Successfully",
+          text: "Parcel has been dispatched successfully.",
+          allowOutsideClick: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        }).then(() => {
+          window.location.href = "/parcel-dashboard";
+        });
+      } else {
+        console.log("Current parcel hub not found in the pathway.");
+      }
+    } else {
+      console.log("Parcel not found.");
+    }
   };
 
   return (

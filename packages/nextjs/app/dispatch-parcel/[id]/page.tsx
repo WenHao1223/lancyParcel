@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { NextPage } from "next";
