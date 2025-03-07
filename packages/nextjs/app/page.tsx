@@ -235,71 +235,55 @@ const Home: NextPage = () => {
           <div className="flex flex-col gap-2 mt-12">
             {/* Customer */}
             <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
-              <h2>Customer</h2>
+              <h2>General</h2>
               <button className="btn">
                 <Link href="/register">Register Page</Link>
               </button>
               <button className="btn">
                 <Link href="/login">Login Page</Link>
               </button>
-            </div>
-
-            <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
-              <h2>User</h2>
-              <button className="btn">
-                <Link href="/order">Order Page</Link>
-              </button>
-              <button className="btn">
-                <Link href="/order-history">Order History Page</Link>
-              </button>
               <button className="btn">
                 <Link href="/track">Tracking Page</Link>
               </button>
-              <button className="btn">
-                <Link href="/receive-parcel">Receive Parcel Page</Link>
-              </button>
             </div>
 
             <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
-              <h2>Warehouse Employee</h2>
-              <button className="btn">
-                <Link href="/dispatch-parcel">Send Transaction Page</Link>
-              </button>
-            </div>
-
-            <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
-              <h2>Parcel Hub Employee</h2>
+              <h2>Parcel Hub</h2>
               <button className="btn">
                 <Link href="/dashboard">Parcel Dashboard Page</Link>
               </button>
+            </div>
+
+            <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
+              <h2>Customer</h2>
               <button className="btn">
-                <Link href="/dispatch-parcel">Dispatch Parcel Page</Link>
+                <Link href="/customer-dashboard">Customer Dashboard Page</Link>
               </button>
             </div>
 
             {/* Blockchain testing*/}
-            <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
-              <button className="btn" /*onClick={handleClick}*/>
+            {/* <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
+              <button className="btn">
                 <Link href="/parcel_template">Block Chain</Link>
               </button>
               {deployedContractData ? <ContractReadMethods /> : <p>Loading contract data...</p>}
-            </div>
+            </div> */}
 
             {/* Algo testing*/}
-            <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
+            {/* <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
               <h2>Algo Test</h2>
               <button className="btn">
                 <Link href="/algo-test">Algo Test</Link>
               </button>
-            </div>
+            </div> */}
 
             {/* Test fetch API */}
-            <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
+            {/* <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
               <h2>Test Fetch API</h2>
               <button className="btn">
                 <Link href="/test-json">Test Fetch API</Link>
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
