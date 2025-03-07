@@ -12,7 +12,7 @@ import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 //Write Contract
 
 //Signature Hashing
-export const useHashSignature = (connectedAddress: string | undefined) => {
+const useHashSignature = (connectedAddress: string | undefined) => {
   const { writeContractAsync } = useScaffoldWriteContract({
     contractName: "YourContract",
   });
@@ -77,7 +77,7 @@ const useHashParcel = () => {
 };
 
 //Send
-export const useHashSend = () => {
+const useHashSend = () => {
   const { writeContractAsync } = useScaffoldWriteContract({
     contractName: "YourContract",
   });
