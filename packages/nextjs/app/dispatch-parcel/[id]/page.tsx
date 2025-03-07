@@ -6,7 +6,6 @@ import { useParams } from "next/navigation";
 import { NextPage } from "next";
 import Swal from "sweetalert2";
 import { useAccount } from "wagmi";
-import employeeJSON from "~~/data/employee.json";
 import parcelJSON from "~~/data/parcel.json";
 import parcelHubJSON from "~~/data/parcelHub.json";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
@@ -36,7 +35,17 @@ const useHashSignature = (connectedAddress: string | undefined) => {
 
   const handleHashSignature = async () => {
     if (!connectedAddress) {
-      alert("Please connect MetaMask first!");
+      Swal.fire({
+        icon: "error",
+        title: "Please connect MetaMask first!",
+        text: "Please try again.",
+        allowOutsideClick: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       return null;
     }
 
@@ -47,12 +56,32 @@ const useHashSignature = (connectedAddress: string | undefined) => {
       });
 
       if (tx) {
-        alert(`Transaction sent! Hash: ${tx}`);
+        Swal.fire({
+          icon: "success",
+          title: "Transaction successful!",
+          text: "Transaction has been sent successfully. Signature Hash: " + tx,
+          allowOutsideClick: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
         return tx as string;
       }
     } catch (error) {
       console.error("Error hashing address:", error);
-      alert("Transaction failed!");
+      Swal.fire({
+        icon: "error",
+        title: "Transaction failed!",
+        text: "Please try again.",
+        allowOutsideClick: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       return "";
     }
   };
@@ -73,12 +102,32 @@ const useHashSend = () => {
       });
 
       if (tx) {
-        alert(`Transaction successful! Hash: ${tx}`);
+        Swal.fire({
+          icon: "success",
+          title: "Transaction successful!",
+          text: "Transaction has been sent successfully. Verification Hash: " + tx,
+          allowOutsideClick: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
         return tx as string; // Returning hash
       }
     } catch (error) {
       console.error("Error hashing parcel data:", error);
-      alert("Transaction failed!");
+      Swal.fire({
+        icon: "error",
+        title: "Transaction failed!",
+        text: "Please try again.",
+        allowOutsideClick: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       return null;
     }
   };
@@ -206,7 +255,17 @@ const ParcelDispatch: NextPage = () => {
 
     const signature_hash = await handleHashSignature();
     if (!signature_hash) {
-      alert("Signature hash is invalid!");
+      Swal.fire({
+        icon: "error",
+        title: "Signature hash is invalid!",
+        text: "Please try again.",
+        allowOutsideClick: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       return;
     }
 
@@ -217,7 +276,17 @@ const ParcelDispatch: NextPage = () => {
       signature_hash, // Employee
     );
     if (!verification_hash) {
-      alert("Verification hash failed!");
+      Swal.fire({
+        icon: "error",
+        title: "Verification hash is invalid!",
+        text: "Please try again.",
+        allowOutsideClick: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       return;
     }
 
