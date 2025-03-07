@@ -84,6 +84,40 @@ const Track: NextPage = () => {
     }
   }, [parcelData, trackingNumber]);
 
+  useEffect(() => {
+    if (specificParcel) {
+      // check if the parcel is owned by the customer
+      if (customerData && specificParcel.recipient.email !== customerData.email) {
+        setSpecificParcel(null);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "This parcel is not owned by you.",
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        }).then(() => {
+          window.location.href = "/customer-dashboard";
+        });
+      }
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Parcel not found.",
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      }).then(() => {
+        window.location.href = "/customer-dashboard";
+      });
+    }
+  }, [specificParcel]);
+
   const formatDate = (isoString?: string): string => {
     if (!isoString) return "--/--"; // Handle undefined or null values
 
