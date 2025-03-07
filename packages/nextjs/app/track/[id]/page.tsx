@@ -195,7 +195,7 @@ const Track: NextPage = () => {
                             onClick={() =>
                               (
                                 document.getElementById(
-                                  "modal-checkSignature-" + specificParcel?.tracking_number,
+                                  `modal-checkSignature-${specificParcel?.tracking_number}-${item.parcel_hub_id}`,
                                 ) as HTMLDialogElement
                               )?.showModal()
                             }
@@ -264,37 +264,48 @@ const Track: NextPage = () => {
         </div>
       </dialog>
 
-      <dialog id={"modal-checkSignature-" + specificParcel?.tracking_number} className="modal">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">{specificParcel?.tracking_number}</h3>
-          <p className="pb-2">Press ESC key or click the button below to close</p>
-          {/* Employee Digital Signature Hash */}
-          <div className="flex justify-between items-center">
-            <p>Employee Digital Signature Hash</p>
-            <p>{specificParcel?.pathway[0].employee.signature_hash}</p>
+      {specificParcel?.pathway?.map((pathwayItem, index) => (
+        <dialog
+          key={index}
+          id={`modal-checkSignature-${specificParcel.tracking_number}-${pathwayItem.parcel_hub_id}`}
+          className="modal"
+        >
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">
+              {specificParcel.tracking_number} -{" "}
+              {parcelHubJSON.find(hub => hub.parcel_hub_id === pathwayItem.parcel_hub_id)?.parcel_hub_name}
+            </h3>
+            <p className="pb-2">Press ESC key or click the button below to close</p>
+            {/* Employee ID */}
+            <div className="flex justify-between items-center">
+              <p>Employee ID</p>
+              <p>{pathwayItem.employee.employee_id}</p>
+            </div>
+            {/* Employee Digital Signature Hash */}
+            <div className="flex justify-between items-center">
+              <p>Employee Digital Signature Hash</p>
+              <p>
+                {pathwayItem.employee.signature_hash?.substring(0, 6)}...
+                {pathwayItem.employee.signature_hash?.substring(pathwayItem.employee.signature_hash.length - 4)}
+              </p>
+            </div>
+            {/* Verification Hash */}
+            <div className="flex justify-between items-center">
+              <p>Verification Hash</p>
+              <p>
+                {pathwayItem.verification_hash?.substring(0, 6)}...
+                {pathwayItem.verification_hash?.substring(pathwayItem.verification_hash.length - 4)}
+              </p>
+            </div>
+            {/* Close button */}
+            <div className="modal-action">
+              <form method="dialog">
+                <button className="btn">Close</button>
+              </form>
+            </div>
           </div>
-          {/* Employee Id */}
-          <div className="flex justify-between items-center">
-            <p>Parcel dimension</p>
-            <p>
-              {specificParcel?.parcel_dimensions_cm.length} cm x {specificParcel?.parcel_dimensions_cm.width} cm x{" "}
-              {specificParcel?.parcel_dimensions_cm.height} cm
-            </p>
-          </div>
-          {/* Parcel estimated delivery */}
-          <div className="flex justify-between items-center">
-            <p>Parcel estimated delivery</p>
-            <p>{specificParcel?.parcel_estimated_delivery}</p>
-          </div>
-          {/* Close button */}
-          <div className="modal-action">
-            <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn">Close</button>
-            </form>
-          </div>
-        </div>
-      </dialog>
+        </dialog>
+      ))}
 
       <div className="flex flex-row w-[40%] min-w-96 gap-4 justify-center mt-4">
         <button className="btn btn-error btn-disabled w-1/2">Cancel</button>
