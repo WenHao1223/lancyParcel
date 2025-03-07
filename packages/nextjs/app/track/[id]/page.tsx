@@ -326,7 +326,7 @@ const Track: NextPage = () => {
           </div>
           {/* is fragile */}
           <div className="flex justify-between items-center">
-            <p>Is fragile</p>
+            <p>Is fragile?</p>
             <p>{specificParcel?.is_fragile ? "Yes" : "No"}</p>
           </div>
           {/* extra comment */}

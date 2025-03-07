@@ -5,11 +5,10 @@ import Image from "next/image";
 import { NextPage } from "next";
 import Swal from "sweetalert2";
 import parcelJSON from "~~/data/parcel.json";
-import { CustomerWithoutPasswordInterface, ParcelHubInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
+import { CustomerWithoutPasswordInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
 
 const OrderHistory: NextPage = () => {
   const [customerData, setCustomerData] = useState<CustomerWithoutPasswordInterface | null>(null);
-  const [parcelHubData, setParcelHubData] = useState<ParcelHubInterface | null>(null);
   const [parcelData, setParcelData] = useState<ParcelInterface[] | null>(null);
 
   const [isLogin, setIsLogin] = useState<null | boolean>(null);
@@ -35,6 +34,12 @@ const OrderHistory: NextPage = () => {
       window.location.href = "/login";
     }
   }, []);
+
+  const formatDate = (isoString?: string): string => {
+    if (!isoString) return "--/--"; // Handle undefined or null values
+
+    return isoString.slice(0, 16).replace("T", " ");
+  };
 
   useEffect(() => {
     if (isLogin === false) {
@@ -69,7 +74,7 @@ const OrderHistory: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold">Customer Dashboard Page</h1>
+      <h1 className="text-4xl font-bold">Customer Dashboard</h1>
       <p>View your parcel status here.</p>
 
       {/* Customer details */}
@@ -99,56 +104,101 @@ const OrderHistory: NextPage = () => {
           <li className="p-4 pb-2 text-xs opacity-60 tracking-wide">Order History</li>
 
           <li className="list-row">
-            <div>
-              <Image
-                width={40}
-                height={40}
-                className="rounded-box"
-                src="https://img.daisyui.com/images/profile/demo/1@94.webp"
-                alt="Product"
-              />
-            </div>
-            <div>
-              <div>Dio Lupa</div>
-              <div className="text-xs uppercase font-semibold opacity-60">2025-03-02 17:00:00</div>
-            </div>
-            <button className="btn btn-square btn-ghost">
-              <div className="tooltip" data-tip="Check product details">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                  />
-                </svg>
+            {filteredParcelData ? (
+              filteredParcelData.map((parcel, index) => (
+                <>
+                  <div>
+                    <Image width={40} height={40} className="rounded-box" src="/lancy-parcel.png" alt="" />
+                  </div>
+                  <div>
+                    <div
+                      className="link hover:text-secondary"
+                      onClick={() =>
+                        (
+                          document.getElementById("modal-trackingNo-" + parcel.tracking_number) as HTMLDialogElement
+                        )?.showModal()
+                      }
+                    >
+                      {parcel.tracking_number}
+                    </div>
+                    <div className="text-xs font-semibold opacity-60">
+                      Expected Delivery Time: {formatDate(parcel.parcel_estimated_delivery)}
+                    </div>
+                  </div>
+
+                  {/* Tracking Number Modal */}
+                  <dialog id={"modal-trackingNo-" + parcel.tracking_number} className="modal">
+                    <div className="modal-box">
+                      <h3 className="font-bold text-lg">{parcel.tracking_number}</h3>
+                      <p className="pb-2">Press ESC key or click the button below to close</p>
+                      {/* Parcel weight */}
+                      <div className="flex justify-between items-center">
+                        <p>Parcel weight</p>
+                        <p>{parcel.parcel_weight_kg} kg</p>
+                      </div>
+                      {/* Parcel dimension */}
+                      <div className="flex justify-between items-center">
+                        <p>Parcel dimension</p>
+                        <p>
+                          {parcel.parcel_dimensions_cm.length} cm x {parcel.parcel_dimensions_cm.width} cm x{" "}
+                          {parcel.parcel_dimensions_cm.height} cm
+                        </p>
+                      </div>
+                      {/* Parcel estimated delivery */}
+                      <div className="flex justify-between items-center">
+                        <p>Parcel estimated delivery</p>
+                        <p>{parcel.parcel_estimated_delivery}</p>
+                      </div>
+                      {/* Parcel type */}
+                      <div className="flex justify-between items-center">
+                        <p>Parcel type</p>
+                        <p>{parcel.parcel_type.charAt(0).toUpperCase() + parcel.parcel_type.slice(1)}</p>
+                      </div>
+                      {/* is fragile */}
+                      <div className="flex justify-between items-center">
+                        <p>Is fragile?</p>
+                        <p>{parcel.is_fragile ? "Yes" : "No"}</p>
+                      </div>
+                      {/* extra comment */}
+                      <div className="flex justify-between items-center">
+                        <p>Extra comment</p>
+                        <p>{parcel.extra_comment}</p>
+                      </div>
+                      {/* Close button */}
+                      <div className="modal-action">
+                        <form method="dialog">
+                          {/* if there is a button in form, it will close the modal */}
+                          <button className="btn">Close</button>
+                        </form>
+                      </div>
+                    </div>
+                  </dialog>
+                  <button className="btn btn-square btn-ghost" onClick={() => trackDelivery(parcel.tracking_number)}>
+                    <div className="tooltip" data-tip="Track delivery">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="size-6"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                </>
+              ))
+            ) : (
+              <div className="flex flex-row justify-between w-full items-center">
+                <p className="text-center w-full">Loading ...</p>
               </div>
-            </button>
-            <button className="btn btn-square btn-ghost">
-              <div className="tooltip" data-tip="Track delivery">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
-                  />
-                </svg>
-              </div>
-            </button>
+            )}
           </li>
         </ul>
       </div>

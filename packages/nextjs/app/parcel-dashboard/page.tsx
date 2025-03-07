@@ -1220,7 +1220,7 @@ const Dashboard: NextPage = () => {
                         </div>
                         {/* is fragile */}
                         <div className="flex justify-between items-center">
-                          <p>Is fragile</p>
+                          <p>Is fragile?</p>
                           <p>{parcel.is_fragile ? "Yes" : "No"}</p>
                         </div>
                         {/* extra comment */}
