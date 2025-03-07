@@ -10,7 +10,11 @@ import parcelHubJSON from "~~/data/parcelHub.json";
 //BLOCKCHAIN
 import { useScaffoldContract } from "~~/hooks/scaffold-eth";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
-import { EmployeeWithoutPasswordInterface, ParcelHubInterface } from "~~/interfaces/GeneralInterface";
+import {
+  CustomerWithoutPasswordInterface,
+  EmployeeWithoutPasswordInterface,
+  ParcelHubInterface,
+} from "~~/interfaces/GeneralInterface";
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
@@ -20,7 +24,8 @@ const Home: NextPage = () => {
     contractName: "YourContract",
   });
 
-  const [loginData, setLoginData] = useState<EmployeeWithoutPasswordInterface | null>(null);
+  const [employeeData, setEmployeeData] = useState<EmployeeWithoutPasswordInterface | null>(null);
+  const [customerData, setCustomerData] = useState<CustomerWithoutPasswordInterface | null>(null);
   const [parcelHubData, setParcelHubData] = useState<ParcelHubInterface | null>(null);
   const [isLogin, setIsLogin] = useState<null | boolean>(null);
 
@@ -33,45 +38,50 @@ const Home: NextPage = () => {
   // };
   //BLOCKCHAIN
 
-  // if local storage has user
-  // decode user
-  // save it to loginData variable
-
   useEffect(() => {
-    const userBase64 = localStorage.getItem("loginData");
+    const employeeBase64 = localStorage.getItem("employeeData");
+    const customerBase64 = localStorage.getItem("customerData");
 
-    if (userBase64) {
-      const userString = atob(userBase64);
-      const user = JSON.parse(userString);
-      setLoginData(user);
+    if (employeeBase64) {
+      const employeeString = atob(employeeBase64);
+      const employee = JSON.parse(employeeString);
+      setEmployeeData(employee);
 
-      // load parcel hub info from json based on loginData.parcel_hub_id
-      const parcelHub = parcelHubJSON.find(p => p.parcel_hub_id === user.parcel_hub_id);
+      // load parcel hub info from json based on employeeData.parcel_hub_id
+      const parcelHub = parcelHubJSON.find(p => p.parcel_hub_id === employee.parcel_hub_id);
       if (parcelHub) {
         setParcelHubData(parcelHub);
         setIsLogin(true);
       } else {
         console.log("Parcel hub not found.");
         setIsLogin(false);
-        localStorage.removeItem("loginData");
+        localStorage.removeItem("employeeData");
         window.location.href = "/login";
       }
+    } else if (customerBase64) {
+      const customerString = atob(customerBase64);
+      const customer = JSON.parse(customerString);
+      setCustomerData(customer);
+      setParcelHubData(null);
+      setIsLogin(true);
     } else {
       // not login
       console.log("Please login first.");
       setIsLogin(false);
-      window.location.href = "/login";
+      // window.location.href = "/login";
     }
   }, []);
 
   useEffect(() => {
     if (isLogin === false) {
-      window.location.href = "/login";
+      console.log("Please login first.");
+      // window.location.href = "/login";
     }
   }, [isLogin]);
 
   const handleLogout = () => {
-    localStorage.removeItem("loginData");
+    localStorage.removeItem("employeeData");
+    localStorage.removeItem("customerData");
     setIsLogin(false);
     window.location.href = "/";
   };
@@ -150,11 +160,11 @@ const Home: NextPage = () => {
                 <>
                   {/* Parcel Hub detail */}
                   <div className="flex flex-row gap-4 mb-6">
-                    {typeof loginData === "object" && loginData !== null && (
+                    {typeof employeeData === "object" && employeeData !== null && (
                       <ul className="list bg-base-100 rounded-box w-full shadow-md">
                         <li className="p-4 pt-2 pb-0 tracking-wide border-b-2 border-gray-400 flex flex-row justify-between items-center">
-                          <p>{loginData.employee_id}</p>
-                          <p>{loginData.email}</p>
+                          <p>{employeeData.employee_id}</p>
+                          <p>{employeeData.email}</p>
                         </li>
                         <div className="card bg-base-100 w-full shadow-sm opacity-65 p-4">
                           {parcelHubData ? (
@@ -195,6 +205,14 @@ const Home: NextPage = () => {
                         </div>
                       </ul>
                     )}
+                    {typeof customerData === "object" && customerData !== null && (
+                      <ul className="list bg-base-100 rounded-box w-full shadow-md">
+                        <li className="p-4 pt-2 pb-0 tracking-wide border-gray-400 flex flex-row justify-between items-center">
+                          <p>{customerData.name}</p>
+                          <p>{customerData.email}</p>
+                        </li>
+                      </ul>
+                    )}
                   </div>
                   <button className="btn btn-primary w-full" onClick={handleLogout}>
                     Logout
@@ -217,6 +235,17 @@ const Home: NextPage = () => {
             </div>
           </div>
           <div className="flex flex-col gap-2 mt-12">
+            {/* Customer */}
+            <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
+              <h2>Customer</h2>
+              <button className="btn">
+                <Link href="/register">Register Page</Link>
+              </button>
+              <button className="btn">
+                <Link href="/login">Login Page</Link>
+              </button>
+            </div>
+
             <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
               <h2>User</h2>
               <button className="btn">
