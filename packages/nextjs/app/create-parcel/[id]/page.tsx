@@ -73,51 +73,51 @@ const useHashSignature = (connectedAddress: string | undefined) => {
   return { handleHashSignature };
 };
 
-const useHashReceive = () => {
-  const { writeContractAsync } = useScaffoldWriteContract({
-    contractName: "YourContract",
-  });
+// const useHashReceive = () => {
+//   const { writeContractAsync } = useScaffoldWriteContract({
+//     contractName: "YourContract",
+//   });
 
-  const hashReceiveData = async (trackingNumber: string, receiveTime: string, hubId: string, employee: string) => {
-    try {
-      const tx = await writeContractAsync({
-        functionName: "hashReceiveData",
-        args: [trackingNumber, receiveTime, hubId, employee],
-      });
+//   const hashReceiveData = async (trackingNumber: string, receiveTime: string, hubId: string, employee: string) => {
+//     try {
+//       const tx = await writeContractAsync({
+//         functionName: "hashReceiveData",
+//         args: [trackingNumber, receiveTime, hubId, employee],
+//       });
 
-      if (tx) {
-        Swal.fire({
-          icon: "success",
-          title: "Transaction successful!",
-          text: "Transaction has been sent successfully. Verification Hash: " + tx,
-          allowOutsideClick: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: () => {
-            Swal.showLoading();
-          },
-        });
-        return tx; // Returning hash
-      }
-    } catch (error) {
-      console.error("Error hashing parcel data:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Transaction failed!",
-        text: "Please try again.",
-        allowOutsideClick: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
-      return null;
-    }
-  };
+//       if (tx) {
+//         Swal.fire({
+//           icon: "success",
+//           title: "Transaction successful!",
+//           text: "Transaction has been sent successfully. Verification Hash: " + tx,
+//           allowOutsideClick: false,
+//           timer: 3000,
+//           timerProgressBar: true,
+//           didOpen: () => {
+//             Swal.showLoading();
+//           },
+//         });
+//         return tx; // Returning hash
+//       }
+//     } catch (error) {
+//       console.error("Error hashing parcel data:", error);
+//       Swal.fire({
+//         icon: "error",
+//         title: "Transaction failed!",
+//         text: "Please try again.",
+//         allowOutsideClick: false,
+//         timer: 3000,
+//         timerProgressBar: true,
+//         didOpen: () => {
+//           Swal.showLoading();
+//         },
+//       });
+//       return null;
+//     }
+//   };
 
-  return { hashReceiveData };
-};
+//   return { hashReceiveData };
+// };
 
 // Seller
 // Tracking Number, Order Time, Sender Details (Encrypted), Parcel Weight & Dimensions, Dispatch Time, Employee ID Wallet Address, Digital Signature
@@ -136,7 +136,7 @@ const ParcelCreate: NextPage = () => {
   const params = useParams();
   const { address: connectedAddress } = useAccount();
   const { handleHashSignature } = useHashSignature(connectedAddress);
-  const { hashReceiveData } = useHashReceive();
+  // const { hashReceiveData } = useHashReceive();
 
   useEffect(() => {
     if (!params) return;
@@ -281,27 +281,27 @@ const ParcelCreate: NextPage = () => {
       });
       return;
     }
-    const verification_hash = await hashReceiveData(
-      trackingNumber, // Tracking number
-      receivedTime, // Received time
-      hub_id, // Hub ID
-      signature_hash, // Employee
-    );
+    // const verification_hash = await hashReceiveData(
+    //   trackingNumber, // Tracking number
+    //   receivedTime, // Received time
+    //   hub_id, // Hub ID
+    //   signature_hash, // Employee
+    // );
 
-    if (!verification_hash) {
-      Swal.fire({
-        icon: "error",
-        title: "Verification hash is invalid!",
-        text: "Please try again.",
-        allowOutsideClick: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
-      return;
-    }
+    // if (!verification_hash) {
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "Verification hash is invalid!",
+    //     text: "Please try again.",
+    //     allowOutsideClick: false,
+    //     timer: 3000,
+    //     timerProgressBar: true,
+    //     didOpen: () => {
+    //       Swal.showLoading();
+    //     },
+    //   });
+    //   return;
+    // }
 
     const photo_url = "dummy_photo_url"; // Replace with actual photo URL
 
@@ -318,7 +318,7 @@ const ParcelCreate: NextPage = () => {
         parcel.pathway[pathwayIndex].photo_url = photo_url;
         parcel.pathway[pathwayIndex].employee.employee_id = employeeData?.employee_id || "";
         parcel.pathway[pathwayIndex].employee.signature_hash = signature_hash;
-        parcel.pathway[pathwayIndex].verification_hash = verification_hash;
+        // parcel.pathway[pathwayIndex].verification_hash = verification_hash;
 
         parcel.current_location = parcelHubData?.parcel_hub_id || "";
 
