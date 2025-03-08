@@ -7,7 +7,6 @@ import { NextPage } from "next";
 import Swal from "sweetalert2";
 //solidity
 import { useAccount } from "wagmi";
-import employeeJSON from "~~/data/employee.json";
 import parcelJSON from "~~/data/parcel.json";
 import parcelHubJSON from "~~/data/parcelHub.json";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
@@ -268,7 +267,7 @@ const ParcelReceive: NextPage = () => {
     }
     const verification_hash = await hashReceiveData(
       trackingNumber, // Tracking number
-      dispatchedTime, // Dispatch time
+      receivedTime, // Received time
       hub_id, // Hub ID
       signature_hash, // Employee
     );
@@ -303,6 +302,8 @@ const ParcelReceive: NextPage = () => {
         parcel.pathway[pathwayIndex].employee.employee_id = employeeData?.employee_id || "";
         parcel.pathway[pathwayIndex].employee.signature_hash = signature_hash;
         parcel.pathway[pathwayIndex].verification_hash = verification_hash;
+
+        parcel.current_location = parcelHubData?.parcel_hub_id || "";
 
         // Update the parcelJSON with the modified parcel
         parcelJSON[parcelIndex] = parcel;
