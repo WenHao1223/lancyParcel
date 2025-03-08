@@ -181,6 +181,10 @@ const Track: NextPage = () => {
     return date.toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
   };
 
+  const backAction = () => {
+    window.location.href = "/parcel-dashboard";
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-4xl font-bold mt-8">Tracking Page</h1>
@@ -392,7 +396,9 @@ const Track: NextPage = () => {
       ))}
 
       <div className="flex flex-row w-[40%] min-w-96 gap-4 justify-center mt-4">
-        <button className="btn btn-error btn-disabled w-1/2">Cancel</button>
+        <button className="btn btn-secondary btn-outline w-1/2" onClick={backAction}>
+          Back
+        </button>
         <button className="btn btn-primary w-1/2">Confirm Delivery</button>
       </div>
     </div>
