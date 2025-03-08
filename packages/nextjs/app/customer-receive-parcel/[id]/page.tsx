@@ -218,6 +218,22 @@ const ParcelReceiveCustomer: NextPage = () => {
     }
   }, [specificParcel, customerData, isCurrentCustomer]);
 
+  const cancelDigitalSignature = () => {
+    Swal.fire({
+      icon: "warning",
+      title: "Cancel Digital Signature!",
+      text: "Action has been cancelled.",
+      allowOutsideClick: false,
+      timer: 1500,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    }).then(() => {
+      window.location.href = "/parcel-dashboard";
+    });
+  };
+
   const placeDigitalSigature = async () => {
     console.log("Tracking Number", trackingNumber);
     console.log("Received Time", receivedTime);
@@ -571,7 +587,9 @@ const ParcelReceiveCustomer: NextPage = () => {
 
       {isCurrentCustomer && (
         <div className="flex flex-row w-[40%] min-w-96 gap-4 justify-center mt-4">
-          <button className="btn btn-error btn-disabled w-1/2">Cancel</button>
+          <button className="btn btn-secondary btn-outline w-1/2" onClick={cancelDigitalSignature}>
+            Cancel
+          </button>
           <button className="btn btn-primary w-1/2" onClick={placeDigitalSigature}>
             Place Digital Signature
           </button>
