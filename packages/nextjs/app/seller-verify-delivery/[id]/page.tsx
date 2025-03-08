@@ -8,8 +8,9 @@ import Swal from "sweetalert2";
 //solidity
 import { useAccount } from "wagmi";
 import employeeJSON from "~~/data/employee.json";
+import parcelJSON from "~~/data/parcel.json";
 import parcelHubJSON from "~~/data/parcelHub.json";
-import parcelJSON from "~~/data/temporaryParcel.json";
+import temporaryParcelJSON from "~~/data/temporaryParcel.json";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { CustomerWithoutPasswordInterface, ParcelHubInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
 
@@ -146,6 +147,7 @@ const ParcelSellerVerify: NextPage = () => {
 
   const [customerData, setCustomerData] = useState<CustomerWithoutPasswordInterface | null>(null);
   const [parcelData, setParcelData] = useState<ParcelInterface[] | null>(null);
+  const [temporaryParcelData, setTemporaryParcelData] = useState<ParcelInterface[] | null>(null);
   const [isLogin, setIsLogin] = useState<null | boolean>(null);
 
   const [trackingNumber, setTrackingNumber] = useState("");
@@ -184,15 +186,24 @@ const ParcelSellerVerify: NextPage = () => {
   }, [isLogin]);
 
   // store parcelJSON data into parcelData
-  if (!parcelData) {
-    setParcelData(parcelJSON);
-  }
+  useEffect(() => {
+    if (!parcelData) {
+      setParcelData(parcelJSON);
+    }
+  }, [parcelJSON]);
+
+  // store temporaryParcelJSON data into temporaryParcelData
+  useEffect(() => {
+    if (!temporaryParcelData) {
+      setTemporaryParcelData(temporaryParcelJSON);
+    }
+  }, [temporaryParcelJSON]);
 
   useEffect(() => {
-    if (parcelData) {
-      setSpecificParcel(parcelData.find(p => p.tracking_number === trackingNumber) || null);
+    if (temporaryParcelData) {
+      setSpecificParcel(temporaryParcelData.find(p => p.tracking_number === trackingNumber) || null);
     }
-  }, [parcelData, trackingNumber]);
+  }, [temporaryParcelData, trackingNumber]);
 
   useEffect(() => {
     if (specificParcel) {
@@ -266,10 +277,10 @@ const ParcelSellerVerify: NextPage = () => {
 
     const photo_url = "dummy_photo_url"; // Replace with actual photo URL
 
-    // Find the specific parcel
-    const parcelIndex = parcelJSON.findIndex(p => p.tracking_number === trackingNumber);
-    if (parcelIndex !== -1) {
-      const parcel = parcelJSON[parcelIndex];
+    // Find the specific parcel in temporaryParcelJSON
+    const tempParcelIndex = temporaryParcelJSON.findIndex(p => p.tracking_number === trackingNumber);
+    if (tempParcelIndex !== -1) {
+      const parcel = temporaryParcelJSON[tempParcelIndex];
 
       // Find the current parcel hub in the pathway
       const pathwayIndex = parcel.pathway.findIndex(
@@ -282,28 +293,30 @@ const ParcelSellerVerify: NextPage = () => {
 
         parcel.current_location = specificParcel?.pathway[0]?.parcel_hub_id || "";
 
-        // Update the parcelJSON with the modified parcel
-        parcelJSON[parcelIndex] = parcel;
+        // Remove the parcel from temporaryParcelJSON
+        temporaryParcelJSON.splice(tempParcelIndex, 1);
 
-        async function handleUpdate() {
-          if (!parcelJSON) return;
+        // Add the updated parcel to ParcelJSON
+        const updatedParcelJSON = [...parcelJSON, parcel];
 
+        async function handleUpdate(api: string, data: any) {
           try {
-            const response = await fetch("/api/parcel", {
+            const response = await fetch(api, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(parcelJSON),
+              body: JSON.stringify(data),
             });
 
-            // if (!response.ok) throw new Error("Failed to update data");
+            if (!response.ok) throw new Error("Failed to update data");
           } catch (error) {
             console.error(error);
           }
         }
 
-        await handleUpdate();
+        await handleUpdate("/api/temporaryParcel", temporaryParcelJSON); // Update temporaryParcelJSON
+        await handleUpdate("/api/parcel", updatedParcelJSON); // Update ParcelJSON
 
-        console.log("Parcel updated successfully:", parcel);
+        console.log("Parcel moved successfully:", parcel);
 
         Swal.fire({
           icon: "success",
