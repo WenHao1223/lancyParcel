@@ -190,14 +190,14 @@ const ParcelSellerVerify: NextPage = () => {
     if (!parcelData) {
       setParcelData(parcelJSON);
     }
-  }, [parcelJSON]);
+  }, [parcelData]);
 
   // store temporaryParcelJSON data into temporaryParcelData
   useEffect(() => {
     if (!temporaryParcelData) {
       setTemporaryParcelData(temporaryParcelJSON);
     }
-  }, [temporaryParcelJSON]);
+  }, [temporaryParcelData]);
 
   useEffect(() => {
     if (temporaryParcelData) {
@@ -210,7 +210,7 @@ const ParcelSellerVerify: NextPage = () => {
       // check if this is the sender
       setIsSender(specificParcel?.sender?.email === customerData?.email ? true : false);
     }
-  }, [specificParcel]);
+  }, [specificParcel, customerData]);
 
   const cancelDigitalSignature = () => {
     Swal.fire({
