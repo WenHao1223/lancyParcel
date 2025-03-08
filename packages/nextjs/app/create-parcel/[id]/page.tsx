@@ -158,9 +158,7 @@ const ParcelCreate: NextPage = () => {
   const [isInsidePathway, setIsInsidePathway] = useState<boolean | null>(null);
 
   const [receivedTime, setReceivedTime] = useState("");
-  const [prevParcelHub, setPrevParcelHub] = useState<ParcelHubInterface | null>(null);
   const [currentParcelHub, setCurrentParcelHub] = useState<ParcelHubInterface | null>(null);
-  const [dispatchedTime, setDispatchedTime] = useState("");
 
   useEffect(() => {
     const employeeBase64 = localStorage.getItem("employeeData");
@@ -223,20 +221,6 @@ const ParcelCreate: NextPage = () => {
     if (specificParcel && parcelHubData && isInsidePathway) {
       setReceivedTime(new Date().toISOString());
       setCurrentParcelHub(parcelHubData);
-      setPrevParcelHub(
-        parcelHubJSON.find(
-          ph =>
-            ph.parcel_hub_id ===
-            specificParcel.pathway[
-              specificParcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData.parcel_hub_id) - 1
-            ]?.parcel_hub_id,
-        ) || null,
-      );
-      setDispatchedTime(
-        specificParcel.pathway[
-          specificParcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData.parcel_hub_id) - 1
-        ]?.dispatch_time || "",
-      );
     }
   }, [specificParcel, parcelHubData, isInsidePathway, employeeData]);
 
