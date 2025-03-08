@@ -367,7 +367,7 @@ const ParcelReceive: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold">Receive Parcel Verification</h1>
+      <h1 className="text-4xl font-bold mt-8">Receive Parcel Verification</h1>
       <p>Verify your parcel ready for receive.</p>
 
       {/* Ordered Item detail */}

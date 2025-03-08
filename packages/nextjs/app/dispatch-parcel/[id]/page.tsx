@@ -361,7 +361,7 @@ const ParcelDispatch: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold">Dispatch Parcel Verification</h1>
+      <h1 className="text-4xl font-bold mt-8">Dispatch Parcel Verification</h1>
       <p>Verify your parcel ready for dispatch.</p>
 
       {/* Ordered Item detail */}

@@ -21,7 +21,7 @@ const Track: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold">Tracking Page</h1>
+      <h1 className="text-4xl font-bold mt-8">Tracking Page</h1>
       <p>Track your order here.</p>
 
       {/* Ordered Item detail */}

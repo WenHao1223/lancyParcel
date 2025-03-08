@@ -110,7 +110,7 @@ const Register: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold">Register Page</h1>
+      <h1 className="text-4xl font-bold mt-8">Register Page</h1>
       <p>Register your account here.</p>
 
       {/* Register window */}
