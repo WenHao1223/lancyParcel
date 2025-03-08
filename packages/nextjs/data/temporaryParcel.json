@@ -39,8 +39,8 @@
           "signature_hash": ""
         },
         "employee": {
-          "employee_id": "",
-          "signature_hash": ""
+          "employee_id": "EMP1001",
+          "signature_hash": "0x123456789dsa"
         },
         "verification_hash": ""
       },

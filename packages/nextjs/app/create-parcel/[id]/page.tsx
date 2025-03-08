@@ -530,128 +530,21 @@ const ParcelCreate: NextPage = () => {
       )}
 
       {/* Sender Modal */}
+      {/* Sender Modal */}
       {specificParcel && (
         <dialog id={"modal-sender-" + specificParcel.tracking_number} className="modal">
           <div className="modal-box">
-            <h3 className="font-bold text-lg">
-              {
-                parcelHubJSON.find(
-                  ph =>
-                    ph.parcel_hub_id ===
-                    specificParcel.pathway[
-                      specificParcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) - 1
-                    ]?.parcel_hub_id,
-                )?.parcel_hub_name
-              }
-            </h3>
+            <h3 className="font-bold text-lg">{specificParcel.sender.name}</h3>
             <p className="pb-2">Press ESC key or click the button below to close</p>
-            {/* Parcel Hub ID */}
+            {/* Sender phone number */}
             <div className="flex justify-between items-center">
-              <p>Parcel Hub ID</p>
-              <p>
-                {
-                  specificParcel.pathway[
-                    specificParcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) - 1
-                  ]?.parcel_hub_id
-                }
-              </p>
+              <p>Phone number</p>
+              <p>{specificParcel.sender.phone_number}</p>
             </div>
-            {/* Parcel Hub Location */}
+            {/* Sender address */}
             <div className="flex justify-between items-center">
-              <p>Parcel Hub Location</p>
-              <p>
-                {parcelHubJSON.find(
-                  ph =>
-                    ph.parcel_hub_id ===
-                    specificParcel.pathway[
-                      specificParcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) - 1
-                    ]?.parcel_hub_id,
-                )?.parcel_hub_address +
-                  ", " +
-                  parcelHubJSON.find(
-                    ph =>
-                      ph.parcel_hub_id ===
-                      specificParcel.pathway[
-                        specificParcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) - 1
-                      ]?.parcel_hub_id,
-                  )?.state +
-                  ", " +
-                  parcelHubJSON.find(
-                    ph =>
-                      ph.parcel_hub_id ===
-                      specificParcel.pathway[
-                        specificParcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) - 1
-                      ]?.parcel_hub_id,
-                  )?.country}
-              </p>
-            </div>
-            {/* Parcel Hub Operating Level */}
-            <div className="flex justify-between items-center">
-              <p>Parcel Hub Operating Level</p>
-              <p>
-                <span
-                  className={`badge badge-outline badge-sm ${
-                    parcelHubJSON
-                      .find(
-                        ph =>
-                          ph.parcel_hub_id ===
-                          specificParcel.pathway[
-                            specificParcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) -
-                              1
-                          ]?.parcel_hub_id,
-                      )
-                      ?.parcel_hub_operating_level.toLowerCase() === "international"
-                      ? "badge-success"
-                      : parcelHubJSON
-                            .find(
-                              ph =>
-                                ph.parcel_hub_id ===
-                                specificParcel.pathway[
-                                  specificParcel.pathway.findIndex(
-                                    ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id,
-                                  ) - 1
-                                ]?.parcel_hub_id,
-                            )
-                            ?.parcel_hub_operating_level.toLowerCase() === "national"
-                        ? "badge-info"
-                        : parcelHubJSON
-                              .find(
-                                ph =>
-                                  ph.parcel_hub_id ===
-                                  specificParcel.pathway[
-                                    specificParcel.pathway.findIndex(
-                                      ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id,
-                                    ) - 1
-                                  ]?.parcel_hub_id,
-                              )
-                              ?.parcel_hub_operating_level.toLowerCase() === "regional"
-                          ? "badge-warning"
-                          : "badge-error"
-                  }`}
-                >
-                  {(parcelHubJSON
-                    .find(
-                      ph =>
-                        ph.parcel_hub_id ===
-                        specificParcel.pathway[
-                          specificParcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) - 1
-                        ]?.parcel_hub_id,
-                    )
-                    ?.parcel_hub_operating_level.charAt(0)
-                    .toUpperCase() || "") +
-                    (parcelHubJSON
-                      .find(
-                        ph =>
-                          ph.parcel_hub_id ===
-                          specificParcel.pathway[
-                            specificParcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) -
-                              1
-                          ]?.parcel_hub_id,
-                      )
-                      ?.parcel_hub_operating_level.slice(1)
-                      .toLowerCase() || "")}
-                </span>
-              </p>
+              <p>Email</p>
+              <p>{specificParcel.sender.email}</p>
             </div>
             {/* Close button */}
             <div className="modal-action">
