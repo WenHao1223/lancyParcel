@@ -1,29 +1,41 @@
-# 🏗 Scaffold-ETH 2
+# 🏗 Lancy Parcel
 
-<h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Documentation</a> |
-  <a href="https://scaffoldeth.io">Website</a>
-</h4>
+Lancy Parcel – Secure, Transparent, and Immutable Parcel Tracking System, that helps e-commerce logistics companies securely track parcels
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+## Verified Contract Address
 
-⚙️ Built using NextJS, RainbowKit, Foundry, Wagmi, Viem, and Typescript.
+Scroll Sepolia:
 
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
-- 🪝 **[Custom hooks](https://docs.scaffoldeth.io/hooks/)**: Collection of React hooks wrapper around [wagmi](https://wagmi.sh/) to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build your frontend.
-- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet.
-- 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network.
+```
+0x1dE55945e2c86F766613D55784b73F3dDCb2901B
+```
 
-![Debug Contracts tab](https://github.com/scaffold-eth/scaffold-eth-2/assets/55535804/b237af0c-5027-4849-a5c1-2e31495cccb1)
+## Link to Scrollscan
+
+https://sepolia.scrollscan.com/address/0x1dE55945e2c86F766613D55784b73F3dDCb2901B
+
+## The Problem Lancy Parcel Solves
+
+Lancy Parcel addresses major challenges in the logistics industry by ensuring secure, transparent and verifiable parcel tracking.
+
+-   Stolen or Missing Parcels: Every parcel’s journey is immutably recorded on the blockchain, preventing lost or stolen items from going unnoticed.
+-   Fake Signature Fraud: With cryptographic digital signatures, only verified employees and recipients can sign for parcels, eliminating unauthorized deliveries.
+-   Proof of Recipient & Seller Accountability: If a dispute arises (e.g., fake products or unreceived items), tamper-proof records provide legal proof, ensuring fraudulent sellers are held accountable.
+-   Mishandling & Damaged Parcels: Parcel conditions can be tracked at each hub and responsible employees are directly linked to each handover, reducing careless handling.
+
+Lancy Parcel ensures that every transaction is secure, every signature is verified, and every parcel is delivered with accountability.
+
+## Technologies We Used
+
+Solidity, Scaffold-ETH, NextJS, Foundry, Scroll
 
 ## Requirements
 
 Before you begin, you need to install the following tools:
 
-- [Node (>= v20.18.3)](https://nodejs.org/en/download/)
-- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
-- [Git](https://git-scm.com/downloads)
+-   [Node (>= v20.18.3)](https://nodejs.org/en/download/)
+-   Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
+-   [Git](https://git-scm.com/downloads)
 
 ## Quickstart
 
@@ -62,19 +74,6 @@ Visit your app on: `http://localhost:3000`. You can interact with your smart con
 
 Run smart contract test with `yarn foundry:test`
 
-- Edit your smart contracts in `packages/foundry/contracts`
-- Edit your frontend homepage at `packages/nextjs/app/page.tsx`. For guidance on [routing](https://nextjs.org/docs/app/building-your-application/routing/defining-routes) and configuring [pages/layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts) checkout the Next.js documentation.
-- Edit your deployment scripts in `packages/foundry/script`
-
-
-## Documentation
-
-Visit our [docs](https://docs.scaffoldeth.io) to learn how to start building with Scaffold-ETH 2.
-
-To know more about its features, check out our [website](https://scaffoldeth.io).
-
-## Contributing to Scaffold-ETH 2
-
-We welcome contributions to Scaffold-ETH 2!
-
-Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
+-   Edit your smart contracts in `packages/foundry/contracts`
+-   Edit your frontend homepage at `packages/nextjs/app/page.tsx`. For guidance on [routing](https://nextjs.org/docs/app/building-your-application/routing/defining-routes) and configuring [pages/layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts) checkout the Next.js documentation.
+-   Edit your deployment scripts in `packages/foundry/script`
