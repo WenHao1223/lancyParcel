@@ -895,7 +895,7 @@ const Dashboard: NextPage = () => {
                   </td>
                   <td>
                     {parcel.pathway[0].parcel_hub_id === parcelHubData?.parcel_hub_id ? (
-                      <i>(Sender)</i>
+                      <i>(Sender: {parcel.sender.name})</i>
                     ) : parcel.pathway.findIndex(ph => ph.parcel_hub_id === parcelHubData?.parcel_hub_id) > 0 ? (
                       <>
                         <span

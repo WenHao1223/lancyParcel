@@ -5,15 +5,18 @@ import Image from "next/image";
 import { NextPage } from "next";
 import Swal from "sweetalert2";
 import parcelJSON from "~~/data/parcel.json";
+import temporaryParcelJSON from "~~/data/temporaryParcel.json";
 import { CustomerWithoutPasswordInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
 
 const SellerDashboard: NextPage = () => {
   const [customerData, setCustomerData] = useState<CustomerWithoutPasswordInterface | null>(null);
   const [parcelData, setParcelData] = useState<ParcelInterface[] | null>(null);
+  const [temporaryParcelData, setTemporaryParcelData] = useState<ParcelInterface[] | null>(null);
 
   const [isLogin, setIsLogin] = useState<null | boolean>(null);
 
   const [filteredParcelData, setFilteredParcelData] = useState<ParcelInterface[] | null>(null);
+  const [filteredTemporaryParcelData, setFilteredTemporaryParcelData] = useState<ParcelInterface[] | null>(null);
 
   useEffect(() => {
     const employeeBase64 = localStorage.getItem("employeeData");
@@ -48,9 +51,17 @@ const SellerDashboard: NextPage = () => {
   }, [isLogin]);
 
   // store parcelJSON data into parcelData
-  if (!parcelData) {
-    setParcelData(parcelJSON);
-  }
+  useEffect(() => {
+    if (!parcelData) {
+      setParcelData(parcelJSON);
+    }
+  }, [parcelData]);
+
+  useEffect(() => {
+    if (!temporaryParcelData) {
+      setTemporaryParcelData(temporaryParcelJSON);
+    }
+  }, [temporaryParcelData]);
 
   useEffect(() => {
     if (parcelData) {
@@ -58,6 +69,13 @@ const SellerDashboard: NextPage = () => {
       setFilteredParcelData(filteredData);
     }
   }, [parcelData, customerData]);
+
+  useEffect(() => {
+    if (temporaryParcelData) {
+      const filteredData = temporaryParcelData.filter(parcel => parcel.sender.email === customerData?.email);
+      setFilteredTemporaryParcelData(filteredData);
+    }
+  }, [temporaryParcelData, customerData]);
 
   const trackDelivery = (trackingNumber: string) => {
     Swal.fire({
@@ -72,7 +90,7 @@ const SellerDashboard: NextPage = () => {
     });
   };
 
-  const receiveParcel = (trackingNumber: string) => {
+  const verifyDelivery = (trackingNumber: string) => {
     Swal.fire({
       title: "Get ready to receive parcel...",
       timer: 1000,
@@ -81,7 +99,7 @@ const SellerDashboard: NextPage = () => {
         Swal.showLoading();
       },
     }).then(() => {
-      window.location.href = "customer-receive-parcel/" + trackingNumber;
+      window.location.href = "seller-verify-delivery/" + trackingNumber;
     });
   };
 
@@ -109,6 +127,119 @@ const SellerDashboard: NextPage = () => {
             <p className="text-center w-full">Loading ...</p>
           </div>
         )}
+      </div>
+
+      {/* Create parcel list */}
+      <div className="flex flex-row w-[40%] gap-4 mb-6">
+        <ul className="list bg-base-100 rounded-box w-full shadow-md">
+          <li className="p-4 pb-2 text-xs opacity-60 tracking-wide">Create Parcel</li>
+
+          {filteredTemporaryParcelData ? (
+            filteredTemporaryParcelData.map(parcel => (
+              <li className="list-row" key={parcel.tracking_number}>
+                <div>
+                  <Image width={40} height={40} className="rounded-box" src="/lancy-parcel.png" alt="" />
+                </div>
+                <div>
+                  <div
+                    className="link hover:text-secondary"
+                    onClick={() =>
+                      (
+                        document.getElementById("modal-trackingNo-" + parcel.tracking_number) as HTMLDialogElement
+                      )?.showModal()
+                    }
+                  >
+                    {parcel.tracking_number}
+                  </div>
+                  <div className="text-xs flex flex-row items-center gap-4">
+                    <div className="text-xs font-semibold opacity-60">
+                      Expected Delivery Time: {formatDate(parcel.parcel_estimated_delivery)}
+                    </div>
+                    <div
+                      id={`status-${parcel.tracking_number}`}
+                      className={`badge badge-outline badge-sm ${
+                        parcel.pathway[0]?.employee.signature_hash ? "badge-primary" : "badge-warning"
+                      }`}
+                    >
+                      {parcel.pathway[0]?.employee.signature_hash ? "Pending" : "Unverified"}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tracking Number Modal */}
+                <dialog id={"modal-trackingNo-" + parcel.tracking_number} className="modal">
+                  <div className="modal-box">
+                    <h3 className="font-bold text-lg">{parcel.tracking_number}</h3>
+                    <p className="pb-2">Press ESC key or click the button below to close</p>
+                    {/* Parcel weight */}
+                    <div className="flex justify-between items-center">
+                      <p>Parcel weight</p>
+                      <p>{parcel.parcel_weight_kg} kg</p>
+                    </div>
+                    {/* Parcel dimension */}
+                    <div className="flex justify-between items-center">
+                      <p>Parcel dimension</p>
+                      <p>
+                        {parcel.parcel_dimensions_cm.length} cm x {parcel.parcel_dimensions_cm.width} cm x{" "}
+                        {parcel.parcel_dimensions_cm.height} cm
+                      </p>
+                    </div>
+                    {/* Parcel estimated delivery */}
+                    <div className="flex justify-between items-center">
+                      <p>Parcel estimated delivery</p>
+                      <p>{parcel.parcel_estimated_delivery}</p>
+                    </div>
+                    {/* Parcel type */}
+                    <div className="flex justify-between items-center">
+                      <p>Parcel type</p>
+                      <p>{parcel.parcel_type.charAt(0).toUpperCase() + parcel.parcel_type.slice(1)}</p>
+                    </div>
+                    {/* is fragile */}
+                    <div className="flex justify-between items-center">
+                      <p>Is fragile?</p>
+                      <p>{parcel.is_fragile ? "Yes" : "No"}</p>
+                    </div>
+                    {/* extra comment */}
+                    <div className="flex justify-between items-center">
+                      <p>Extra comment</p>
+                      <p>{parcel.extra_comment}</p>
+                    </div>
+                    {/* Close button */}
+                    <div className="modal-action">
+                      <form method="dialog">
+                        {/* if there is a button in form, it will close the modal */}
+                        <button className="btn">Close</button>
+                      </form>
+                    </div>
+                  </div>
+                </dialog>
+                {/* Verify Delivery button */}
+                <button className="btn btn-square btn-ghost" onClick={() => verifyDelivery(parcel.tracking_number)}>
+                  <div className="tooltip" data-tip="Verify delivery">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      className="size-6"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                    </svg>
+                  </div>
+                </button>
+              </li>
+            ))
+          ) : (
+            <div className="flex flex-row justify-between w-full items-center">
+              <p className="text-center w-full">Loading ...</p>
+            </div>
+          )}
+        </ul>
       </div>
 
       {/* Sold history list */}

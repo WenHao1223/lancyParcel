@@ -12,9 +12,9 @@
     "is_fragile": true,
     "extra_comment": "",
     "sender": {
-      "name": "123",
-      "phone_number": "123",
-      "email": "123"
+      "name": "David Tan",
+      "phone_number": "+60123456789",
+      "email": "david.tan@example.com"
     },
     "recipient": {
       "name": "123",
