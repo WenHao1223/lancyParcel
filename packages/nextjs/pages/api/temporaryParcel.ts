@@ -28,7 +28,17 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "PUT") {
     try {
       const newParcel = req.body;
-      console.log("Ran here", newParcel);
+
+      // Convert string values to numbers before saving
+      const processedParcel = {
+        ...newParcel,
+        parcel_weight_kg: Number(newParcel.parcel_weight_kg),
+        parcel_dimensions_cm: {
+          length: Number(newParcel.parcel_dimensions_cm.length),
+          width: Number(newParcel.parcel_dimensions_cm.width),
+          height: Number(newParcel.parcel_dimensions_cm.height),
+        },
+      };
 
       // Step 1: Read existing file data
       let existingData: any[] = [];
@@ -41,7 +51,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       }
 
       // Step 2: Append new parcel to the array
-      existingData.push(newParcel);
+      existingData.push(processedParcel);
 
       // Step 3: Write updated data back to the file
       fs.writeFileSync(filePath, JSON.stringify(existingData, null, 2), "utf8");
