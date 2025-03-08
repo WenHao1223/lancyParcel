@@ -221,9 +221,14 @@ const Home: NextPage = () => {
               ) : isLogin == false ? (
                 <>
                   <p className="py-6 px-4 list bg-base-100 rounded-box w-full shadow-md">Please login first.</p>
-                  <Link href="/login" className="link no-underline">
-                    <button className="btn btn-primary mt-4 w-full">Login</button>
-                  </Link>
+                  <div className="flex justify-between w-full flex-row gap-4 mt-4">
+                    <Link href="/register" className="link no-underline w-full">
+                      <button className="btn btn-secondary btn-outline w-full">Register</button>
+                    </Link>
+                    <Link href="/login" className="link no-underline w-full">
+                      <button className="btn btn-primary btn-outline w-full">Login</button>
+                    </Link>
+                  </div>
                 </>
               ) : (
                 <>
