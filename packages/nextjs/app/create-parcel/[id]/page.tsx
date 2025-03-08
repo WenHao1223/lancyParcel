@@ -132,7 +132,7 @@ const useHashReceive = () => {
 // Customer
 // Tracking Number, Out for Delivery Time, Delivery Time, Receiver Confirmation (Signature or Digital Proof), Employee ID Wallet Address, Digital Signature
 
-const ParcelReceive: NextPage = () => {
+const ParcelCreate: NextPage = () => {
   const params = useParams();
   const { address: connectedAddress } = useAccount();
   const { handleHashSignature } = useHashSignature(connectedAddress);
@@ -368,8 +368,8 @@ const ParcelReceive: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold mt-8">Receive Parcel Verification</h1>
-      <p>Verify your parcel ready for receive.</p>
+      <h1 className="text-4xl font-bold mt-8">Create Parcel Verification</h1>
+      <p>Create your parcel here.</p>
 
       {/* Ordered Item detail */}
       <div className="flex flex-col w-[40%] min-w-96 gap-4 mb-4">
@@ -857,4 +857,4 @@ const ParcelReceive: NextPage = () => {
   );
 };
 
-export default ParcelReceive;
+export default ParcelCreate;
