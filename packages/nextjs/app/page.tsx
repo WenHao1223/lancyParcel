@@ -105,7 +105,7 @@ const Home: NextPage = () => {
         <div className="px-5">
           <h1 className="text-center">
             <span className="block text-2xl mb-2">Welcome to</span>
-            <span className="block text-4xl font-bold">Scaffold-ETH 2</span>
+            <span className="block text-4xl font-bold">Lancy Parcel</span>
           </h1>
           <div className="flex justify-center items-center space-x-2 flex-col sm:flex-row">
             <p className="my-2 font-medium">Connected Address:</p>
@@ -159,7 +159,7 @@ const Home: NextPage = () => {
               {isLogin == true ? (
                 <>
                   {/* Parcel Hub detail */}
-                  <div className="flex flex-row gap-4 mb-6">
+                  <div className="flex flex-row gap-4 mb-8">
                     {typeof employeeData === "object" && employeeData !== null && (
                       <ul className="list bg-base-100 rounded-box w-full shadow-md">
                         <li className="p-4 pt-2 pb-0 tracking-wide border-b-2 border-gray-400 flex flex-row justify-between items-center">
@@ -232,9 +232,9 @@ const Home: NextPage = () => {
               )}
             </div>
           </div>
-          <div className="flex flex-col gap-2 mt-12">
+          <div className="flex flex-col gap-2 mt-6 w-full">
             {/* Customer */}
-            <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
+            {/* <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
               <h2>General</h2>
               <button className="btn">
                 <Link href="/register">Register Page</Link>
@@ -245,20 +245,23 @@ const Home: NextPage = () => {
               <button className="btn">
                 <Link href="/track">Tracking Page</Link>
               </button>
-            </div>
+            </div> */}
 
-            <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
-              <h2>Parcel Hub</h2>
-              <button className="btn">
-                <Link href="/parcel-dashboard">Parcel Dashboard Page</Link>
-              </button>
-            </div>
-
-            <div className="flex justify-start items-center gap-2 flex-col sm:flex-row">
-              <h2>Customer</h2>
-              <button className="btn">
-                <Link href="/customer-dashboard">Customer Dashboard Page</Link>
-              </button>
+            <div className="flex items-center justify-center flex-col sm:flex-row w-full btn-xl">
+              {employeeData && (
+                <Link href="/parcel-dashboard" className="w-full justify-center flex">
+                  <button className="btn btn-primary border-dashed text-white btn-outline w-[40%] py-12">
+                    Parcel Dashboard Page
+                  </button>
+                </Link>
+              )}
+              {customerData && (
+                <Link href="/customer-dashboard" className="w-full justify-center flex">
+                  <button className="btn btn-primary border-dashed text-white btn-outline w-[40%] py-12">
+                    Customer Dashboard Page
+                  </button>
+                </Link>
+              )}
             </div>
 
             {/* Blockchain testing*/}
