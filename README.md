@@ -29,6 +29,20 @@ Lancy Parcel ensures that every transaction is secure, every signature is verifi
 
 Solidity, Scaffold-ETH, NextJS, Foundry, Scroll
 
+# Conceptual Flow Diagram
+
+![Lancy Parcel Flow Diagram](https://github.com/WenHao1223/lancyParcel/blob/main/flow%20diagram/lancyParcel%20Smart%20Contract.png?raw=true)
+
+# Sequence Diagram
+
+![Lancy Parcel Sequence Diagram](https://github.com/WenHao1223/lancyParcel/blob/main/flow%20diagram/lancyParcel%20Flow.png?raw=true)
+
+# Hubs
+
+International -> National -> Regional -> Local
+
+![Lancy Parcel Hubs](https://github.com/WenHao1223/lancyParcel/blob/main/flow%20diagram/lancyParcel%20Parcel%20Hub.png?raw=true)
+
 ## Requirements
 
 Before you begin, you need to install the following tools:
