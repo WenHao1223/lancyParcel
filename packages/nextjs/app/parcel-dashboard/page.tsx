@@ -279,9 +279,9 @@ const Dashboard: NextPage = () => {
     newParcelData.current_location = destinationId;
 
     // Map pathway data structure
-    newParcelData.pathway = pathwayHubs.map(hubId => ({
+    newParcelData.pathway = pathwayHubs.map((hubId, index) => ({
       parcel_hub_id: hubId,
-      received_time: "",
+      received_time: index === 0 ? new Date().toISOString() : "", // Set current time for first hub only
       dispatch_time: "",
       photo_url: "",
       sender: {
@@ -323,7 +323,7 @@ const Dashboard: NextPage = () => {
             Swal.showLoading();
           },
         }).then(() => {
-          window.location.href = "receive-parcel/" + newParcelData.tracking_number;
+          window.location.href = "receive-parcel/[" + newParcelData.tracking_number + "]";
         });
       } else {
         console.error("Error:", result);
