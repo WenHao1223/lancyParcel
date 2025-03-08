@@ -12,9 +12,9 @@
     "is_fragile": true,
     "extra_comment": "Handle with care, contains electronics.",
     "sender": {
-      "name": "Ali Bin Abu",
+      "name": "David Tan",
       "phone_number": "+60123456789",
-      "email": "ali.abu@example.com"
+      "email": "david.tan@example.com"
     },
     "recipient": {
       "name": "John Doe",
@@ -87,9 +87,9 @@
     "is_fragile": false,
     "extra_comment": "No special handling required.",
     "sender": {
-      "name": "Siti Aminah",
-      "phone_number": "+60135678901",
-      "email": "siti.aminah@example.com"
+      "name": "David Tan",
+      "phone_number": "+60123456789",
+      "email": "david.tan@example.com"
     },
     "recipient": {
       "name": "David Tan",
@@ -224,9 +224,9 @@
     "is_fragile": false,
     "extra_comment": "Documents enclosed.",
     "sender": {
-      "name": "Hassan Rahman",
-      "phone_number": "+60147896523",
-      "email": "hassan.rahman@example.com"
+      "name": "David Tan",
+      "phone_number": "+60123456789",
+      "email": "david.tan@example.com"
     },
     "recipient": {
       "name": "Emily Wong",
@@ -333,9 +333,9 @@
     "is_fragile": false,
     "extra_comment": "Contains clothing items.",
     "sender": {
-      "name": "Nurul Huda",
-      "phone_number": "+60145968723",
-      "email": "nurul.huda@example.com"
+      "name": "David Tan",
+      "phone_number": "+60123456789",
+      "email": "david.tan@example.com"
     },
     "recipient": {
       "name": "James Lee",
@@ -470,9 +470,9 @@
     "is_fragile": true,
     "extra_comment": "Contains medical equipment.",
     "sender": {
-      "name": "Farid Ismail",
-      "phone_number": "+60123465879",
-      "email": "farid.ismail@example.com"
+      "name": "David Tan",
+      "phone_number": "+60123456789",
+      "email": "david.tan@example.com"
     },
     "recipient": {
       "name": "Karen Chong",
@@ -621,9 +621,9 @@
     "is_fragile": false,
     "extra_comment": "Contains clothing and accessories.",
     "sender": {
-      "name": "Zulkifli Rahman",
-      "phone_number": "+60125698741",
-      "email": "zulkifli.rahman@example.com"
+      "name": "David Tan",
+      "phone_number": "+60123456789",
+      "email": "david.tan@example.com"
     },
     "recipient": {
       "name": "Melissa Tan",

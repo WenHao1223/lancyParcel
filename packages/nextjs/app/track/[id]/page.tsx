@@ -85,7 +85,7 @@ const Track: NextPage = () => {
     }
   }, [parcelData, trackingNumber]);
 
-  // check if the parcel is owned by the customer
+  // check if the parcel is owned by the customer / seller
   useEffect(() => {
     if (!customerData) return;
 
@@ -93,7 +93,10 @@ const Track: NextPage = () => {
       if (specificParcel) {
         console.log(specificParcel.recipient.email, customerData.email);
         // check if the parcel is owned by the customer
-        if (specificParcel.recipient.email !== customerData.email) {
+        if (
+          specificParcel.recipient.email !== customerData.email ||
+          specificParcel.sender.email !== customerData.email
+        ) {
           setSpecificParcel(null);
           Swal.fire({
             icon: "error",

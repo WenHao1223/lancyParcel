@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import parcelJSON from "~~/data/parcel.json";
 import { CustomerWithoutPasswordInterface, ParcelInterface } from "~~/interfaces/GeneralInterface";
 
-const CustomerDashboard: NextPage = () => {
+const SellerDashboard: NextPage = () => {
   const [customerData, setCustomerData] = useState<CustomerWithoutPasswordInterface | null>(null);
   const [parcelData, setParcelData] = useState<ParcelInterface[] | null>(null);
 
@@ -54,7 +54,7 @@ const CustomerDashboard: NextPage = () => {
 
   useEffect(() => {
     if (parcelData) {
-      const filteredData = parcelData.filter(parcel => parcel.recipient.email === customerData?.email);
+      const filteredData = parcelData.filter(parcel => parcel.sender.email === customerData?.email);
       setFilteredParcelData(filteredData);
     }
   }, [parcelData, customerData]);
@@ -87,8 +87,8 @@ const CustomerDashboard: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold mt-8">Customer Dashboard</h1>
-      <p>View your parcel status here.</p>
+      <h1 className="text-4xl font-bold mt-8">Seller Dashboard</h1>
+      <p>View your sold parcel status here.</p>
 
       {/* Customer details */}
       <div className="flex flex-row w-[40%] gap-4 mb-6">
@@ -111,10 +111,10 @@ const CustomerDashboard: NextPage = () => {
         )}
       </div>
 
-      {/* Order history list */}
+      {/* Sold history list */}
       <div className="flex flex-row w-[40%] gap-4">
         <ul className="list bg-base-100 rounded-box w-full shadow-md">
-          <li className="p-4 pb-2 text-xs opacity-60 tracking-wide">Order History</li>
+          <li className="p-4 pb-2 text-xs opacity-60 tracking-wide">Sold History</li>
 
           {filteredParcelData ? (
             filteredParcelData.map(parcel => (
@@ -142,18 +142,10 @@ const CustomerDashboard: NextPage = () => {
                       className={`badge badge-outline badge-sm ${
                         parcel.current_location === "received"
                           ? "badge-success" // Received
-                          : parcel.pathway[parcel.pathway.length - 1].parcel_hub_id === parcel.current_location &&
-                              parcel.pathway[parcel.pathway.length - 1].dispatch_time
-                            ? "badge-secondary" // Arrived
-                            : "badge-primary" // Pending
+                          : "badge-primary" // Sending
                       }`}
                     >
-                      {parcel.current_location === "received"
-                        ? "Received"
-                        : parcel.pathway[parcel.pathway.length - 1].parcel_hub_id === parcel.current_location &&
-                            parcel.pathway[parcel.pathway.length - 1].dispatch_time
-                          ? "Arrived"
-                          : "Pending"}
+                      {parcel.current_location === "received" ? "Received" : "Sending"}
                     </div>
                   </div>
                 </div>
@@ -225,28 +217,6 @@ const CustomerDashboard: NextPage = () => {
                     </svg>
                   </div>
                 </button>
-                {/* Receive parcel button */}
-                {parcel.pathway[parcel.pathway.length - 1].parcel_hub_id === parcel.current_location &&
-                  parcel.pathway[parcel.pathway.length - 1].dispatch_time && (
-                    <button className="btn btn-square btn-ghost" onClick={() => receiveParcel(parcel.tracking_number)}>
-                      <div className="tooltip" data-tip="Receive parcel">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          className="size-6"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                          />
-                        </svg>
-                      </div>
-                    </button>
-                  )}
               </li>
             ))
           ) : (
@@ -260,4 +230,4 @@ const CustomerDashboard: NextPage = () => {
   );
 };
 
-export default CustomerDashboard;
+export default SellerDashboard;

@@ -74,6 +74,7 @@ const Register: NextPage = () => {
       name,
       email,
       password,
+      seller: false,
     };
 
     async function registerUser(newUser: CustomerInterface) {

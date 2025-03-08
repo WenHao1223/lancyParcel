@@ -8,11 +8,13 @@ export interface CustomerInterface {
   name: string;
   email: string;
   password: string;
+  seller: boolean;
 }
 
 export interface CustomerWithoutPasswordInterface {
   name: string;
   email: string;
+  seller: boolean;
 }
 
 export interface ParcelHubInterface {

@@ -2,31 +2,37 @@
   {
     "name": "David Tan",
     "email": "david.tan@example.com",
-    "password": "password123"
+    "password": "password123",
+    "seller": true
   },
   {
     "name": "Emily Wong",
     "email": "emily.wong@example.com",
-    "password": "password123"
+    "password": "password123",
+    "seller": false
   },
   {
     "name": "James Lee",
     "email": "james.lee@example.com",
-    "password": "password123"
+    "password": "password123",
+    "seller": false
   },
   {
     "name": "John Doe",
     "email": "john.doe@example.com",
-    "password": "password123"
+    "password": "password123",
+    "seller": false
   },
   {
     "name": "Karen Chong",
     "email": "karen.chong@example.com",
-    "password": "password123"
+    "password": "password123",
+    "seller": false
   },
   {
     "name": "Melissa Tan",
     "email": "melissa.tan@example.com",
-    "password": "password123"
+    "password": "password123",
+    "seller": false
   }
 ]

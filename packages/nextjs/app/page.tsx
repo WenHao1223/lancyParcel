@@ -256,11 +256,21 @@ const Home: NextPage = () => {
                 </Link>
               )}
               {customerData && (
-                <Link href="/customer-dashboard" className="w-full justify-center flex">
-                  <button className="btn btn-primary border-dashed text-white btn-outline w-[40%] py-12">
-                    Customer Dashboard Page
-                  </button>
-                </Link>
+                <div className="flex items-center justify-center flex-col sm:flex-row w-[40%] gap-4">
+                  <Link href="/customer-dashboard" className="w-full justify-center flex">
+                    <button className="btn btn-primary border-dashed text-white btn-outline w-full py-12">
+                      Customer Dashboard Page
+                    </button>
+                  </Link>
+
+                  {customerData?.seller && (
+                    <Link href="/seller-dashboard" className="w-full justify-center flex">
+                      <button className="btn btn-primary border-dashed text-white btn-outline w-full py-12">
+                        Seller Dashboard Page
+                      </button>
+                    </Link>
+                  )}
+                </div>
               )}
             </div>
 
