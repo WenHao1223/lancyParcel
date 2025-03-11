@@ -75,6 +75,8 @@ const Dashboard: NextPage = () => {
 
   const [filteredParcelData, setFilteredParcelData] = useState<ParcelInterface[] | null>(null);
 
+  console.log("Hello");
+
   useEffect(() => {
     const employeeBase64 = localStorage.getItem("employeeData");
     const customerBase64 = localStorage.getItem("customerData");
